@@ -1,0 +1,5 @@
+DEPENDENCIAS
+
+npm install @hapi/joi @sendgrid/mail bcrypt body-parser cors date-fns dotenv express express-fileupload fs-extra jsonwebtoken morgan mysql2 sharp uuid --save 
+npm install eslint faker nodemon prettier --save-dev 
+npm install eslint faker nodemon prettier --save-dev 
