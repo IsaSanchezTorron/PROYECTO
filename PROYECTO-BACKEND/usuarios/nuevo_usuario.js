@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 const { getConnection } = require('../DB');
 const { newUserSchema } = require('../validations/usuarios');
-const { generateError } = require('../helpers');
+const { generateError, randomString, sendEmail } = require('../helpers');
 
 async function newUser(req, res, next) {
   let connection;
@@ -34,15 +34,15 @@ async function newUser(req, res, next) {
 
     try {
       await sendEmail({
-        email: email,
+        email: mail,
         title: 'Debes validar tu cuenta para LOA',
         content: `Para validar tu cuenta con LOA, clicka este enlace: ${validationURL}`
       });
     } catch (error) {
-      console.error(error.response.body);
+      console.error(error);
       throw new Error('Error al enviar el correo electrónico..');
     }
-
+    /*
     let savedFileAvatar;
     if (req.files && req.files.avatar) {
       try {
@@ -60,11 +60,11 @@ async function newUser(req, res, next) {
     } else {
       savedFileAvatar = current.avatar;
     }
-
+*/
     await connection.query(
       `INSERT INTO USUARIOS ( nombre, apellidos, mail, contrasenha, url_foto, descripcion, fecha_registro, fecha_modificacion, codigo_registro, rol)
-      VALUES (?,?,?,?,NULL,NULL,NOW(),NOW(),NULL,?,"escritor") `,
-      [nombre, apellidos, mail, contrasenha, registrationCode]
+      VALUES (?,?,?,?,NULL,NULL,NOW(),NOW(),?,"escritor") `,
+      [nombre, apellidos, mail, dbPassword, registrationCode]
     );
 
     res.send({
