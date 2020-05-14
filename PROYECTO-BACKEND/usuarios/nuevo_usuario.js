@@ -28,10 +28,10 @@ async function newUser(req, res, next) {
     ////// mogollon de cosas por aqui  /////////////////////////////ls
 
     ///////////////////////////////////////////////////////////////
-    /*
-    const registrationCode = randomString(40);
 
+    const registrationCode = randomString(40);
     const validationURL = `${process.env.PUBLIC_HOST}/users/validate?code=${registrationCode}`;
+
     try {
       await sendEmail({
         email: email,
@@ -42,8 +42,7 @@ async function newUser(req, res, next) {
       console.error(error.response.body);
       throw new Error('Error al enviar el correo electrónico..');
     }
-*/
-    /*
+
     let savedFileAvatar;
     if (req.files && req.files.avatar) {
       try {
@@ -53,16 +52,19 @@ async function newUser(req, res, next) {
           await deletePhoto(current.avatar);
         }
       } catch (error) {
-        throw generateError('No se pudo procesar la imagen, inténtalo de nuevo', 400);
+        throw generateError(
+          'No se pudo procesar la imagen, inténtalo de nuevo',
+          400
+        );
       }
     } else {
       savedFileAvatar = current.avatar;
     }
-*/
+
     await connection.query(
       `INSERT INTO USUARIOS ( nombre, apellidos, mail, contrasenha, url_foto, descripcion, fecha_registro, fecha_modificacion, codigo_registro, rol)
-      VALUES (?,?,?,?,NULL,NULL,NOW(),NOW(),NULL,"escritor") `,
-      [nombre, apellidos, mail, contrasenha]
+      VALUES (?,?,?,?,NULL,NULL,NOW(),NOW(),NULL,?,"escritor") `,
+      [nombre, apellidos, mail, contrasenha, registrationCode]
     );
 
     res.send({

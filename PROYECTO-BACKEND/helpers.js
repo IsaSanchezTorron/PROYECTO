@@ -15,7 +15,7 @@ async function sendEmail({ email, title, content }) {
   sgMail.setApiKey(process.env.SENDGRID_KEY);
 
   const msg = {
-    to: mail,
+    to: email,
     from: 'isasancheztorron@gmail.com',
     subject: title,
     text: content,
