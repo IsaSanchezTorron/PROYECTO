@@ -1,7 +1,7 @@
-require("dotenv").config();
-const bcrypt = require("bcrypt");
+require('dotenv').config();
+const bcrypt = require('bcrypt');
 
-const { getConnection } = require("./DB");
+const { getConnection } = require('./DB');
 
 async function main() {
   const connection = await getConnection();
@@ -37,7 +37,7 @@ async function main() {
   fecha_registro DATETIME NOT NULL,
   fecha_modificacion DATETIME, 
   codigo_registro VARCHAR (100),
-  rol ENUM ('escritor', 'agregador', 'administrador') default 'escritor' NOT NULL,
+  rol ENUM ('escritor', 'agregador', 'admin') default 'escritor' NOT NULL,
  );`
   );
 
@@ -94,9 +94,8 @@ fecha_valoracion DATETIME,
       `);
 */
 
-  const result = await connection.query("SELECT * FROM CONCURSOS ");
+  const result = await connection.query('SELECT * CONCURSOS');
   console.log(result[0]);
-  //console.log(result[1]);
   connection.release();
   process.exit(); //Se cierra el proceso lanzado (initDB)
 }
