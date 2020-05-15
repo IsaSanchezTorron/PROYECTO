@@ -10,9 +10,10 @@ const app = express();
 const port = process.env.PORT;
 
 const { newUser } = require('./usuarios/nuevo_usuario');
+const { loginUser } = require('./usuarios/login');
 const { validateUser } = require('./usuarios/validation');
-const { newConcourse } = require('./concursos/nuevo_concurso');
-const { newRating } = require('./votaciones/nueva_votacion');
+//const { newConcourse } = require('./concursos/nuevo_concurso');
+//const { newRating } = require('./votaciones/nueva_votacion');
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -20,7 +21,9 @@ app.use(fileUpload());
 app.use(cors());
 
 app.post('/usuarios', newUser);
+app.post('/usuarios/login', loginUser);
 app.get('/usuarios/validar', validateUser);
+
 //app.post('./concursos', newConcourse);
 //app.post('./votaciones', newRating);
 

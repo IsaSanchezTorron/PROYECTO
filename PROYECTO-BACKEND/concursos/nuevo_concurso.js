@@ -1,4 +1,4 @@
-require('dotenv').config();
+/*require('dotenv').config();
 
 const { getConnection } = require('../DB');
 const { newConcourseSchema } = require('../validations/concursos');
@@ -56,3 +56,4 @@ async function newConcourse(req, res, next) {
 }
 module.exports = { newConcourse };
 console.log('Llega hasta aquí.');
+*/
