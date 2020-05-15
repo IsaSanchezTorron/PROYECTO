@@ -15,7 +15,7 @@ async function validateUser(req, res, next) {
     const [
       result
     ] = await connection.query(
-      'UPDATE USUARIOS SET active=0,registrationCode=NULL WHERE registrationCode=?',
+      'UPDATE USUARIOS SET activo=1,codigo_registro=NULL WHERE codigo_registro=?',
       [code]
     );
     if (result.affectedRows === 0) {
