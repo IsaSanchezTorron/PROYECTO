@@ -24,10 +24,10 @@ async function getUser(req, res, next) {
       throw generateError(`No existe ningún usuario con ese ${id}`, 404);
     }
     const [userData] = result;
-    const payload = { id_usuario: userData.id_usuario };
-
-    /*const payload = {
-              nombre: userData.nombre,
+    // const payload = { id_usuario: userData.id_usuario };
+    let payload = {};
+    // const payload = {;
+    /* nombre: userData.nombre,
               apellidos: userData.apellidos,
               mail = userData.mail,
               // contrasenha = userData.contrasenha,
@@ -35,20 +35,17 @@ async function getUser(req, res, next) {
               fecha_registo: userData.fecha_registro,
               rol: userData.rol,
   };*/
-    /*
-    if (
-      userData.id_usuario === req.auth.id_usuario ||
-      req.auth.rol === 'admin'
-    ) {
-      (payload.nombre = userData.nombre),
-        (payload.apellidos = userData.apellidos),
-        (payload.mail = userData.mail);
-      (payload.url_foto = userData.url_foto),
-        (payload.fecha_registro = userData.fecha_registro),
-        (payload.rol = userData.rol);
+
+    if (userData.id_usuario === req.auth.id || req.auth.rol === 'admin') {
+      payload.nombre = userData.nombre;
+      payload.apellidos = userData.apellidos;
+      payload.mail = userData.mail;
+      payload.url_foto = userData.url_foto;
+      payload.fecha_registro = userData.fecha_registro;
+      payload.rol = userData.rol;
     } else {
       throw generateError('No tiene permisos para ver esta información', 401);
-    }*/
+    }
     res.send({
       status: 'ok',
       data: payload

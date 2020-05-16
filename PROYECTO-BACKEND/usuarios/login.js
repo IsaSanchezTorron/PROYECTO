@@ -18,7 +18,7 @@ async function loginUser(req, res, next) {
     const [
       dbUser
     ] = await connection.query(
-      'SELECT nombre, mail, contrasenha, rol  FROM USUARIOS WHERE mail=? AND activo=1',
+      'SELECT id_usuario, nombre, mail, contrasenha, rol  FROM USUARIOS WHERE mail=? AND activo=1',
       [mail]
     );
 
