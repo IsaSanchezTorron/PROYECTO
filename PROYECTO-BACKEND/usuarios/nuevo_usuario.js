@@ -1,4 +1,5 @@
 require('dotenv').config();
+
 const bcrypt = require('bcrypt');
 
 const { getConnection } = require('../DB');
@@ -11,7 +12,6 @@ async function newUser(req, res, next) {
     connection = await getConnection();
     await newUserSchema.validateAsync(req.body);
 
-    /////////////////////////////////////////////////////////////////
     const { nombre, apellidos, mail, contrasenha } = req.body;
 
     const [

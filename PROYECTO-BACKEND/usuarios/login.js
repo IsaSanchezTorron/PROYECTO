@@ -43,7 +43,7 @@ async function loginUser(req, res, next) {
 
     res.send({
       status: 'ok',
-      message: 'Login incorrecto',
+      message: 'Login correcto, coño!',
       data: { token }
     });
   } catch (error) {

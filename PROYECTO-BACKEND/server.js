@@ -12,6 +12,7 @@ const port = process.env.PORT;
 const { newUser } = require('./usuarios/nuevo_usuario');
 const { loginUser } = require('./usuarios/login');
 const { validateUser } = require('./usuarios/validation');
+const { getUser } = require('./usuarios/get_data');
 //const { newConcourse } = require('./concursos/nuevo_concurso');
 //const { newRating } = require('./votaciones/nueva_votacion');
 
@@ -23,6 +24,7 @@ app.use(cors());
 app.post('/usuarios', newUser);
 app.post('/usuarios/login', loginUser);
 app.get('/usuarios/validar', validateUser);
+app.get('/usuarios/:id', getUser);
 
 //app.post('./concursos', newConcourse);
 //app.post('./votaciones', newRating);
