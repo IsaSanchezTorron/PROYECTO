@@ -7,7 +7,7 @@ const { updateUserSchema } = require('../validations/edit_user');
 async function editUser(req, res, next) {
   let connection;
   try {
-    await updatechema.validateAsync(req.body);
+    await updateUserSchema.validateAsync(req.body);
     connection = await getConnection();
     const { id } = req.params;
     const { nombre, apellidos, url_foto, descripcion } = req.body;

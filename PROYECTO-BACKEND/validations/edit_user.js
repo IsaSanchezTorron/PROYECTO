@@ -9,10 +9,10 @@ const updateUserSchema = Joi.object().keys({
 
   apellidos: Joi.string()
 
-    .max(50)
+    .max(100)
     .min(2)
 
-    .error(new Error('Field must have between 2 and 50 types')),
+    .error(new Error('El campo debe tener entre 2 y 200 caracteres')),
   mail: Joi.string().email().error(new Error('Email not valid')),
 
   descripcion: Joi.string()

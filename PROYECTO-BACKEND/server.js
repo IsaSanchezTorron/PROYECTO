@@ -15,6 +15,8 @@ const { validateUser } = require('./usuarios/validation');
 const { getUser } = require('./usuarios/get_data');
 const { editUser } = require('./usuarios/edit_user');
 const { userIsAuthenticated, userIsAdmin } = require('./middlewares/auth');
+const { updatePassword } = require('./usuarios/edit_password');
+const { disableUser } = require('./usuarios/disable');
 //const { newConcourse } = require('./concursos/nuevo_concurso');
 //const { newRating } = require('./votaciones/nueva_votacion');
 
@@ -26,9 +28,11 @@ app.use(cors());
 app.post('/usuarios', newUser);
 app.post('/usuarios/login', loginUser);
 app.get('/usuarios/validar', validateUser);
+app.put('/usuarios/:id', editUser);
+app.get('/usuarios/:id', userIsAuthenticated, userIsAdmin, editUser);
 app.get('/usuarios/:id', userIsAuthenticated, userIsAdmin, getUser);
-//app.put('/usuarios/:id', editUser);
-app.put('/usuarios/:id', userIsAuthenticated, userIsAdmin, editUser);
+app.put('/usuarios/password/:id', userIsAuthenticated, updatePassword);
+app.put('/usuarios/disable/:id', userIsAuthenticated, disableUser);
 
 //app.post('./concursos', newConcourse);
 //app.post('./votaciones', newRating);

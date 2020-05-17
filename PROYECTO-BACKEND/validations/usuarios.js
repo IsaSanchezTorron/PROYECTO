@@ -24,5 +24,6 @@ const newUserSchema = Joi.object().keys({
   contrasenha: passwordSchema
 });
 module.exports = {
-  newUserSchema
+  newUserSchema,
+  passwordSchema
 };
