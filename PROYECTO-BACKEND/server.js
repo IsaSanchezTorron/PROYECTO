@@ -24,7 +24,8 @@ const { editConcourse } = require('./concursos/edit_concourse');
 const { getConcourse } = require('./concursos/get_data');
 const { deleteConcourse } = require('./concursos/delete');
 
-//const { newConcourse } = require('./concursos/nuevo_concurso');
+const { newInscription } = require('./inscripciones/new_inscription');
+
 //const { newRating } = require('./votaciones/nueva_votacion');
 
 app.use(morgan('dev'));
@@ -32,6 +33,7 @@ app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors());
 
+// RUTAS DE USUARIO
 app.post('/usuarios', newUser);
 app.post('/usuarios/login', loginUser);
 app.get('/usuarios/validar', validateUser);
@@ -40,17 +42,27 @@ app.get('/usuarios/:id', userIsAuthenticated, userIsAdmin, editUser);
 app.get('/usuarios/:id', userIsAuthenticated, userIsAdmin, getUser);
 app.put('/usuarios/password/:id', userIsAuthenticated, updatePassword);
 app.put('/usuarios/disable/:id', userIsAuthenticated, disableUser);
-app.delete('/usuarios/delete', userIsAuthenticated, userIsAdmin, deleteUser);
+app.delete(
+  '/usuarios/delete/:id',
+  userIsAuthenticated,
+  userIsAdmin,
+  deleteUser
+);
 
+//RUTAS DE CONCURSO
 app.post('/concursos', newConcourse, userIsAuthenticated, userIsAdmin);
 app.put('/concursos/:id', editConcourse, userIsAuthenticated, userIsAdmin);
 app.get('/concursos/:id', getConcourse);
 app.delete(
-  '/concursos/delete',
+  '/concursos/delete/:id',
   userIsAuthenticated,
   userIsAdmin,
   deleteConcourse
 );
+
+//RUTAS DE INSCRIPCIONES
+app.post('/concursos/inscripciones/:id', userIsAuthenticated, newInscription);
+
 //app.post('./votaciones', newRating);
 
 //Middleware de error

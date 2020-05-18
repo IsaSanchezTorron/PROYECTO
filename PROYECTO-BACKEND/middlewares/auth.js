@@ -58,7 +58,7 @@ async function userIsAuthenticated(req, res, next) {
     // Tened en cuenta que el iat del token está guardado en segundos y node trabaja en
     // milisegundos
     if (new Date(iat * 1000) < new Date(user.fecha_modificacion_contrasenha)) {
-      generateError('Token is not valid, Login again', 401);
+      generateError('El token no es válido, debes hacer login de nuevo', 401);
     }
 
     req.auth = decoded;
