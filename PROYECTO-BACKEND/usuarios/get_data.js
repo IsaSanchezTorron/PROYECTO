@@ -12,10 +12,7 @@ async function getUser(req, res, next) {
     const { id } = req.params;
 
     const [result] = await connection.query(
-      `SELECT id_usuario, nombre, apellidos, mail, contrasenha,
-           url_foto,
-           descripcion,
-           fecha_registro, rol
+      `SELECT id_usuario, nombre, apellidos, mail, url_foto, descripcion, fecha_registro, rol)
            FROM USUARIOS WHERE id_usuario=?`,
       [id]
     );
@@ -41,6 +38,7 @@ async function getUser(req, res, next) {
       payload.apellidos = userData.apellidos;
       payload.mail = userData.mail;
       payload.url_foto = userData.url_foto;
+      payload.descripcion = userData.descripcion;
       payload.fecha_registro = userData.fecha_registro;
       payload.rol = userData.rol;
     } else {
@@ -56,5 +54,5 @@ async function getUser(req, res, next) {
     if (connection) connection.release();
   }
 }
-console.log('Llego hasta aquí en get_data');
+console.log('Llego hasta aquí en get_data de usuarios');
 module.exports = { getUser };
