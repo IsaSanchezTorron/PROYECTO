@@ -7,15 +7,12 @@ async function newInscription(req, res, next) {
   let connection;
 
   try {
-    console.log('entró aquí');
-
     connection = await getConnection();
-    const userid = req.auth.id_usuario;
-    const concourseid = req.params.id_concurso;
+    const userid = req.auth.id;
+    const concourseid = req.params.id;
     //await newInscriptionSchema.validateAsync(req.body);
-    console.log('prueba1');
 
-    const [
+    /*const [
       existingInscription
     ] = await connection.query(
       'SELECT id_concurso, id_usuario from INSCRIPCIONES where id_concurso=? & id_usuario=?',
@@ -25,13 +22,15 @@ async function newInscription(req, res, next) {
     if (existingInscription.length) {
       throw generateError('Ya te has inscrito a este concurso', 409);
     }
-    console.log('prueba asf');
+    */
+    //console.log('prueba asf');
+
     await connection.query(
-      `INSERT INTO INSCRIPCIONES ( id_concurso, id_usuario, fecha_inscripcion)
-      VALUES (?,?,NOW()) `,
+      `INSERT INTO INSCRIPCIONES ( CONCURSOS_id_concurso, USUARIOS_id_usuario, fecha_inscripcion)
+      VALUES (?, ?, NOW()) `,
       [concourseid, userid]
     );
-
+    console.log('prueba1');
     res.send({
       status: 'ok',
       message: 'Te has inscrito correctamente a este concurso'
