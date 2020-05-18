@@ -1,7 +1,8 @@
-/*require('dotenv').config();
+require('dotenv').config();
 
 const { getConnection } = require('../DB');
-const { newConcourseSchema } = require('../validations/concursos');
+const { newConcourseSchema } = require('../validations/nuevo_concurso');
+const { generateError } = require('../helpers');
 
 async function newConcourse(req, res, next) {
   let connection;
@@ -56,4 +57,3 @@ async function newConcourse(req, res, next) {
 }
 module.exports = { newConcourse };
 console.log('Llega hasta aquí.');
-*/

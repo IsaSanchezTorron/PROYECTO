@@ -43,8 +43,8 @@ const newConcourseSchema = Joi.object().keys({
       )
     ),
   genero: Joi.string()
-    .max(100)
-    .required()
+    .max(200)
+
     .error(
       new Error('El género del concurso debe tener un máximo de 100 caracteres')
     )

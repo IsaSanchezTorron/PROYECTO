@@ -67,7 +67,7 @@ async function updatePassword(req, res, next) {
     res.send({
       status: 'ok',
       message:
-        'Password changes properly. Your tokens are not valid. You must login again.'
+        'La contraseña ha sido cambiada con éxito. Por favor haz el proceso de login de nuevo'
     });
   } catch (error) {
     next(error);

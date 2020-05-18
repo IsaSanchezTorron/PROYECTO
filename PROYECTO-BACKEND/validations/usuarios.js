@@ -10,17 +10,20 @@ const passwordSchema = Joi.string()
 const newUserSchema = Joi.object().keys({
   nombre: Joi.string()
 
-    .max(50)
+    .max(100)
     .min(2)
     .required()
     .error(new Error('Tu nombre debe tener entre 2 y 100 caracteres')),
   apellidos: Joi.string()
 
-    .max(50)
+    .max(100)
     .min(2)
     .required()
-    .error(new Error('Field must have between 2 and 50 types')),
-  mail: Joi.string().email().required().error(new Error('Email not valid')),
+    .error(new Error('Tus apellidos deben tener entre 2 y 100 caracteres')),
+  mail: Joi.string()
+    .email()
+    .required()
+    .error(new Error('El correo electrónico no es válido')),
   contrasenha: passwordSchema
 });
 module.exports = {

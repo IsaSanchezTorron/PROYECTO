@@ -23,7 +23,7 @@ async function validateUser(req, res, next) {
     }
     res.send({
       status: 'ok',
-      message: 'User is validated, now, you can login.'
+      message: 'Tu usuario ha sido validado, ya puedes hacer inciar sesión'
       // data: {
       //   token
       // }

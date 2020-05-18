@@ -14,7 +14,10 @@ async function disableUser(req, res, next) {
       [id]
     );
     if (!current.length) {
-      throw generateError(`There is no entry with id ${id}`, 400);
+      throw generateError(
+        `No existe un usuario con id. de registo  ${id}`,
+        400
+      );
     }
     /*
     if (current[0].id !== req.auth.id && req.auth.role !== 'admin') {
@@ -29,8 +32,8 @@ async function disableUser(req, res, next) {
     );
 
     res.send({
-      status: 'ok',
-      message: 'Hemos desabilitado tu usuario.'
+      status: 'OK',
+      message: 'El usuario ha sido borrado correctamente.'
     });
   } catch (error) {
     next(error);

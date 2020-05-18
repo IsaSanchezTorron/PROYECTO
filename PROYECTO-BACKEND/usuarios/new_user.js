@@ -36,7 +36,7 @@ async function newUser(req, res, next) {
       await sendEmail({
         email: mail,
         title: 'Debes validar tu cuenta para LOA',
-        content: `Para validar tu cuenta con LOA, clicka este enlace: ${validationURL}`
+        content: `Para validar tu cuenta con LOA, haz click en este enlace: ${validationURL}`
       });
     } catch (error) {
       console.error(error);
