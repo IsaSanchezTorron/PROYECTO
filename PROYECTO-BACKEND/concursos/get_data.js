@@ -20,22 +20,20 @@ async function getConcourse(req, res, next) {
     if (!result.length) {
       throw generateError(`No existe ningún concurso con ese ${id}`, 404);
     }
+
     const [concourseData] = result;
 
-    let payload = {};
+    const payload = {
+      nombre: concourseData.nombre,
+      fecha_inicio: concourseData.fecha_inicio,
+      fecha_final: concourseData.fecha_final,
+      url_foto: concourseData.url_foto,
+      descripcion: concourseData.descripcion,
+      modalidad: concourseData.modalidad,
+      genero: concourseData.genero,
+      ciudad: concourseData.ciudad
+    };
 
-    if (concourseData.id_concourse === req.auth.id_concourse) {
-      payload.nombre = concourseData.nombre;
-      payload.fecha_inicio = concourseData.apellidos;
-      payload.fecha_final = concourseData.mail;
-      payload.url_foto = concourseData.url_foto;
-      payload.descripcion = concourseData.fecha_registro;
-      payload.modalidad = concourseData.rol;
-      payload.genero = concourseData.genero;
-      payload.ciudad = concouseData.ciudad;
-    } else {
-      throw generateError('No tiene permisos para ver esta información', 401);
-    }
     res.send({
       status: 'ok',
       data: payload

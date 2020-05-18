@@ -22,6 +22,7 @@ const { deleteUser } = require('./usuarios/delete');
 const { newConcourse } = require('./concursos/new_concourse');
 const { editConcourse } = require('./concursos/edit_concourse');
 const { getConcourse } = require('./concursos/get_data');
+const { deleteConcourse } = require('./concursos/delete');
 
 //const { newConcourse } = require('./concursos/nuevo_concurso');
 //const { newRating } = require('./votaciones/nueva_votacion');
@@ -44,6 +45,12 @@ app.delete('/usuarios/delete', userIsAuthenticated, userIsAdmin, deleteUser);
 app.post('/concursos', newConcourse, userIsAuthenticated, userIsAdmin);
 app.put('/concursos/:id', editConcourse, userIsAuthenticated, userIsAdmin);
 app.get('/concursos/:id', getConcourse);
+app.delete(
+  '/concursos/delete',
+  userIsAuthenticated,
+  userIsAdmin,
+  deleteConcourse
+);
 //app.post('./votaciones', newRating);
 
 //Middleware de error
