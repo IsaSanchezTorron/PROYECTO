@@ -9,7 +9,7 @@ async function getUser(req, res, next) {
   try {
     connection = await getConnection();
 
-    const { id } = req.params;
+    const { id } = req.auth;
 
     const [result] = await connection.query(
       `SELECT id_usuario, nombre, apellidos, mail, url_foto, descripcion, fecha_registro, rol)
@@ -21,17 +21,8 @@ async function getUser(req, res, next) {
       throw generateError(`No existe ningún usuario con ese ${id}`, 404);
     }
     const [userData] = result;
-    // const payload = { id_usuario: userData.id_usuario };
+
     let payload = {};
-    // const payload = {;
-    /* nombre: userData.nombre,
-              apellidos: userData.apellidos,
-              mail = userData.mail,
-              // contrasenha = userData.contrasenha,
-              url_foto = userData.contrasenha,
-              fecha_registo: userData.fecha_registro,
-              rol: userData.rol,
-  };*/
 
     if (userData.id_usuario === req.auth.id || req.auth.rol === 'admin') {
       payload.nombre = userData.nombre;

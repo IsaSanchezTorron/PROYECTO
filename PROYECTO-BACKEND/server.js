@@ -12,12 +12,13 @@ const port = process.env.PORT;
 const { newUser } = require('./usuarios/new_user');
 const { loginUser } = require('./usuarios/login');
 const { validateUser } = require('./usuarios/validation');
-const { getUser } = require('./usuarios/get_data');
+const { getUser } = require('./usuarios/get_data_user');
 const { editUser } = require('./usuarios/edit_user');
 const { userIsAuthenticated, userIsAdmin } = require('./middlewares/auth');
 const { updatePassword } = require('./usuarios/edit_password');
 const { disableUser } = require('./usuarios/disable');
 const { deleteUser } = require('./usuarios/delete');
+const { getInscriptionHistoryUser } = require('./usuarios/get_history_user');
 
 const { newConcourse } = require('./concursos/new_concourse');
 const { editConcourse } = require('./concursos/edit_concourse');
@@ -48,6 +49,11 @@ app.delete(
   userIsAuthenticated,
   userIsAdmin,
   deleteUser
+);
+app.get(
+  '/usuarios/historial/:id',
+  userIsAuthenticated,
+  getInscriptionHistoryUser
 );
 
 //RUTAS DE CONCURSO
