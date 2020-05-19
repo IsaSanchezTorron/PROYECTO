@@ -19,9 +19,10 @@ async function disableUser(req, res, next) {
         400
       );
     }
+
     /*
-    if (current[0].id !== req.auth.id && req.auth.role !== 'admin') {
-      throw generateError('You do not autorise to disable this user', 401);
+    if (current[0].id !== req.auth.id_usuario && req.auth.rol !== 'admin') {
+      throw generateError('No estás autorizado para deshabilitar al usuario', 401);
     }*/
 
     const registrationCode = randomString(40);

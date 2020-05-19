@@ -21,9 +21,11 @@ async function editUser(req, res, next) {
     if (!current.length) {
       throw generateError(`El usuario con id  ${id} no existe`, 404);
     }
+
     /* if (current[0].id !== req.auth.id && req.auth.role !== 'admin') {
             throw generateError('No tienes permisos para editar este usuario', 401);
         } */
+
     await connection.query(
       ` UPDATE USUARIOS SET nombre=?, apellidos =?, url_foto =?, descripcion=?  WHERE id_usuario=?`,
       [nombre, apellidos, url_foto, descripcion, id]

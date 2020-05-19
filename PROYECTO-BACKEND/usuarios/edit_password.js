@@ -9,7 +9,7 @@ async function updatePassword(req, res, next) {
   let connection;
   try {
     const { id } = req.params;
-    // body: oldpassword, newPassword, newPasswordRepeat (opcional)
+
     connection = await getConnection();
 
     await editPasswordSchema.validateAsync(req.body);
@@ -38,7 +38,6 @@ async function updatePassword(req, res, next) {
       [id]
     );
 
-    // Código un poco redundante
     if (!currentUser.length) {
       throw generateError(`The user with id ${id} does not exist`, 404);
     }
@@ -53,7 +52,7 @@ async function updatePassword(req, res, next) {
       throw generateError('Tu password antigua es incorrecta', 401);
     }
 
-    // generar hash de la password
+    // Generar el hash de la contraseña
     const dbNewPassword = await bcrypt.hash(newPassword, 10);
 
     // actualizar la base de datos

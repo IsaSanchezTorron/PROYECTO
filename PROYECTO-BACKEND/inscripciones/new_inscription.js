@@ -10,20 +10,20 @@ async function newInscription(req, res, next) {
     connection = await getConnection();
     const userid = req.auth.id;
     const concourseid = req.params.id;
-    //await newInscriptionSchema.validateAsync(req.body);
 
-    /*const [
+    //Pendiente depurar la comprobación de duplicidad aunque la propia BD impide que se repita la combinación de las dos FK.
+    /*
+    const [
       existingInscription
     ] = await connection.query(
-      'SELECT id_concurso, id_usuario from INSCRIPCIONES where id_concurso=? & id_usuario=?',
+      'SELECT CONCURSOS_id_concurso, USUARIOS_id_usuario from INSCRIPCIONES where CONCURSOS_id_concurso=? & USUARIOS_id_usuario=?',
       [concourseid, userid]
     );
 
     if (existingInscription.length) {
       throw generateError('Ya te has inscrito a este concurso', 409);
     }
-    */
-    //console.log('prueba asf');
+*/
 
     await connection.query(
       `INSERT INTO INSCRIPCIONES ( CONCURSOS_id_concurso, USUARIOS_id_usuario, fecha_inscripcion)

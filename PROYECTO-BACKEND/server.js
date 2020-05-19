@@ -25,6 +25,7 @@ const { getConcourse } = require('./concursos/get_data');
 const { deleteConcourse } = require('./concursos/delete');
 
 const { newInscription } = require('./inscripciones/new_inscription');
+const { deleteInscription } = require('./inscripciones/delete_inscription');
 
 //const { newRating } = require('./votaciones/nueva_votacion');
 
@@ -62,6 +63,11 @@ app.delete(
 
 //RUTAS DE INSCRIPCIONES
 app.post('/concursos/inscripciones/:id', userIsAuthenticated, newInscription);
+app.delete(
+  '/concursos/inscripciones/:id',
+  userIsAuthenticated,
+  deleteInscription
+);
 
 //app.post('./votaciones', newRating);
 

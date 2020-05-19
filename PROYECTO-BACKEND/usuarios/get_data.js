@@ -54,5 +54,5 @@ async function getUser(req, res, next) {
     if (connection) connection.release();
   }
 }
-console.log('Llego hasta aquí en get_data de usuarios');
+
 module.exports = { getUser };
