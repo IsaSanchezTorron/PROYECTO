@@ -1,0 +1,58 @@
+
+
+SEMANA 14 MAYO-20 MAYO
+
+- Planificación de rutas a partir de mis frameworks, requerimientos y mi diseño de BD en MySQL.
+- Creación del entorno de desarrollo.
+- Instalación de dependencias, edición del .gitignore, creación .env, .eslintrc.json
+- Edición de package.json para script de arranque del módulo "start" y "dev".
+
+- Conexión con mi Base de Datos en DB.js + edición del .env 
+
+
+- Creación de directorios (middlewares, validations, helpers)
+
+
+-TRABAJO CON LAS RUTAS DE "USUARIOS", "CONCURSOS", "INSCRIPCIONES" y "VALORACIONES", correspondientes a las tablas de la BD.
+
+        (Utilización de arrays, objetos, destructuring, asincronía, inyección de SQL, uso de encryptación de contraseñas y de generador de códigos, implementación del envío de mail de registro, uso de 	 JOINS en las consultas SQL, comprobaciónes para la no duplicidad de campos,
+	uso de roles para controlar permisos, testeos con Postman).
+
+
+- Rutas de USUARIOS:
+
+	- Crear nuevo usuario
+	- Validar cuenta de usuario
+	- Hacer login
+	- Editar datos de usuario
+	- Modificar contraseña
+	- Obtener datos de usuario
+	- Ver el historial de inscripciones a concursos
+	- Deshabilitar cuenta.
+	- Borrar cuenta definitivamente
+
+
+- Rutas de CONCURSOS:
+
+	- Nuevo concurso
+	- Editar concurso
+	- Obtener datos de concurso
+	- Borrar concurso
+
+
+
+- Rutas de INSCRIPCIONES:
+
+	- Inscribirse.
+	- Cancelar suscripción
+	- Ver usuarios inscritos
+
+    
+  
+
+	
+	
+
+
+
+
