@@ -9,24 +9,25 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT;
 
-const { newUser } = require('./usuarios/new_user');
-const { loginUser } = require('./usuarios/login');
-const { validateUser } = require('./usuarios/validation');
-const { getUser } = require('./usuarios/get_data_user');
-const { editUser } = require('./usuarios/edit_user');
+const { newUser } = require('./USUARIOS/new_user');
+const { loginUser } = require('./USUARIOS/login');
+const { validateUser } = require('./USUARIOS/validation');
+const { getUser } = require('./USUARIOS/get_data_user');
+const { editUser } = require('./USUARIOS/edit_user');
 const { userIsAuthenticated, userIsAdmin } = require('./middlewares/auth');
-const { updatePassword } = require('./usuarios/edit_password');
-const { disableUser } = require('./usuarios/disable');
-const { deleteUser } = require('./usuarios/delete');
-const { getInscriptionHistoryUser } = require('./usuarios/get_history_user');
+const { updatePassword } = require('./USUARIOS/edit_password');
+const { disableUser } = require('./USUARIOS/disable');
+const { deleteUser } = require('./USUARIOS/delete');
+const { getInscriptionHistoryUser } = require('./USUARIOS/get_history_user');
 
-const { newConcourse } = require('./concursos/new_concourse');
-const { editConcourse } = require('./concursos/edit_concourse');
-const { getConcourse } = require('./concursos/get_data');
-const { deleteConcourse } = require('./concursos/delete');
+const { newConcourse } = require('./CONCURSOS/new_concourse');
+const { editConcourse } = require('./CONCURSOS/edit_concourse');
+const { getConcourse } = require('./CONCURSOS/get_data');
+const { deleteConcourse } = require('./CONCURSOS/delete');
 
-const { newInscription } = require('./inscripciones/new_inscription');
-const { deleteInscription } = require('./inscripciones/delete_inscription');
+const { newInscription } = require('./INSCRIPCIONES/new_inscription');
+const { deleteInscription } = require('./INSCRIPCIONES/delete_inscription');
+const { getInscribed } = require('./INSCRIPCIONES/get_data_inscriptions');
 
 //const { newRating } = require('./votaciones/nueva_votacion');
 
@@ -59,7 +60,7 @@ app.get(
 //RUTAS DE CONCURSO
 app.post('/concursos', newConcourse, userIsAuthenticated, userIsAdmin);
 app.put('/concursos/:id', editConcourse, userIsAuthenticated, userIsAdmin);
-app.get('/concursos/:id', getConcourse);
+app.get('/concursos/info/:id', getConcourse);
 app.delete(
   '/concursos/delete/:id',
   userIsAuthenticated,
@@ -70,10 +71,11 @@ app.delete(
 //RUTAS DE INSCRIPCIONES
 app.post('/concursos/inscripciones/:id', userIsAuthenticated, newInscription);
 app.delete(
-  '/concursos/inscripciones/:id',
+  '/concursos/inscripciones/borrar/:id',
   userIsAuthenticated,
   deleteInscription
 );
+app.get('/concursos/inscripciones/:id', userIsAuthenticated, getInscribed);
 
 //app.post('./votaciones', newRating);
 

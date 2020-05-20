@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { getConnection } = require('../DB');
 const { generateError } = require('../helpers');
+
 async function deleteInscription(req, res, next) {
   let connection;
   try {
