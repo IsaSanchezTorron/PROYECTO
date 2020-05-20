@@ -1,16 +1,19 @@
 
 
-SEMANA 14 MAYO-20 MAYO
+ 
 
-- Planificación de rutas a partir de mis frameworks, requerimientos y mi diseño de BD en MySQL.
+- Planificación de rutas a partir de mis frameworks, requerimientos y mi diseño de BD en MySQL. 
+
 - Creación del entorno de desarrollo.
+
 - Instalación de dependencias, edición del .gitignore, creación .env, .eslintrc.json
+
 - Edición de package.json para script de arranque del módulo "start" y "dev".
 
 - Conexión con mi Base de Datos en DB.js + edición del .env 
 
-
 - Creación de directorios (middlewares, validations, helpers)
+
 
 
 -TRABAJO CON LAS RUTAS DE "USUARIOS", "CONCURSOS", "INSCRIPCIONES" y "VALORACIONES", correspondientes a las tablas de la BD.
