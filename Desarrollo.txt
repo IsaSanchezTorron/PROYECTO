@@ -18,9 +18,17 @@
 
 -TRABAJO CON LAS RUTAS DE "USUARIOS", "CONCURSOS", "INSCRIPCIONES" y "VALORACIONES", correspondientes a las tablas de la BD.
 
-        (Utilización de arrays, objetos, destructuring, asincronía, inyección de SQL, uso de encryptación de contraseñas y de generador de códigos, implementación del envío de mail de registro, uso de 	 JOINS en las consultas SQL, comprobaciónes para la no duplicidad de campos,
-	uso de roles para controlar permisos, testeos con Postman).
+         - Importación y exportación de funciones y módulos. 
+         - Utilización de arrays, objetos, destructuring, asincronía.
+	 - Inyección de SQL, uso de JOINS en las consultas.
+	 - Uso de encryptación de contraseñas, de generador de códigos e implementación del envío de e-mail de registro a través de módulos de node.js
+	 - Comprobaciónes para la no duplicidad de campos.
+ 	 - Uso de roles para controlar permisos sobre la BD.
+	 - Testeos con Postman.
 
+
+- DIRECTORIO "validations" con creación de esquemas para validar los datos de entrada en la BD con ayuda del módulo Hapi-Joi.
+	- 
 
 - Rutas de USUARIOS:
 
@@ -41,6 +49,7 @@
 	- Editar concurso
 	- Obtener datos de concurso
 	- Borrar concurso
+	- Listar concursos
 
 
 
