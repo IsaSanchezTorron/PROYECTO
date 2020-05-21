@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT;
@@ -36,7 +37,8 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'static')));
+app.use(express.static(path.join(__dirname, '/STATIC/images')));
+app.use(fileUpload());
 
 // RUTAS DE USUARIO
 app.post('/usuarios', newUser);

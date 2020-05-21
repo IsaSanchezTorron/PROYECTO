@@ -13,43 +13,51 @@ async function editUser(req, res, next) {
   try {
     await updateUserSchema.validateAsync(req.body);
     connection = await getConnection();
+
     const { id } = req.params;
     const { nombre, apellidos, descripcion } = req.body;
 
     const [
       current
     ] = await connection.query(
-      `SELECT id_usuario FROM USUARIOS  WHERE id_usuario =?`,
+      `SELECT id_usuario, url_foto  FROM USUARIOS  WHERE id_usuario =?`,
       [id]
     );
     if (!current.length) {
       throw generateError(`El usuario con id  ${id} no existe`, 404);
     }
 
-    /* if (current[0].id !== req.auth.id && req.auth.role !== 'admin') {
-            throw generateError('No tienes permisos para editar este usuario', 401);
-        } */
+    if (current[0].id_usuario !== req.auth.id && req.auth.role !== 'admin') {
+      throw generateError('No tienes permisos para editar este usuario', 401);
+    }
 
-    let savedFileName;
+    const [user] = current;
 
-    if (req.files && req.files.url_foto) {
-      try {
-        savedFileName = await processAndSavePhoto(req.files.url_foto);
+    const currentImage = [user.url_foto];
 
-        if (current && current.url_foto) {
-          await deletePhoto(current.url_foto);
+    const newImage = [request.files.url_foto];
+
+    const imageToDB = [];
+
+    if (request.files) {
+      let savedFileName;
+
+      for (let i = 0; i < newImage.length; i++) {
+        savedFileName = await processAndSavePhoto(newImage[i]);
+
+        if (currentImage[i]) {
+          await deletePhoto(currentImage[i]);
         }
-      } catch (error) {
-        throw generateError('No se puede procesar la imagen', 400);
+
+        imageToDB.push(savedFileName);
       }
-    } else {
-      savedFileName = current.url_foto;
     }
 
     await connection.query(
       ` UPDATE USUARIOS SET nombre=?, apellidos =?, url_foto =?, descripcion=?  WHERE id_usuario=?`,
-      [nombre, apellidos, savedFileName, descripcion, id]
+      [nombre, apellidos, imageToDB[0], descripcion, id]
     );
+
     res.send({
       status: 'ok',
       message: 'Has actualizado tus datos correctamente'

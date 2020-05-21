@@ -1,14 +1,18 @@
-const { format } = require('date-fns');
 require('dotenv').config();
+
+const path = require('path');
 const crypto = require('crypto');
 const sgMail = require('@sendgrid/mail');
-
 const sharp = require('sharp');
-const path = require('path');
+
+const { format } = require('date-fns');
+
 const fs = require('fs-extra');
 const uuid = require('uuid');
-const crypto = require('crypto');
+
 const imageUploadPath = path.join(__dirname, process.env.UPLOADS_DIR);
+
+console.log(path);
 
 function formatDateToDB(date) {
   return format(date, 'yyyy-MM-dd HH:mm:ss');
@@ -44,7 +48,7 @@ async function sendEmail({ email, title, content }) {
 async function processAndSavePhoto(uploadedImage) {
   const savedFileName = `${uuid.v1()}.jpg`;
 
-  await fs.ensueDir(imageUploadPath);
+  await fs.ensureDir(imageUploadPath);
   const finalImage = sharp(uploadedImage.data);
   const imageInfo = await finalImage.metadata();
 
