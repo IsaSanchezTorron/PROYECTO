@@ -24,6 +24,7 @@ const { newConcourse } = require('./CONCURSOS/new_concourse');
 const { editConcourse } = require('./CONCURSOS/edit_concourse');
 const { getConcourse } = require('./CONCURSOS/get_data');
 const { deleteConcourse } = require('./CONCURSOS/delete');
+const { listingConcourses } = require('./CONCURSOS/list_concourse');
 
 const { newInscription } = require('./INSCRIPCIONES/new_inscription');
 const { deleteInscription } = require('./INSCRIPCIONES/delete_inscription');
@@ -35,6 +36,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'static')));
 
 // RUTAS DE USUARIO
 app.post('/usuarios', newUser);
@@ -67,6 +69,7 @@ app.delete(
   userIsAdmin,
   deleteConcourse
 );
+app.get('/concursos/listado', listingConcourses);
 
 //RUTAS DE INSCRIPCIONES
 app.post('/concursos/inscripciones/:id', userIsAuthenticated, newInscription);

@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi').extend(require('@hapi/joi-date'));
 
-const newConcourseSchema = Joi.object().keys({
+const updateConcourseSchema = Joi.object().keys({
   nombre: Joi.string()
     .max(500)
     .required()
@@ -49,4 +49,4 @@ const newConcourseSchema = Joi.object().keys({
       new Error('El género del concurso debe tener un máximo de 200 caracteres')
     )
 });
-module.exports = { newConcourseSchema };
+module.exports = { updateConcourseSchema };

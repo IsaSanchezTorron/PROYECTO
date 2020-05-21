@@ -25,9 +25,6 @@ async function newUser(req, res, next) {
     }
 
     const dbPassword = await bcrypt.hash(contrasenha, 10);
-    ////// mogollon de cosas por aqui  /////////////////////////////ls
-
-    ///////////////////////////////////////////////////////////////
 
     const registrationCode = randomString(40);
     const validationURL = `${process.env.PUBLIC_HOST}/USUARIOS/validate?code=${registrationCode}`;
@@ -35,8 +32,8 @@ async function newUser(req, res, next) {
     try {
       await sendEmail({
         email: mail,
-        title: 'Debes validar tu cuenta para LOA',
-        content: `Para validar tu cuenta con LOA, haz click en este enlace: ${validationURL}`
+        title: 'Debes validar tu cuenta para InterTextual',
+        content: `Para validar tu cuenta con InterTextual, haz click en este enlace: ${validationURL}`
       });
     } catch (error) {
       console.error(error);
@@ -69,7 +66,8 @@ async function newUser(req, res, next) {
 
     res.send({
       status: 'ok',
-      message: 'Usuario creado correctamente.'
+      message:
+        'Usuario creado correctamente. Debes comprobar tu correo electrónico para activar tu cuenta'
     });
   } catch (error) {
     next(error);

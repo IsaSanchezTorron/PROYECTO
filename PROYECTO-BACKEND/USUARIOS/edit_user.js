@@ -1,8 +1,12 @@
 require('dotenv').config();
 
 const { getConnection } = require('../DB');
-const { generateError } = require('../helpers');
 const { updateUserSchema } = require('../validations/edit_user');
+const {
+  generateError,
+  processAndSavePhoto,
+  deletePhoto
+} = require('../helpers');
 
 async function editUser(req, res, next) {
   let connection;
@@ -10,7 +14,7 @@ async function editUser(req, res, next) {
     await updateUserSchema.validateAsync(req.body);
     connection = await getConnection();
     const { id } = req.params;
-    const { nombre, apellidos, url_foto, descripcion } = req.body;
+    const { nombre, apellidos, descripcion } = req.body;
 
     const [
       current
@@ -26,9 +30,25 @@ async function editUser(req, res, next) {
             throw generateError('No tienes permisos para editar este usuario', 401);
         } */
 
+    let savedFileName;
+
+    if (req.files && req.files.url_foto) {
+      try {
+        savedFileName = await processAndSavePhoto(req.files.url_foto);
+
+        if (current && current.url_foto) {
+          await deletePhoto(current.url_foto);
+        }
+      } catch (error) {
+        throw generateError('No se puede procesar la imagen', 400);
+      }
+    } else {
+      savedFileName = current.url_foto;
+    }
+
     await connection.query(
       ` UPDATE USUARIOS SET nombre=?, apellidos =?, url_foto =?, descripcion=?  WHERE id_usuario=?`,
-      [nombre, apellidos, url_foto, descripcion, id]
+      [nombre, apellidos, savedFileName, descripcion, id]
     );
     res.send({
       status: 'ok',
