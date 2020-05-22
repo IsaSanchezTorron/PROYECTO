@@ -1,7 +1,7 @@
 require('dotenv').config();
 
-const { getConnection } = require('../DB');
-const { generateError } = require('../helpers');
+const { getConnection } = require('../../DB');
+const { generateError } = require('../../helpers');
 
 async function getConcourse(req, res, next) {
   let connection;

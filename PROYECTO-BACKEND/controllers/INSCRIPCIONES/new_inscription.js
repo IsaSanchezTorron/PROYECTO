@@ -1,7 +1,7 @@
 require('dotenv').config();
 
-const { generateError } = require('../helpers');
-const { getConnection } = require('../DB');
+const { generateError } = require('../../helpers');
+const { getConnection } = require('../../DB');
 
 async function newInscription(req, res, next) {
   let connection;

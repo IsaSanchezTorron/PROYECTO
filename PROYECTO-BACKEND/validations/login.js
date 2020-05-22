@@ -1,5 +1,4 @@
 const Joi = require('@hapi/joi');
-const { generateError } = require('../helpers');
 
 const passwordSchema = Joi.string()
   .min(2)

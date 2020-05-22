@@ -2,9 +2,9 @@ require('dotenv').config();
 
 const bcrypt = require('bcrypt');
 
-const { getConnection } = require('../DB');
-const { newUserSchema } = require('../validations/usuarios');
-const { generateError, randomString, sendEmail } = require('../helpers');
+const { getConnection } = require('../../DB');
+const { newUserSchema } = require('../../validations/usuarios');
+const { generateError, randomString, sendEmail } = require('../../helpers');
 
 async function newUser(req, res, next) {
   let connection;
@@ -27,7 +27,7 @@ async function newUser(req, res, next) {
     const dbPassword = await bcrypt.hash(contrasenha, 10);
 
     const registrationCode = randomString(40);
-    const validationURL = `${process.env.PUBLIC_HOST}/USUARIOS/validate?code=${registrationCode}`;
+    const validationURL = `${process.env.PUBLIC_HOST}controllers/USUARIOS/validate?code=${registrationCode}`;
 
     try {
       await sendEmail({

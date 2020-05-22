@@ -10,26 +10,34 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT;
 
-const { newUser } = require('./USUARIOS/new_user');
-const { loginUser } = require('./USUARIOS/login');
-const { validateUser } = require('./USUARIOS/validation');
-const { getUser } = require('./USUARIOS/get_data_user');
-const { editUser } = require('./USUARIOS/edit_user');
+const { newUser } = require('./controllers/USUARIOS/new_user');
+const { loginUser } = require('./controllers/USUARIOS/login');
+const { validateUser } = require('./controllers/USUARIOS/validation');
+const { getUser } = require('./controllers/USUARIOS/get_data_user');
+const { editUser } = require('./controllers/USUARIOS/edit_user');
 const { userIsAuthenticated, userIsAdmin } = require('./middlewares/auth');
-const { updatePassword } = require('./USUARIOS/edit_password');
-const { disableUser } = require('./USUARIOS/disable');
-const { deleteUser } = require('./USUARIOS/delete');
-const { getInscriptionHistoryUser } = require('./USUARIOS/get_history_user');
+const { updatePassword } = require('./controllers/USUARIOS/edit_password');
+const { disableUser } = require('./controllers/USUARIOS/disable');
+const { deleteUser } = require('./controllers/USUARIOS/delete');
+const {
+  getInscriptionHistoryUser
+} = require('./controllers/USUARIOS/get_history_user');
 
-const { newConcourse } = require('./CONCURSOS/new_concourse');
-const { editConcourse } = require('./CONCURSOS/edit_concourse');
-const { getConcourse } = require('./CONCURSOS/get_data');
-const { deleteConcourse } = require('./CONCURSOS/delete');
-const { listingConcourses } = require('./CONCURSOS/list_concourse');
+const { newConcourse } = require('./controllers/CONCURSOS/new_concourse');
+const { editConcourse } = require('./controllers/CONCURSOS/edit_concourse');
+const { getConcourse } = require('./controllers/CONCURSOS/get_data');
+const { deleteConcourse } = require('./controllers/CONCURSOS/delete');
+const { listingConcourses } = require('./controllers/CONCURSOS/list_concourse');
 
-const { newInscription } = require('./INSCRIPCIONES/new_inscription');
-const { deleteInscription } = require('./INSCRIPCIONES/delete_inscription');
-const { getInscribed } = require('./INSCRIPCIONES/get_data_inscriptions');
+const {
+  newInscription
+} = require('./controllers/INSCRIPCIONES/new_inscription');
+const {
+  deleteInscription
+} = require('./controllers/INSCRIPCIONES/delete_inscription');
+const {
+  getInscribed
+} = require('./controllers/INSCRIPCIONES/get_data_inscriptions');
 
 //const { newRating } = require('./votaciones/nueva_votacion');
 
@@ -37,14 +45,13 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors());
-app.use(express.static(path.join(__dirname, '/STATIC/images')));
-app.use(fileUpload());
+app.use(express.static(path.join(__dirname, 'static')));
 
 // RUTAS DE USUARIO
 app.post('/usuarios', newUser);
 app.post('/usuarios/login', loginUser);
 app.get('/usuarios/validar', validateUser);
-app.put('/usuarios/:id', editUser);
+app.put('/usuarios/editar/:id', userIsAuthenticated, editUser);
 app.get('/usuarios/:id', userIsAuthenticated, userIsAdmin, editUser);
 app.get('/usuarios/:id', userIsAuthenticated, userIsAdmin, getUser);
 app.put('/usuarios/password/:id', userIsAuthenticated, updatePassword);
@@ -99,5 +106,5 @@ app.use((req, res) => {
   });
 });
 app.listen(port, () => {
-  console.log(`Servidor funcionando en  http://localhost:${port} 💞`);
+  console.log(`Servidor funcionando en  http://localhost:${port} 💞🥑🤓🌱💞`);
 });

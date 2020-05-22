@@ -1,6 +1,6 @@
 require('dotenv').config();
-const { getConnection } = require('../DB');
-const { generateError, randomString } = require('../helpers');
+const { getConnection } = require('../../DB');
+const { generateError, randomString } = require('../../helpers');
 
 async function disableUser(req, res, next) {
   let connection;

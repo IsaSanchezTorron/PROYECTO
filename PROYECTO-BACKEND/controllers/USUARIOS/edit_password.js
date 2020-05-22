@@ -1,9 +1,9 @@
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 
-const { getConnection } = require('../DB');
-const { editPasswordSchema } = require('../validations/edit_password');
-const { generateError } = require('../helpers');
+const { getConnection } = require('../../DB');
+const { editPasswordSchema } = require('../../validations/edit_password');
+const { generateError } = require('../../helpers');
 
 async function updatePassword(req, res, next) {
   let connection;

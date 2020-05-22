@@ -1,8 +1,8 @@
 require('dotenv').config();
 
-const { getConnection } = require('../DB');
-const { newConcourseSchema } = require('../validations/nuevo_concurso');
-const { generateError } = require('../helpers');
+const { getConnection } = require('../../DB');
+const { newConcourseSchema } = require('../../validations/nuevo_concurso');
+const { generateError } = require('../../helpers');
 
 async function newConcourse(req, res, next) {
   let connection;

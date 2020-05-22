@@ -1,20 +1,20 @@
 require('dotenv').config();
 
-const { getConnection } = require('../DB');
-const { updateUserSchema } = require('../validations/edit_user');
+const { getConnection } = require('../../DB');
+const { updateUserSchema } = require('../../validations/edit_user');
 const {
   generateError,
   processAndSavePhoto,
   deletePhoto
-} = require('../helpers');
+} = require('../../helpers');
 
 async function editUser(req, res, next) {
   let connection;
   try {
     await updateUserSchema.validateAsync(req.body);
     connection = await getConnection();
-
     const { id } = req.params;
+
     const { nombre, apellidos, descripcion } = req.body;
 
     const [
@@ -23,39 +23,37 @@ async function editUser(req, res, next) {
       `SELECT id_usuario, url_foto  FROM USUARIOS  WHERE id_usuario =?`,
       [id]
     );
+
     if (!current.length) {
       throw generateError(`El usuario con id  ${id} no existe`, 404);
     }
 
-    if (current[0].id_usuario !== req.auth.id && req.auth.role !== 'admin') {
+    //console.log(typeof current);
+    //console.log(current);
+
+    if (current[0].id_usuario !== req.auth.id) {
       throw generateError('No tienes permisos para editar este usuario', 401);
     }
 
-    const [user] = current;
-
-    const currentImage = [user.url_foto];
-
-    const newImage = [request.files.url_foto];
-
-    const imageToDB = [];
-
-    if (request.files) {
-      let savedFileName;
-
-      for (let i = 0; i < newImage.length; i++) {
-        savedFileName = await processAndSavePhoto(newImage[i]);
-
-        if (currentImage[i]) {
-          await deletePhoto(currentImage[i]);
+    let savedFileName;
+    console.log(req.files);
+    console.log(req.files.url_foto);
+    if (req.files && req.files.url_foto) {
+      try {
+        savedFileName = await processAndSavePhoto(req.files.url_foto);
+        if (current && current[0].url_foto) {
+          await deletePhoto(current[0].url_foto);
         }
-
-        imageToDB.push(savedFileName);
+      } catch (error) {
+        throw generateError('No se puede procesar la imagen.', 400);
       }
+    } else {
+      savedFileName = current[0].url_foto;
     }
 
     await connection.query(
-      ` UPDATE USUARIOS SET nombre=?, apellidos =?, url_foto =?, descripcion=?  WHERE id_usuario=?`,
-      [nombre, apellidos, imageToDB[0], descripcion, id]
+      ` UPDATE USUARIOS SET nombre=?, apellidos =?, descripcion=?, url_foto =? WHERE id_usuario=?`,
+      [nombre, apellidos, descripcion, savedFileName, id]
     );
 
     res.send({
