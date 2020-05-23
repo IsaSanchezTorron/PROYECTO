@@ -12,7 +12,7 @@ async function listingConcourses(req, res, next) {
     const { id } = req.params;
 
     const [result] = await connection.query(
-      `SELECT * FROM CONCURSOS ORDER BY CONCURSOS.fecha_final`
+      `SELECT * FROM CONCURSOS ORDER BY CONCURSOS.fecha_inicio`
     );
 
     if (!result.length) {

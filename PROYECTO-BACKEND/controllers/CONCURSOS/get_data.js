@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const { getConnection } = require('../../DB');
-const { generateError } = require('../../helpers');
+const { generateError, formatDateToDB } = require('../../helpers');
 
 async function getConcourse(req, res, next) {
   let connection;
@@ -25,8 +25,8 @@ async function getConcourse(req, res, next) {
 
     const payload = {
       nombre: concourseData.nombre,
-      fecha_inicio: concourseData.fecha_inicio,
-      fecha_final: concourseData.fecha_final,
+      fecha_inicio: formatDateToDB(concourseData.fecha_inicio),
+      fecha_final: formatDateToDB(concourseData.fecha_final),
       url_foto: concourseData.url_foto,
       descripcion: concourseData.descripcion,
       modalidad: concourseData.modalidad,

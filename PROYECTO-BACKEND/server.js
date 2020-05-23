@@ -27,7 +27,11 @@ const { newConcourse } = require('./controllers/CONCURSOS/new_concourse');
 const { editConcourse } = require('./controllers/CONCURSOS/edit_concourse');
 const { getConcourse } = require('./controllers/CONCURSOS/get_data');
 const { deleteConcourse } = require('./controllers/CONCURSOS/delete');
-const { listingConcourses } = require('./controllers/CONCURSOS/list_concourse');
+const { listingConcourses } = require('./controllers/CONCURSOS/all_concourse');
+const { nextConcourses } = require('./controllers/CONCURSOS/next_concourses');
+const {
+  finishedConcourses
+} = require('./controllers/CONCURSOS/finished_concourses');
 
 const {
   newInscription
@@ -79,6 +83,8 @@ app.delete(
   deleteConcourse
 );
 app.get('/concursos/listado', listingConcourses);
+app.get('/concursos/proximamente', nextConcourses);
+app.get('/concursos/finalizados', finishedConcourses);
 
 //RUTAS DE INSCRIPCIONES
 app.post('/concursos/inscripciones/:id', userIsAuthenticated, newInscription);
