@@ -39,8 +39,9 @@
 	- Modificar contraseña
 	- Obtener datos de usuario
 	- Ver el historial de inscripciones a concursos
-	- Deshabilitar cuenta.
+	- Deshabilitar cuenta.//Falta "rehabilitar", tengo esta función en barbecho.
 	- Borrar cuenta definitivamente
+	- Historial de inscripciones a concursos
 
 
 - Rutas de CONCURSOS:
@@ -49,9 +50,10 @@
 	- Editar concurso
 	- Obtener datos de concurso
 	- Borrar concurso
-	- Listar concursos
-
-
+	- Listar todos los concursos
+	- Próximos concursos
+	- Concursos finalizados
+	
 
 - Rutas de INSCRIPCIONES:
 
