@@ -2,7 +2,7 @@
 
  
 
-- Planificación de rutas a partir de mis frameworks, requerimientos y mi diseño de BD en MySQL. 
+- Planificación de rutas a partir de wireframes, requerimientos y mi diseño de BD en MySQL. 
 
 - Creación del entorno de desarrollo.
 
@@ -18,11 +18,12 @@
 
 -TRABAJO CON LAS RUTAS DE "USUARIOS", "CONCURSOS", "INSCRIPCIONES" y "VALORACIONES", correspondientes a las tablas de la BD.
 
-         - Importación y exportación de funciones y módulos. 
+         - Importación y exportación de funciones y módulos, uso de módulos externos.
          - Utilización de arrays, objetos, destructuring, asincronía.
-	 - Inyección de SQL, uso de JOINS en las consultas.
+	 - Inyección de SQL, consultas multitabla.
 	 - Uso de encryptación de contraseñas, de generador de códigos e implementación del envío de e-mail de registro a través de módulos de node.js
-	 - Comprobaciónes para la no duplicidad de campos.
+	 - Comprobaciónes para la no duplicidad de campos y validaciones de tipo de dato, longitud, formato.
+	 - Formateo de fechas.
  	 - Uso de roles para controlar permisos sobre la BD.
 	 - Testeos con Postman.
 
