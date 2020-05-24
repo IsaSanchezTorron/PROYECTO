@@ -12,8 +12,13 @@ async function getConcourse(req, res, next) {
     const { id } = req.params;
 
     const [result] = await connection.query(
-      `SELECT id_concurso, nombre, fecha_inicio, fecha_final, url_foto, descripcion, modalidad, genero,ciudad
-           FROM CONCURSOS WHERE id_concurso=?`,
+      `
+    SELECT id_concurso, nombre, fecha_inicio,fecha_final, url_foto, descripcion, modalidad, genero, ciudad, ROUND(AVG(INSCRIPCIONES.valoracion), 1) AS valoracion
+    FROM CONCURSOS
+    INNER JOIN INSCRIPCIONES 
+    ON  INSCRIPCIONES.CONCURSOS_id_concurso = CONCURSOS_id_concurso 
+    WHERE id_concurso= ?
+    ORDER BY fecha_inicio`,
       [id]
     );
 
@@ -31,7 +36,8 @@ async function getConcourse(req, res, next) {
       descripcion: concourseData.descripcion,
       modalidad: concourseData.modalidad,
       genero: concourseData.genero,
-      ciudad: concourseData.ciudad
+      ciudad: concourseData.ciudad,
+      valoracion: concourseData.valoracion
     };
 
     res.send({

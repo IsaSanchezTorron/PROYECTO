@@ -12,7 +12,11 @@ async function listingConcourses(req, res, next) {
     const { id } = req.params;
 
     const [result] = await connection.query(
-      `SELECT * FROM CONCURSOS ORDER BY CONCURSOS.fecha_inicio`
+      `SELECT id_concurso, nombre, fecha_inicio, fecha_final, url_foto, descripcion, modalidad, genero, ciudad, ROUND(AVG(INSCRIPCIONES.valoracion), 1) AS valoracion
+    FROM CONCURSOS
+    INNER JOIN INSCRIPCIONES ON CONCURSOS.id_concurso = INSCRIPCIONES.CONCURSOS_id_concurso
+    GROUP BY id_concurso
+    ORDER BY fecha_inicio`
     );
 
     if (!result.length) {

@@ -10,6 +10,7 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT;
 
+//############### Funciones importadas relativas a USUARIOS #######################
 const { newUser } = require('./controllers/USUARIOS/new_user');
 const { loginUser } = require('./controllers/USUARIOS/login');
 const { validateUser } = require('./controllers/USUARIOS/validation');
@@ -23,16 +24,18 @@ const {
   getInscriptionHistoryUser
 } = require('./controllers/USUARIOS/get_history_user');
 
+//############## Funciones importadas relativas a CONCURSOS ######################
 const { newConcourse } = require('./controllers/CONCURSOS/new_concourse');
 const { editConcourse } = require('./controllers/CONCURSOS/edit_concourse');
 const { getConcourse } = require('./controllers/CONCURSOS/get_data');
 const { deleteConcourse } = require('./controllers/CONCURSOS/delete');
-const { listingConcourses } = require('./controllers/CONCURSOS/all_concourse');
+const { listingConcourses } = require('./controllers/CONCURSOS/all_concourses');
 const { nextConcourses } = require('./controllers/CONCURSOS/next_concourses');
 const {
   finishedConcourses
 } = require('./controllers/CONCURSOS/finished_concourses');
 
+//############# Funciones importadas relativas a INSCRIPCIONES ##############
 const {
   newInscription
 } = require('./controllers/INSCRIPCIONES/new_inscription');
@@ -43,15 +46,21 @@ const {
   getInscribed
 } = require('./controllers/INSCRIPCIONES/get_data_inscriptions');
 
-//const { newRating } = require('./votaciones/nueva_votacion');
+const { newRating } = require('./controllers/VALORACIONES/new_rating');
 
+const { viewRating } = require('./controllers/VALORACIONES/view_rating');
+
+const { viewRanking } = require('./controllers/VALORACIONES/view_ranking');
+
+// Middlewares
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(fileUpload());
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'static')));
 
-// RUTAS DE USUARIO
+// ################## RUTAS DE USUARIO ##############################
+
 app.post('/usuarios', newUser);
 app.post('/usuarios/login', loginUser);
 app.get('/usuarios/validar', validateUser);
@@ -72,9 +81,20 @@ app.get(
   getInscriptionHistoryUser
 );
 
-//RUTAS DE CONCURSO
-app.post('/concursos', newConcourse, userIsAuthenticated, userIsAdmin);
-app.put('/concursos/:id', editConcourse, userIsAuthenticated, userIsAdmin);
+// ################### RUTAS DE CONCURSO ###########################
+
+app.post(
+  '/concursos/new_concourse',
+  newConcourse,
+  userIsAuthenticated,
+  userIsAdmin
+);
+app.put(
+  '/concursos/editar/:id',
+  editConcourse,
+  userIsAuthenticated,
+  userIsAdmin
+);
 app.get('/concursos/info/:id', getConcourse);
 app.delete(
   '/concursos/delete/:id',
@@ -86,7 +106,8 @@ app.get('/concursos/listado', listingConcourses);
 app.get('/concursos/proximamente', nextConcourses);
 app.get('/concursos/finalizados', finishedConcourses);
 
-//RUTAS DE INSCRIPCIONES
+//################ RUTAS DE INSCRIPCIONES #############################
+
 app.post('/concursos/inscripciones/:id', userIsAuthenticated, newInscription);
 app.delete(
   '/concursos/inscripciones/borrar/:id',
@@ -95,9 +116,13 @@ app.delete(
 );
 app.get('/concursos/inscripciones/:id', userIsAuthenticated, getInscribed);
 
-//app.post('./votaciones', newRating);
+//############### RUTAS DE VALORACIONES #################################
+app.post('/valoraciones/:id', userIsAuthenticated, newRating);
+app.get('/valoraciones/ver/:id', viewRating);
+app.get('/valoraciones/ranking', viewRanking);
 
-//Middleware de error
+// ############ Middlewares de error ##################################
+
 app.use((error, req, res, next) => {
   res.status(error.httpCode || 500).send({
     status: 'error',
@@ -111,6 +136,7 @@ app.use((req, res) => {
     message: 'Not found'
   });
 });
+
 app.listen(port, () => {
   console.log(`Servidor funcionando en  http://localhost:${port} 💞🥑🤓🌱💞`);
 });
