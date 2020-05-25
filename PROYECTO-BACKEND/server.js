@@ -15,14 +15,15 @@ const { newUser } = require('./controllers/USUARIOS/new_user');
 const { loginUser } = require('./controllers/USUARIOS/login');
 const { validateUser } = require('./controllers/USUARIOS/validation');
 const { getUser } = require('./controllers/USUARIOS/get_data_user');
-const { editUser } = require('./controllers/USUARIOS/edit_user');
-const { userIsAuthenticated, userIsAdmin } = require('./middlewares/auth');
+const { editUser } = require('./controllers/USUARIOS/edit_user'); //middlewares para autenticación
 const { updatePassword } = require('./controllers/USUARIOS/edit_password');
 const { disableUser } = require('./controllers/USUARIOS/disable');
 const { deleteUser } = require('./controllers/USUARIOS/delete');
 const {
   getInscriptionHistoryUser
 } = require('./controllers/USUARIOS/get_history_user');
+const { userIsAuthenticated } = require('./middlewares/auth.js');
+const { userIsAdmin } = require('./middlewares/auth.js');
 
 //############## Funciones importadas relativas a CONCURSOS ######################
 const { newConcourse } = require('./controllers/CONCURSOS/new_concourse');
@@ -61,25 +62,24 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 // ################## RUTAS DE USUARIO ##############################
 
-app.post('/usuarios', newUser);
-app.post('/usuarios/login', loginUser);
-app.get('/usuarios/validar', validateUser);
-app.put('/usuarios/editar/:id', userIsAuthenticated, editUser);
-app.get('/usuarios/:id', userIsAuthenticated, userIsAdmin, editUser);
-app.get('/usuarios/:id', userIsAuthenticated, userIsAdmin, getUser);
-app.put('/usuarios/password/:id', userIsAuthenticated, updatePassword);
-app.put('/usuarios/disable/:id', userIsAuthenticated, disableUser);
+app.post('/usuarios', newUser); // Crear nuevo usuario
+app.post('/usuarios/login', loginUser); // Hacer login
+app.get('/usuarios/validar', validateUser); // Validar cuenta
+app.put('/usuarios/editar/:id', userIsAuthenticated, editUser); //Editar usuario
+app.get('/usuarios/:id', userIsAuthenticated, userIsAdmin, getUser); //Obtener datos de un usuario
+app.put('/usuarios/password/:id', userIsAuthenticated, updatePassword); //Cambiar contraseña de usuario
+app.put('/usuarios/disable/:id', userIsAuthenticated, disableUser); // Deshabilitar usuario
 app.delete(
   '/usuarios/delete/:id',
   userIsAuthenticated,
   userIsAdmin,
   deleteUser
-);
+); // Borrar cuenta de usuario
 app.get(
   '/usuarios/historial/:id',
   userIsAuthenticated,
   getInscriptionHistoryUser
-);
+); // Ver historial de usuarios
 
 // ################### RUTAS DE CONCURSO ###########################
 
@@ -88,38 +88,38 @@ app.post(
   newConcourse,
   userIsAuthenticated,
   userIsAdmin
-);
+); //Nuevo concurso
 app.put(
   '/concursos/editar/:id',
   editConcourse,
   userIsAuthenticated,
   userIsAdmin
-);
-app.get('/concursos/info/:id', getConcourse);
+); //Editar concurso
+app.get('/concursos/info/:id', getConcourse); //Obtener datos de un concurso
 app.delete(
   '/concursos/delete/:id',
   userIsAuthenticated,
   userIsAdmin,
   deleteConcourse
-);
-app.get('/concursos/listado', listingConcourses);
-app.get('/concursos/proximamente', nextConcourses);
-app.get('/concursos/finalizados', finishedConcourses);
+); // Borrar concurso
+app.get('/concursos/listado', listingConcourses); //Listado de todos los concursos
+app.get('/concursos/proximamente', nextConcourses); //Listado de próximos concursos
+app.get('/concursos/finalizados', finishedConcourses); //Listado de concursos ya finalizados.
 
 //################ RUTAS DE INSCRIPCIONES #############################
 
-app.post('/concursos/inscripciones/:id', userIsAuthenticated, newInscription);
+app.post('/concursos/inscripciones/:id', userIsAuthenticated, newInscription); // Nueva inscripción
 app.delete(
   '/concursos/inscripciones/borrar/:id',
   userIsAuthenticated,
   deleteInscription
-);
-app.get('/concursos/inscripciones/:id', userIsAuthenticated, getInscribed);
+); // Borrar inscripción
+app.get('/concursos/inscripciones/:id', userIsAuthenticated, getInscribed); // Listar inscritos a un concurso
 
 //############### RUTAS DE VALORACIONES #################################
-app.post('/valoraciones/:id', userIsAuthenticated, newRating);
-app.get('/valoraciones/ver/:id', viewRating);
-app.get('/valoraciones/ranking', viewRanking);
+app.post('/valoraciones/:id', userIsAuthenticated, newRating); // Nueva valoracion
+app.get('/valoraciones/ver/:id', viewRating); // Ver valoración de un concurso
+app.get('/valoraciones/ranking', viewRanking); // Ver ranking de concursos
 
 // ############ Middlewares de error ##################################
 

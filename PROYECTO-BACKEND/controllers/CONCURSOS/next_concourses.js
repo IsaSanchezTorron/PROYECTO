@@ -12,18 +12,18 @@ async function nextConcourses(req, res, next) {
     const dateToday = formatDateToDB(new Date());
     console.log(dateToday);
 
-    const [
-      result
-    ] = await connection.query(
-      `SELECT * FROM CONCURSOS WHERE fecha_final >= ? ORDER BY fecha_inicio`,
+    const [result] = await connection.query(
+      `SELECT CONCURSOS.nombre, CONCURSOS.descripcion, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, CONCURSOS.genero, CONCURSOS.modalidad, CONCURSOS.ciudad, ROUND(AVG(INSCRIPCIONES.valoracion))
+      FROM CONCURSOS
+      LEFT JOIN INSCRIPCIONES ON CONCURSOS.id_concurso = INSCRIPCIONES.CONCURSOS_id_concurso
+      WHERE CONCURSOS.fecha_final >= ?
+      GROUP BY CONCURSOS.id_concurso
+      ORDER BY CONCURSOS.fecha_inicio`,
       [dateToday]
     );
 
     if (!result.length) {
-      throw generateError(
-        `No existen concursos en la Base de Datos que ya hayan finalizado`,
-        404
-      );
+      throw generateError(`No existen concursos próximamente`, 404);
     }
 
     res.send({

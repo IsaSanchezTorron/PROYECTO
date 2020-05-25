@@ -16,7 +16,7 @@ async function viewRating(req, res, next) {
       `SELECT AVG(valoracion)  FROM INSCRIPCIONES WHERE CONCURSOS_id_concurso=? `,
       [id_concurso]
     );
-    if (!current.lenght) {
+    if (!current.length) {
       throw generateError('Este concurso no ha sido evaluado todavía.', 404);
     }
 
