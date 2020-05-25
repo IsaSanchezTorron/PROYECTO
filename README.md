@@ -79,8 +79,7 @@
 
     
 - Actualmente pendiente: 
-- Quiero implementar un buscador en que se puedan rellenar todos los campos incluyendo rango de fechas tal y como se pide. Está en desarrollo porque no quiero hacer buscadores separados
-  sino uno general que irá en la landing.
+- Quiero implementar un buscador en que se puedan rellenar todos los campos incluyendo rango de fechas tal y como se pide. Está en desarrollo porque no quiero hacer buscadores separados sino uno general que irá en la landing.
 - Pendiente el proceso de asignación de ganadores.
 - Pendiente de respuesta respecto a una duda de SQL para modificar el proceso de rating, actualmente funcionando pero mejorable en cuanto a integridad de la BD.
 - Revisión completa del proyecto
