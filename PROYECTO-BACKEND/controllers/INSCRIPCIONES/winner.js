@@ -1,50 +1,42 @@
 require('dotenv').config();
+
 const { getConnection } = require('../../DB');
-const { newRatingSchema } = require('../../validations/new_rating');
 const { generateError } = require('../../helpers');
+const { updateConcourseSchema } = require('../../validations/edit_concourse');
 
-async function newRating(req, res, next) {
+async function setWinner(req, res, next) {
   let connection;
-
   try {
+    await updateConcourseSchema.validateAsync(req.body);
     connection = await getConnection();
-    await newRatingSchema.validateAsync(req.body);
-
-    const id_usuario = req.auth.id;
-    const id_concurso = req.params.id;
-    const { valoracion } = req.body;
+    const { id } = req.params;
+    const { id_usuario, id_concurso } = req.body;
 
     const [
       current
     ] = await connection.query(
-      `SELECT valoracion  FROM INSCRIPCIONES WHERE USUARIOS_id_usuario=? AND CONCURSOS_id_concurso=?  AND valoracion is NULL`,
-      [id_usuario, id_concurso]
+      `SELECT id_concurso, id_usuario FROM INSCRIPCIONES  WHERE id_concurso =? AND id_usuario=?`,
+      [id_concurso, id_usuario]
     );
-    if (!current.length) {
+    if (current.length) {
+      throw generateError(`El concurso con  ${id} ya tiene ganador`, 404);
+    }
+    if (current[0].id_usuario !== req.auth.id && req.auth.role !== 'admin') {
       throw generateError(
-        'Sólo puedes votar una vez cada concurso en que has participado.',
-        404
+        'No tienes permisos para seleccionar ganadores del concursos',
+        401
       );
     }
-
-    await connection.query(
-      `UPDATE INSCRIPCIONES 
-       SET valoracion = ?, fecha_valoracion = NOW()
-       WHERE USUARIOS_id_usuario= ? AND CONCURSOS_id_concurso= ? `,
-      [valoracion, id_usuario, id_concurso]
-    );
+    await connection.query(` UPDATE INSCRIPCIONES SET ganador = 1`);
 
     res.send({
       status: 'ok',
-      message:
-        'Has valorado este concurso, esperamos que tu experiencia haya sido positiva.'
+      message: 'Has actualizado los datos del concurso correctamente.'
     });
   } catch (error) {
     next(error);
   } finally {
-    if (connection) {
-      connection.release();
-    }
+    if (connection) connection.release();
   }
 }
-module.exports = { newRating };
+module.exports = { editConcourse };
