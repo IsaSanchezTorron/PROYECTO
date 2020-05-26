@@ -19,15 +19,15 @@
 -TRABAJO CON LAS RUTAS DE "USUARIOS", "CONCURSOS", "INSCRIPCIONES" y "VALORACIONES", correspondientes a las tablas de la BD, exceptuando las "VALORACIONES" que se incluyen en la tabla de INSCRIPCIONES.
 
 
-        - Importación y exportación de funciones y módulos, uso de módulos externos.
-         - Utilización de arrays, objetos, destructuring, asincronía.
-	 - Manejo del paso de parámetros, autenticaciones e información envíada a través del "body".
-	 - Inyección de SQL, consultas multitabla.
-	 - Uso de encryptación de contraseñas, de generador de códigos e implementación del envío de e-mail de registro a través de módulos de node.js
-	 - Comprobaciónes para la no duplicidad de campos y validaciones de tipo de dato, longitud, formato.
-	 - Formateo de fechas.
- 	 - Uso de roles para controlar permisos sobre la BD.
-	 - Testeos con Postman.
+ - Importación y exportación de funciones y módulos, uso de módulos externos.
+ - Utilización de arrays, objetos, destructuring, asincronía.
+ - Manejo del paso de parámetros, autenticaciones e información envíada a través del "body".
+ - Inyección de SQL, consultas multitabla.
+ - Uso de encryptación de contraseñas, de generador de códigos e implementación del envío de e-mail de registro a través de      módulos de node.js
+ - Comprobaciónes para la no duplicidad de campos y validaciones de tipo de dato, longitud, formato.
+ - Formateo de fechas.
+ - Uso de roles para controlar permisos sobre la BD.
+ - Testeos con Postman.
 
 
 
@@ -74,9 +74,9 @@
 
 -Rutas de VALORACIONES:
 
-	- Nueva valoracíon
-	- Ver ranking de concursos
-	- Ver valoración de concurso
+   - Nueva valoracíon
+   - Ver ranking de concursos
+   - Ver valoración de concurso
 
 
 
