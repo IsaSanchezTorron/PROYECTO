@@ -81,7 +81,7 @@
 
 
     
- - Actualmente pendiente: Quiero implementar un buscador en que se puedan rellenar todos los campos incluyendo rango de fechas tal y como se pide. Está en desarrollo porque no quiero hacer buscadores separados sino uno general que busque entre todos los campos de la tabla y que irá en la landing.
+ - ACTUALMENTE PENDIENTE: Quiero implementar un buscador en que se puedan rellenar todos los campos incluyendo rango de fechas tal y como se pide. Está en desarrollo porque no quiero hacer buscadores separados sino uno general que busque entre todos los campos de la tabla y que irá en la landing.
 
 - Pendiente subida de imágenes para "nuevo concurso" y "edición de concurso".
 			  
