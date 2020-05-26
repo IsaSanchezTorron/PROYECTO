@@ -19,7 +19,7 @@
 -TRABAJO CON LAS RUTAS DE "USUARIOS", "CONCURSOS", "INSCRIPCIONES" y "VALORACIONES", correspondientes a las tablas de la BD, exceptuando las "VALORACIONES" que se incluyen en la tabla de INSCRIPCIONES.
 
 
-         - Importación y exportación de funciones y módulos, uso de módulos externos.
+        - Importación y exportación de funciones y módulos, uso de módulos externos.
          - Utilización de arrays, objetos, destructuring, asincronía.
 	 - Manejo del paso de parámetros, autenticaciones e información envíada a través del "body".
 	 - Inyección de SQL, consultas multitabla.
@@ -85,7 +85,7 @@
 
 - Pendiente subida de imágenes para "nuevo concurso" y "edición de concurso".
 			  
-- Pendiente de respuesta respecto a una duda de SQL para modificar el proceso de rating, actualmente funcionando pero mejorable en cuanto a integridad de la BD. Ya que sólo se me pide una valoración por persona inscrita y ésta sólo se hará en relación a las inscripciones, he añadido un campo "valoración" en la tabla de inscripciones para evitar duplicidades, pues la tabla de VALORACIONES tenía prácticamente los mismos campos que la de INSCRIPCIONES cuando se me dió el BV de la parte SQL, es decir, las claves foráneas id_usuario e id_concurso de la tabla usuarios y concursos respectivamente. Por evitar duplicidades he hecho la valoración en relación a la inscripción y funciona perfectamente pero tengo dudas respecto a la integridad de este método que me gustaría poder comentar con alguien.
+- Pendiente de respuesta respecto a una duda de SQL para modificar el proceso de rating, actualmente funcionando pero mejorable en cuanto a integridad de la BD. Ya que sólo se me pide una valoración por persona inscrita y ésta sólo se hará en relación a las inscripciones, he añadido un campo "valoración" en la tabla de inscripciones para evitar duplicidades, pues la tabla de VALORACIONES tenía prácticamente los mismos campos que la de INSCRIPCIONES cuando se me dió el VB de la parte SQL, es decir, las claves foráneas id_usuario e id_concurso de la tabla usuarios y concursos respectivamente. Por evitar duplicidades he hecho la valoración en relación a la inscripción y funciona perfectamente pero tengo dudas respecto a la integridad de este método que me gustaría poder comentar con alguien.
 
 - Revisión completa del proyecto
 
