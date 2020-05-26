@@ -20,7 +20,7 @@ async function newConcourse(req, res, next) {
       genero
     } = req.body;
 
-    //Compruebo que la descripción del concurso no exista para que no se produzcan duplicaciones
+    //Compruebo que la descripción del concurso no exista para que no se produzcan duplicidades
     //por error
     const [
       existingConcourse

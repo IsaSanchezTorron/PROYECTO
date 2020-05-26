@@ -7,7 +7,7 @@ const { updateConcourseSchema } = require('../../validations/edit_concourse');
 async function setWinner(req, res, next) {
   let connection;
   try {
-    await updateConcourseSchema.validateAsync(req.body);
+    //await updateConcourseSchema.validateAsync(req.body);
     connection = await getConnection();
     const { id } = req.params;
     const { id_usuario, id_concurso } = req.body;
@@ -27,7 +27,10 @@ async function setWinner(req, res, next) {
         401
       );
     }
-    await connection.query(` UPDATE INSCRIPCIONES SET ganador = 1`);
+    await connection.query(
+      ` UPDATE CONCURSOS SET ganador = 1 WHERE id_usuario=? AND id_concurso=?`,
+      [id_usuario, id_concurso]
+    );
 
     res.send({
       status: 'ok',
@@ -39,4 +42,4 @@ async function setWinner(req, res, next) {
     if (connection) connection.release();
   }
 }
-module.exports = { editConcourse };
+module.exports = { setWinner };

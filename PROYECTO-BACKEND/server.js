@@ -10,6 +10,14 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT;
 
+// Middlewares
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(fileUpload());
+app.use(cors());
+
+app.use(express.static(path.join(__dirname, 'static')));
+
 //############### Funciones importadas relativas a USUARIOS #######################
 const { newUser } = require('./controllers/USUARIOS/new_user');
 const { loginUser } = require('./controllers/USUARIOS/login');
@@ -35,6 +43,7 @@ const { nextConcourses } = require('./controllers/CONCURSOS/next_concourses');
 const {
   finishedConcourses
 } = require('./controllers/CONCURSOS/finished_concourses');
+const { setWinner } = require('./controllers/CONCURSOS/winner');
 
 //############# Funciones importadas relativas a INSCRIPCIONES ##############
 const {
@@ -52,13 +61,6 @@ const { newRating } = require('./controllers/VALORACIONES/new_rating');
 const { viewRating } = require('./controllers/VALORACIONES/view_rating');
 
 const { viewRanking } = require('./controllers/VALORACIONES/view_ranking');
-
-// Middlewares
-app.use(morgan('dev'));
-app.use(bodyParser.json());
-app.use(fileUpload());
-app.use(cors());
-app.use(express.static(path.join(__dirname, 'static')));
 
 // ################## RUTAS DE USUARIO ##############################
 
@@ -105,6 +107,12 @@ app.delete(
 app.get('/concursos/listado', listingConcourses); //Listado de todos los concursos
 app.get('/concursos/proximamente', nextConcourses); //Listado de próximos concursos
 app.get('/concursos/finalizados', finishedConcourses); //Listado de concursos ya finalizados.
+app.put(
+  '/concursos/asignar_ganador',
+  userIsAuthenticated,
+  userIsAdmin,
+  setWinner
+);
 
 //################ RUTAS DE INSCRIPCIONES #############################
 
