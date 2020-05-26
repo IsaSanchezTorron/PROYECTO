@@ -7,34 +7,60 @@ const { updateConcourseSchema } = require('../../validations/edit_concourse');
 async function setWinner(req, res, next) {
   let connection;
   try {
-    //await updateConcourseSchema.validateAsync(req.body);
     connection = await getConnection();
-    const { id } = req.params;
+
     const { id_usuario, id_concurso } = req.body;
 
     const [
-      current
+      existingConcourse
     ] = await connection.query(
-      `SELECT id_concurso, id_usuario FROM INSCRIPCIONES  WHERE id_concurso =? AND id_usuario=?`,
-      [id_concurso, id_usuario]
+      `SELECT id_concurso, nombre FROM CONCURSOS WHERE id_concurso=?`,
+      [id_concurso]
     );
-    if (current.length) {
-      throw generateError(`El concurso con  ${id} ya tiene ganador`, 404);
+
+    if (!existingConcourse.length) {
+      throw generateError('No existe este concurso en la BD', 400);
     }
-    if (current[0].id_usuario !== req.auth.id && req.auth.role !== 'admin') {
+
+    const [
+      existingUser
+    ] = await connection.query(
+      `SELECT id_usuario FROM USUARIOS WHERE id_usuario=?`,
+      [id_usuario]
+    );
+    if (!existingUser.length) {
+      throw generateError('No existe este usuario en la BD', 400);
+    }
+
+    const [existingInscription] = await connection.query(
+      `SELECT USUARIOS_id_usuario, CONCURSOS_id_concurso FROM INSCRIPCIONES 
+      WHERE USUARIOS_id_usuario=? AND CONCURSOS_id_concurso=?`,
+      [id_usuario, id_concurso]
+    );
+    if (!existingInscription.length) {
       throw generateError(
-        'No tienes permisos para seleccionar ganadores del concursos',
-        401
+        'No existe coincidencias para esta inscripción, comprueba que el usuario está inscrito'
       );
     }
+
+    const [
+      existingWinner
+    ] = await connection.query(
+      `SELECT id_ganador FROM CONCURSOS WHERE id_concurso=?`,
+      [id_concurso]
+    );
+    if (existingWinner.length) {
+      throw generateError('Este concurso ya tiene un ganador asignado.', 401);
+    }
+
     await connection.query(
-      ` UPDATE CONCURSOS SET ganador = 1 WHERE id_usuario=? AND id_concurso=?`,
+      `UPDATE CONCURSOS SET id_ganador=? WHERE id_concurso=?`,
       [id_usuario, id_concurso]
     );
 
     res.send({
       status: 'ok',
-      message: 'Has actualizado los datos del concurso correctamente.'
+      message: `Has asignado un ganador al concurso ${existingConcourse[0].nombre}`
     });
   } catch (error) {
     next(error);
