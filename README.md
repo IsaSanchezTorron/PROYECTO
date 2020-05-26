@@ -30,9 +30,8 @@
  - Testeos con Postman.
 
 
-
 - DIRECTORIO "validations" con creación de esquemas para validar los datos de entrada en la BD con ayuda del módulo Hapi-Joi.
-	- 
+	
 
 - Rutas de USUARIOS:
 
