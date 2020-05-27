@@ -16,7 +16,7 @@
 
 
 
--TRABAJO CON LAS RUTAS DE "USUARIOS", "CONCURSOS", "INSCRIPCIONES" y "VALORACIONES", correspondientes a las tablas de la BD, exceptuando las "VALORACIONES" que se incluyen en la tabla de INSCRIPCIONES.
+-  TRABAJO CON LAS RUTAS DE "USUARIOS", "CONCURSOS", "INSCRIPCIONES" y "VALORACIONES", correspondientes a las tablas de la BD, exceptuando las "VALORACIONES" que se incluyen en la tabla de INSCRIPCIONES.
 
 
  - Importación y exportación de funciones y módulos, uso de módulos externos.
@@ -66,12 +66,12 @@
 
 	- Inscribirse.
 	- Cancelar suscripción
-	- Ver usuarios inscritos
+        - Ver usuarios inscritos
 
 
 
 
--Rutas de VALORACIONES:
+- Rutas de VALORACIONES:
 
    - Nueva valoracíon
    - Ver ranking de concursos
