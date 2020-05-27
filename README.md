@@ -65,9 +65,8 @@
 - Rutas de INSCRIPCIONES:
 
 	- Inscribirse.
-	- Cancelar suscripción
-        - Ver usuarios inscritos
-
+	- Cancelar suscripción.
+        - Ver usuarios inscritos.
 
 
 
