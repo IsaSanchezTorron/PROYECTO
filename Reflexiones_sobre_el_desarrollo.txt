@@ -3,6 +3,8 @@
 
 :: MIÉRCOLES 27 DE MAYO DE 2020 ::
 
+-Sobre las dificultades iniciales que se me presentaron y cómo salí del enfrascamiento en el que estuve -
+
  Tras recibir el documento con las funcionalidades del "Agregador Literario" me fueron surgiendo dudas al respecto.
 En primer lugar sobre la orientación. Según parecía me pedían que los usuarios que ya se habían inscrito a un concurso
 y una vez éste hubiese finalizado, podrían valorar su paso por el concurso. Cuando comencé a dibujar los wireframes y al pensar en ello; mis dudas principales eran:
