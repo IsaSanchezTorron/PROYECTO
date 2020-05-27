@@ -18,7 +18,8 @@ Cuando comencé a dibujar los wireframes y al pensar en ello; mis dudas principa
 
 
  Todas estas dudas las tuve antes de comenzar a desarrollar el Backend, por supuesto, todavía no plenamente consciente
- de el trabajo a mayores que supondría mi planteamiento pero lo que es más importante, todavía sin entender la orientación inicial del producto.
+ de el trabajo a mayores que supondría mi planteamiento pero lo que es más importante, todavía sin entender
+ la orientación inicial del producto.
 
  En un principio comenté mis dudas en una de las clases con compis y profes y  compañeros como Zoe y Félix me dieron una
  visión muy acertada que finalmente en esclarecedoras conversaciones con Pablo pude termninar de conformar y confirmar:
@@ -37,7 +38,8 @@ Hubo un momento, antes de mantener todas estas conversaciones en las que me cost
 de empezar a desarrollar un proyecto que no tuviera, digamos, "coherencia en la vida real", sin embargo
 este proceso de romperme la cabeza y sobre todo hablar con compañeros, profesores y coordinadores, fue fundamental.
 Ahora en el fondo me pregunto cómo es posible que no pudiese verlo en un principio pero 
-creo que humildemente una tiene que asumir su inexperiencia y pedir ayuda, que fue lo que a mí me abrió los ojos definitivamente. Fue una gran lección. Pasé de "estar ciega" a "ver la luz".
+creo que humildemente una tiene que asumir su inexperiencia y pedir ayuda, que fue lo que a mí me abrió los ojos
+definitivamente. Fue una gran lección. Pasé de "estar ciega" a "ver la luz".
 
 
 Aún así, mi mente fantasea en que en un futuro, la plataforma pudiese también tener concursos de microrelatos, poemas, etc.
