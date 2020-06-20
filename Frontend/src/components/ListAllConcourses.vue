@@ -19,11 +19,7 @@
     <div class="contenedor">
       <br />
       <!-- Contenedor para dar formato a la ficha de productos, lo cargamos con el array de productos filtrados -->
-      <div
-        class="concursoscontenedor"
-        v-for="concurso in concursosFiltrados"
-        :key="concurso.id_concurso"
-      >
+      <div class="concursoscontenedor" v-for="concurso in concursosFiltrados" :key="concurso.id">
         <p>
           <b>id.:</b>
           {{concurso.id_concurso}}
@@ -72,7 +68,7 @@
         <!-- Con una clase dinámica manejo los colores en función de la vigencia del concurso -->
         <hr />
         <!-- El botón de inscribir DE MENTIRIJILLAS AUN, hace una llamada a la función que nos envía un Sweet Alert -->
-        <button @click="inscribir()">INSCRIBIRME</button>
+        <button @click="confirmInscription(concurso)">INSCRIBIRME</button>
       </div>
     </div>
   </div>
@@ -82,6 +78,8 @@
 // IMPORTAMOS PARA
 // enviar mensajes custom
 import Swal from "sweetalert2";
+// manejo de rutas y endpoints
+import axios from "axios";
 // componentes internos
 
 
@@ -99,6 +97,7 @@ data(){
     // Inicializamos un string vacío que contendrá la búsqueda.
     search:"",
     datetoday: new Date(),
+    id: null,
     
 }
 },
@@ -129,27 +128,57 @@ concursosFiltrados() {
 
 methods:{
 // Método para el botón de "comprar"
-inscribir(){
-  Swal.fire({
-    title: "🆗",
-    text:`Te has inscrito correctamenrte a este concurso`,
-    confirmButtonText: "O.K.",
+confirmInscription(concurso){
 
-  });
- 
-},
+const self = this;
+console.log(concurso);
+            // Cojo token e id.
+const token = localStorage.getItem("token");
+const data = localStorage.getItem("id");
+axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-},
+               
+axios.post ("http://localhost:3003/concursos/inscripciones/" + concurso.id_concurso,{
+            id_concurso: self.id_concurso,
+            id_usuario: data,
+})
+            .then(function(response) {
+
+                    console.log("login ok")
+                    console.log(response);
+                     // Enviamos mensaje de confirmación de registro
+                     Swal.fire({
+                    title: "✅",
+                    text: "Te has inscrito en el concurso con éxito",
+                    confirmButtonText: "O.K",
+                    timer: 3000,
+                                  });
+                    
+                })
+                //Recogemos posibles errores
+                .catch(function(error){
+                    console.log(error);
+
+                    Swal.fire({
+                    title: "⚠️",
+                    text: "Ha habido un error, es posible que ya estés inscrito",
+                    confirmButtonText: "O.K",
+                    timer: 3000,
+                });
+                })
+                
+            
+        
+
+            }}};
+
+
 /* FUNCIÓN PARA TRAER FECHA Y UTILIZAR EN CLASES DINÁMICAS pendiente de funcionamiento 
 getTodayDate (datetoday) {
   datetoday = new Date();
   return format(datetoday, 'yyyy-MM-dd HH:mm:ss');
 },  */
 
-
-
-
-};
 </script>
 
 <style>

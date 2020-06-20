@@ -13,7 +13,7 @@ async function getInscriptionHistoryUser(req, res, next) {
 
     const [result] = await connection.query(
       `SELECT USUARIOS.id_usuario, USUARIOS.nombre, USUARIOS.apellidos, CONCURSOS_id_concurso,
-             CONCURSOS.nombre as nombre_concurso, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final
+             CONCURSOS.nombre as nombre_concurso, CONCURSOS.descripcion, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final
              FROM USUARIOS 
              INNER JOIN INSCRIPCIONES ON USUARIOS.id_usuario = INSCRIPCIONES.USUARIOS_id_usuario 
              INNER JOIN CONCURSOS ON CONCURSOS.id_concurso = INSCRIPCIONES.CONCURSOS_id_concurso

@@ -68,7 +68,7 @@ app.post('/usuarios', newUser); // Crear nuevo usuario
 app.post('/usuarios/login', loginUser); // Hacer login
 app.get('/usuarios/validar', validateUser); // Validar cuenta
 app.put('/usuarios/editar/:id', userIsAuthenticated, editUser); //Editar usuario
-app.get('/usuarios/:id', userIsAuthenticated, userIsAdmin, getUser); //Obtener datos de un usuario
+app.get('/usuarios/:id', userIsAuthenticated, getUser); //Obtener datos de un usuario
 app.put('/usuarios/password/:id', userIsAuthenticated, updatePassword); //Cambiar contraseña de usuario
 app.put('/usuarios/disable/:id', userIsAuthenticated, disableUser); // Deshabilitar usuario
 app.delete(

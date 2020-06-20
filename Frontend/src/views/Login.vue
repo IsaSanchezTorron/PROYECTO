@@ -70,7 +70,7 @@ export default {
           localStorage.setItem("id", response.data.id);
           localStorage.setItem("name", response.data.name);
           localStorage.setItem("rol", response.data.rol);
-           self.$router.push("/about");
+           self.$router.push("/profile");
            console.log("login ok")
            console.log(response);
 

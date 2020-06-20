@@ -20,8 +20,15 @@
       <a>
         <router-link :to="{ name: 'About' }">Contacto</router-link>
       </a>
-      <!--Botón que llama a la función de LogOut -->
-      <button @click="logoutUser()">Logout</button>
+      <a>
+        <router-link :to="{ name: 'Profile' }">Mi Perfil</router-link>
+      </a>
+      <!-- No funciona PENDIENTE DE REVISAR -->
+      <div class="verboton" v-show="!seeButton">
+        <!--Botón que llama a la función de LogOut -->
+
+        <button @click="logoutUser()">Logout</button>
+      </div>
     </div>
   </div>
 </template>
@@ -33,14 +40,21 @@ import {clearLogin} from "../api/utils";
 export default {
     name: "menucustom",
 
+    return:{
+      seeButton: false,
+    },
+
 
 methods:{
   //Función de LogOut
   logoutUser(){
-     // No deja datos en el logueo, vacío.
-    return clearLogin();
+  
     //Nos lleva al login
-    this.$router.push("/about")
+    this.$router.push("/");
+     // No deja datos en el logueo, vacío.
+    self.seeButton = true;
+    return clearLogin();
+    
    
   },
  

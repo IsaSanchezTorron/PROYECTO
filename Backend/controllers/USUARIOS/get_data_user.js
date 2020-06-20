@@ -12,7 +12,7 @@ async function getUser(req, res, next) {
     const { id } = req.auth;
 
     const [result] = await connection.query(
-      `SELECT id_usuario, nombre, apellidos, mail, url_foto, descripcion, fecha_registro, rol)
+      `SELECT id_usuario, nombre, apellidos, mail, url_foto, descripcion, fecha_registro, rol
            FROM USUARIOS WHERE id_usuario=?`,
       [id]
     );
@@ -37,6 +37,13 @@ async function getUser(req, res, next) {
     }
     res.send({
       status: 'ok',
+      /*  name: userData.nombre,
+      apellidos: userData.apellidos,
+      mail: userData.mail,
+      url_foto: userData.url_foto,
+      descripcion: userData.descripcion,
+      fecha_registro: userData.fecha_registro,
+      rol: userData.rol, */
       data: payload
     });
   } catch (error) {

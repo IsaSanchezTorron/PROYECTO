@@ -15,7 +15,7 @@ async function editUser(req, res, next) {
     connection = await getConnection();
     const { id } = req.params;
 
-    const { nombre, apellidos, descripcion } = req.body;
+    const { nombre, apellidos, mail, descripcion } = req.body;
 
     const [
       current
@@ -29,7 +29,7 @@ async function editUser(req, res, next) {
     }
 
     //console.log(typeof current);
-    //console.log(current);
+    //
 
     if (current[0].id_usuario !== req.auth.id) {
       throw generateError('No tienes permisos para editar este usuario', 401);
@@ -52,8 +52,8 @@ async function editUser(req, res, next) {
     }
 
     await connection.query(
-      ` UPDATE USUARIOS SET nombre=?, apellidos =?, descripcion=?, url_foto =? WHERE id_usuario=?`,
-      [nombre, apellidos, descripcion, savedFileName, id]
+      ` UPDATE USUARIOS SET nombre=?, apellidos =?, mail= ?, descripcion=?, url_foto =? WHERE id_usuario=?`,
+      [nombre, apellidos, mail, descripcion, savedFileName, id]
     );
 
     res.send({
