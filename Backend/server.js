@@ -30,6 +30,9 @@ const { deleteUser } = require('./controllers/USUARIOS/delete');
 const {
   getInscriptionHistoryUser
 } = require('./controllers/USUARIOS/get_history_user');
+const {
+  getPendingRatings
+} = require('./controllers/USUARIOS/get_pending_ratings');
 const { userIsAuthenticated } = require('./middlewares/auth.js');
 const { userIsAdmin } = require('./middlewares/auth.js');
 
@@ -82,6 +85,12 @@ app.get(
   userIsAuthenticated,
   getInscriptionHistoryUser
 ); // Ver historial de usuarios
+
+app.get(
+  '/usuarios/concursos-pendientes-valoracion/:id',
+  userIsAuthenticated,
+  getPendingRatings
+);
 
 // ################### RUTAS DE CONCURSO ###########################
 

@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <!--Encabezado de página -->
@@ -19,50 +18,57 @@
     <div class="contenedor">
       <br />
       <!-- Contenedor para dar formato a la ficha de productos, lo cargamos con el array de productos filtrados -->
-      <div class="concursoscontenedor" v-for="concurso in concursosFiltrados" :key="concurso.id">
+      <div
+        class="concursoscontenedor"
+        v-for="concurso in concursosFiltrados"
+        :key="concurso.id"
+      >
         <p>
           <b>id.:</b>
-          {{concurso.id_concurso}}
+          {{ concurso.id_concurso }}
         </p>
         <p>
           <img :src="concurso.url_foto" />
         </p>
         <p>
           <b>Nombre:</b>
-          {{concurso.nombre}}
+          {{ concurso.nombre }}
         </p>
         <p>
           <b>Abierto a suscripción desde:</b>
-          {{concurso.fecha_inicio}}
+          {{ concurso.fecha_inicio.slice(0, 10) }}
         </p>
 
         <!-- REVISAR estas clases dinámicas dependientes de FECHA -->
-        <p
-          :class="{ green: concurso.fecha_final >= 'datetoday' , red: concurso.fecha_final <= 'datetoday' }"
-        >
-          <b>Cierre de suscripción:</b>
-          {{concurso.fecha_final}}
-        </p>
+        <!--  <p
+          :class="{
+            green: concurso.fecha_final >= 'datetoday',
+            red: concurso.fecha_final <= 'datetoday',
+          }"
+        >-->
+        <b>Cierre de suscripción:</b>
+        {{ concurso.fecha_final.slice(0, 10) }}
+        <!--  </p> -->
 
         <p>
           <b>Información y bases:</b>
-          {{concurso.descripcion}}
+          {{ concurso.descripcion }}
         </p>
         <p>
           <b>Modalidad:</b>
-          {{concurso.modalidad}}
+          {{ concurso.modalidad }}
         </p>
         <p>
           <b>Genero:</b>
-          {{concurso.genero}}
+          {{ concurso.genero }}
         </p>
         <p>
           <b>Ciudad:</b>
-          {{concurso.ciudad}}
+          {{ concurso.ciudad }}
         </p>
         <p>
           <b>Valoración media:</b>
-          {{concurso.valoracion}}
+          {{ concurso.valoracion }}
         </p>
 
         <!-- Con una clase dinámica manejo los colores en función de la vigencia del concurso -->
@@ -82,106 +88,93 @@ import Swal from "sweetalert2";
 import axios from "axios";
 // componentes internos
 
-
 export default {
-name: 'listallconcourses',
-props:{
-  // Le indicamos que está recibiendo un array.
-concursos: Array,
+  name: "listallconcourses",
+  props: {
+    // Le indicamos que está recibiendo un array.
+    concursos: Array,
+  },
 
+  data() {
+    return {
+      // Inicializamos un string vacío que contendrá la búsqueda.
+      search: "",
 
-},
+      id: null,
+    };
+  },
 
-data(){
-  return {
-    // Inicializamos un string vacío que contendrá la búsqueda.
-    search:"",
-    datetoday: new Date(),
-    id: null,
-    
-}
-},
-
-computed: {
-  
-  //FUNCIÓN PARA FILTRAR PRODUCTOS
-concursosFiltrados() {
-     
+  computed: {
+    //FUNCIÓN PARA FILTRAR PRODUCTOS
+    concursosFiltrados() {
       // Si en la búsqueda no hay nada nos devuelve todo.
-  if (!this.search) {
+      if (!this.search) {
         return this.concursos;
         console.log(this.concursos);
       }
- return this.concursos.filter ( 
-        concurso  => 
-        concurso.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
-        concurso.descripcion.toLowerCase().includes(this.search.toLowerCase()) ||
-        concurso.modalidad.toLowerCase().includes(this.search.toLowerCase()) ||
-        concurso.genero.toLowerCase().includes(this.search.toLowerCase()) 
+      return this.concursos.filter(
+        (concurso) =>
+          concurso.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
+          concurso.descripcion
+            .toLowerCase()
+            .includes(this.search.toLowerCase()) ||
+          concurso.modalidad
+            .toLowerCase()
+            .includes(this.search.toLowerCase()) ||
+          concurso.genero.toLowerCase().includes(this.search.toLowerCase())
         //Ojo aquí, pendiente que funcione la búsqueda por ciudad.
-        // concurso.ciudad.toLowerCase().includes(this.search.toLowerCase()) 
- )
+        // concurso.ciudad.toLowerCase().includes(this.search.toLowerCase())
+      );
     },
-  
+  },
 
-},
+  methods: {
+    // Método para el botón de "comprar"
+    confirmInscription(concurso) {
+      const self = this;
+      console.log(concurso);
+      // Cojo token e id.
+      const token = localStorage.getItem("token");
+      const data = localStorage.getItem("id");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-methods:{
-// Método para el botón de "comprar"
-confirmInscription(concurso){
-
-const self = this;
-console.log(concurso);
-            // Cojo token e id.
-const token = localStorage.getItem("token");
-const data = localStorage.getItem("id");
-axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-               
-axios.post ("http://localhost:3003/concursos/inscripciones/" + concurso.id_concurso,{
+      axios
+        .post(
+          "http://localhost:3003/concursos/inscripciones/" +
+            concurso.id_concurso,
+          {
             id_concurso: self.id_concurso,
             id_usuario: data,
-})
-            .then(function(response) {
+          }
+        )
+        .then(function (response) {
+          console.log("login ok");
+          console.log(response);
+          // Enviamos mensaje de confirmación de registro
+          Swal.fire({
+            title: "✅",
+            text: "Te has inscrito en el concurso con éxito",
+            confirmButtonText: "O.K",
+            timer: 3000,
+          });
+        })
+        //Recogemos posibles errores
+        .catch(function (error) {
+          console.log(error);
 
-                    console.log("login ok")
-                    console.log(response);
-                     // Enviamos mensaje de confirmación de registro
-                     Swal.fire({
-                    title: "✅",
-                    text: "Te has inscrito en el concurso con éxito",
-                    confirmButtonText: "O.K",
-                    timer: 3000,
-                                  });
-                    
-                })
-                //Recogemos posibles errores
-                .catch(function(error){
-                    console.log(error);
-
-                    Swal.fire({
-                    title: "⚠️",
-                    text: "Ha habido un error, es posible que ya estés inscrito",
-                    confirmButtonText: "O.K",
-                    timer: 3000,
-                });
-                })
-                
-            
-        
-
-            }}};
-
-
-/* FUNCIÓN PARA TRAER FECHA Y UTILIZAR EN CLASES DINÁMICAS pendiente de funcionamiento 
-getTodayDate (datetoday) {
-  datetoday = new Date();
-  return format(datetoday, 'yyyy-MM-dd HH:mm:ss');
-},  */
-
+          Swal.fire({
+            title: "⚠️",
+            text: "Ha habido un error, es posible que ya estés inscrito",
+            confirmButtonText: "O.K",
+            timer: 3000,
+          });
+        });
+    },
+  },
+};
 </script>
 
-<style>
+<style scoped>
 .green {
   color: green;
 }
@@ -190,7 +183,7 @@ getTodayDate (datetoday) {
   color: red;
 }
 .concursoscontenedor {
-  box-shadow: 1px 1px 1px 1px #888888;
+  box-shadow: 0 0 10px rgb(12, 12, 12);
   padding: 3em;
   width: 300px;
   margin: 10px auto;

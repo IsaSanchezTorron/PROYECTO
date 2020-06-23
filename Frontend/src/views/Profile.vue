@@ -1,19 +1,19 @@
 <template>
   <div>
     <!-- Definimos el título de página visible en navegador -->
-    <vue-headful title="Profile" description="Tu perfil" />
+    <vue-headful title="Perfil" description="Tu perfil" />
 
     <!-- Inserción del componente menú en la cabecera de la vista -->
     <menucustom></menucustom>
 
     <!--Sección de datos personales -->
     <div class="informacionusuario">
-      <h3>Hola {{ user.nombre }}</h3>
+      <h3>👤 Hola {{ user.nombre }}</h3>
       <img :src="user.url_foto" alt="Foto de perfil de usuario" />
-      <p>Miembro desde {{user.fecha_registro}}</p>
-      <p>Miembro con rol de: {{ user.rol}}</p>
+      <p>Miembro desde {{ user.fecha_registro.slice(0, 10) }}</p>
+      <p>Miembro con rol de: {{ user.rol }}</p>
     </div>
-
+    <!-- Pendiente de revisión la edición de usuario, especialmente por las fotos -->
     <div v-show="!seeEditable">
       <div class="datosparaeditar">
         <p class="nombre">{{ user.nombre }}</p>
@@ -22,26 +22,20 @@
         <p class="descripcion">{{ user.descripcion }}</p>
       </div>
     </div>
-
     <button @click="showEditable()">Actualiza tu perfil</button>
-
     <hr />
-    <!-- <button @click="seeHistory()">Ver historial de inscripciones</button> -->
-    <div class="historialConcurso">
-      <h3>Historial de concursos</h3>
-      <ul v-for="historia in historial" :key="historia.id">
-        <li>{{ historia.nombre_concurso }}</li>
-        <li>{{ historia.descripcion }}</li>
-        <li>{{ historia.fecha_inicio }}</li>
-        <li>{{ historia.fecha_final }}</li>
-        <li>--------------------------------------------------</li>
-      </ul>
-    </div>
 
     <div class="editar" v-show="seeEditable">
       <label for="nombre">Tu nombre:</label>
-      <input type="text" id="nombre" name="nombre" v-model="nuevoNombre" placeholder="nombre" />
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        v-model="nuevoNombre"
+        placeholder="nombre"
+      />
       <br />
+
       <label for="apellidos">Tus apellidos:</label>
       <input
         type="text"
@@ -51,6 +45,7 @@
         placeholder="apellidos"
       />
       <br />
+
       <label for="file">Selecciona tu nueva foto:</label>
       <input type="file" id="file" name="file" />
       <br />
@@ -66,84 +61,172 @@
       <br />
       <button @click="confirmEditUser()">Guardar</button>
       <hr />
+
+      <hr />
+    </div>
+    <div>
+      <!-- Aquí mostramos el historial de concursos del usuario -->
+      <div class="historialConcurso">
+        <h3>Historial de concursos</h3>
+        <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
+        <ul v-for="historia in historial" :key="historia.id">
+          <li>
+            <b>{{ historia.nombre_concurso }}</b>
+          </li>
+          <li><b>Bases:</b> {{ historia.descripcion }}</li>
+          <li>
+            <b>Apertura:</b> {{ historia.fecha_inicio | moment(" D MM YYYY") }}
+          </li>
+          <li>
+            <b>Cierre:</b> {{ historia.fecha_final | moment(" D MM YYYY") }}
+          </li>
+          <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
+          <div v-if="historia.valoracion > 0">
+            <li>
+              Has valorado este concurso con
+              {{ historia.valoracion }} ⭐️
+            </li>
+          </div>
+          <li>--------------------------------------------------</li>
+        </ul>
+        <!-- Botón que llama a la función para ver el historial -->
+        <button v-if="historial" @click="seeHistory()">
+          Ver historial
+        </button>
+        <hr />
+      </div>
+    </div>
+    <div class="historialpendientes">
+      <h3>Tus concursos pendientes de valoración</h3>
+      <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito -->
+      <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
+      <ul v-for="(pendiente, index) in pendientes" :key="pendiente.id">
+        <li>
+          <b>{{ pendiente.nombre_concurso }}</b>
+        </li>
+        <li><b>Bases:</b> {{ pendiente.descripcion }}</li>
+        <li>
+          <b>Apertura:</b> {{ pendiente.fecha_inicio | moment(" D MM YYYY") }}
+        </li>
+        <li>
+          <b>Cierre:</b> {{ pendiente.fecha_final | moment(" D MM YYYY") }}
+        </li>
+        <!-- El botón de votar se muestra si no hay voto -->
+        <button
+          v-if="pendiente.valoracion !== number"
+          @click="openModal(index)"
+        >
+          VOTAR
+        </button>
+        <div v-show="modal" class="modal">
+          <div class="modalbox">
+            <h3>¿Cómo valoras tu experiencia?</h3>
+
+            <star-rating
+              @rating-selected="rating = $event"
+              :rating="rating"
+              v-bind:star-size="20"
+            ></star-rating>
+            <button @click="newRating(votedConcourse, rating)">
+              Este es mi voto!
+            </button>
+            <button @click="closeModal()">Cerrar</button>
+          </div>
+        </div>
+      </ul>
+      <button @click="seePendingRatings()">
+        Ver concursos ya terminados
+      </button>
     </div>
   </div>
 </template>
 
 <script>
-//EXPORTAMOS PARA
-//Manejar títulos de página en pestaña navegador
-import vueHeadful from "vue-headful"
+// EXPORTAMOS PARA
+// Libreria para uso de modales
+import VModal from "vue-js-modal";
+// Gestión de fechas
+import VueMoment from "vue-moment";
+
+// Mensajes customizados
+import Swal from "sweetalert2";
+// Incluir valoraciones mediante estrellitas
+import StarRating from "vue-star-rating";
+// Manejar títulos de página en pestaña navegador
+import vueHeadful from "vue-headful";
 // Manejo de endpoints, peticiones, rutas:
 import axios from "axios";
 // Componentes internos
-import menucustom from "@/components/MenuCustom.vue"
-
+import menucustom from "@/components/MenuCustom.vue";
 
 export default {
-    name: "Profile",
-    // Componentes de la vista
-    components: { menucustom, vueHeadful},
-    data(){
-        
-        return{
-            // Declaración de variables que voy a utilizar para recoger la información
-            id: null,
-            user:{},
-            nuevoNombre: "",
-            nuevoApellido: "",
-            nuevaDescripcion:"",
-            // Booleano para controlar el v-show que contiene el formulario de edición.
-            seeEditable: false,
-            url_foto:"", 
-            historial:[],
-            concursos:[],
+  name: "Profile",
+  // Componentes de la vista
+  components: { menucustom, vueHeadful, StarRating },
+  data() {
+    return {
+      // Declaración de variables que voy a utilizar para recoger la información
+      id: null,
+      user: {},
+      nuevoNombre: "",
+      nuevoApellido: "",
+      nuevaDescripcion: "",
+      // Booleano para controlar el v-show que contiene el formulario de edición.
+      seeEditable: false,
+      url_foto: "",
+      historial: [],
+      concursos: [],
+      rating: 0,
+      modal: false,
+      votedConcourse: {},
+      seeIsVoted: false,
+      mostrarvotables: false,
+      fecha: new Date(),
+      pendientes: [],
+    };
+  },
 
-        }
+  methods: {
+    openModal(index) {
+      this.modal = true;
+      this.votedConcourse = this.historial[index];
     },
 
+    closeModal() {
+      this.modal = false;
+    },
 
-    methods: { 
+    // FUNCIÓN PARA HACER LA PETICIÓN AL SERVIDOR.
 
-        // FUNCIÓN PARA HACER LA PETICIÓN AL SERVIDOR.
+    getDataUser() {
+      const self = this;
+      // Cojo token e id.
+      const token = localStorage.getItem("token");
+      const data = localStorage.getItem("id");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-        getDataUser(){
-            const self = this;
-            // Cojo token e id.
-            const token = localStorage.getItem("token");
-            const data = localStorage.getItem("id");
-            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-           
-            console.log(token);
-            console.log(data);
+      // Petición get a mi ruta del Back para editar usuarios, concatenamos el id.
+      axios
+        .get("http://localhost:3003/usuarios/" + data)
 
-            // Petición get a mi ruta del Back para editar usuarios, concatenamos el id.
-            axios.get("http://localhost:3003/usuarios/" + data)
-            
-            .then (function (response){
-              self.historial = response.data.data;
-                console.log(response);
-                
-                // En user tengo ahora el acceso directo a este usuario concreto.
-               self.user = response.data.data;
-               // Monto la ruta para poder visualizar la imagen que está en la BBDD con un nombre de archivo.
-               self.user.url_foto= "http://localhost:3003/images/" + self.user.url_foto;
-               console.log(self.user.url_foto);
-            })
-             
-            .catch(function(error) {
-             alert("Socorri");
-            console.log(error.response.data.message); 
-            
-          })
-          
-          },
-            
+        .then(function (response) {
+          console.log(response);
 
+          // En user tengo ahora el acceso directo a este usuario concreto.
+          self.user = response.data.data;
+          // Monto la ruta para poder visualizar la imagen que está en la BBDD con un nombre de archivo.
+          self.user.url_foto =
+            "http://localhost:3003/images/" + self.user.url_foto;
+        })
 
+        .catch(function (error) {
+          alert("Socorri");
+          console.log(error.response.data.message);
+        });
+    },
 
-// FUNCIÓN PARA GUARDAR LOS CAMBIOS
-      confirmEditUser() {
+    // FUNCIÓN PARA GUARDAR LOS CAMBIOS
+    confirmEditUser() {
       const self = this;
       //Tengo la autenticación...
       const data = localStorage.getItem("id");
@@ -155,83 +238,168 @@ export default {
           nombre: self.nuevoNombre,
           apellidos: self.nuevoApellido,
           descripcion: self.nuevaDescripcion,
-          url_foto: self.data.url_foto, 
-          
+          url_foto: self.data.url_foto,
         })
-        .then(function(response) {
+        .then(function (response) {
           self.seeEditable = true;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.error(error);
-          console.log(error.response.data.message); 
+          console.log(error.response.data.message);
         });
     },
-    
-
 
     showEditable() {
-        
       this.seeEditable = true;
       this.nuevoNombre = this.user.nombre;
       this.nuevoApellido = this.user.apellidos;
-      this.nuevaDescripcion= this.user.descripcion;
-      this.url_foto= this.user.url_foto; 
+      this.nuevaDescripcion = this.user.descripcion;
+      this.url_foto = this.user.url_foto;
       console.log(this.user.nombre);
     },
 
+    seeHistory() {
+      const self = this;
+      // Cojo token e id.
+      const token = localStorage.getItem("token");
+      const data = localStorage.getItem("id");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
+      console.log(token);
+      console.log(data);
 
-    seeHistory(){
+      // Petición get a mi ruta del Back para consultar inscripciones, concatenamos el id.
+      axios
+        .get("http://localhost:3003/usuarios/historial/" + data)
 
+        .then(function (response) {
+          console.log(response);
 
-        const self = this;
-            // Cojo token e id.
-            const token = localStorage.getItem("token");
-            const data = localStorage.getItem("id");
-            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-           
-            console.log(token);
-            console.log(data);
+          // En user tengo ahora el acceso directo a este usuario concreto.
+          self.historial = response.data.data;
+        })
 
-            // Petición get a mi ruta del Back para consultar inscripciones, concatenamos el id.
-            axios.get("http://localhost:3003/usuarios/historial/" + data)
-            
-            .then (function (response){
-                console.log(response);
-                
-                // En user tengo ahora el acceso directo a este usuario concreto.
-               self.historial = response.data.data;
-              
-            })
-             
-            .catch(function(error) {
-             alert("Socorri");
-            console.log(error.response.data.message); 
-            
-          })
-          
-          },
-            
-
-
+        .catch(function (error) {
+          Swal.fire({
+            title: "✅",
+            text: error.response.data.message,
+            confirmButtonText: "O.K",
+          }).then((result) => {
+            if (result.value) {
+              self.getDataUser();
+            }
+          });
+          console.log(error.response.data.message);
+        });
     },
 
+    // FUNCIÓN PARA VER SOLAMENTE LOS CONCURSOS EN LOS QUE SE HA INSCRITO Y ESTÁN PENDIENTES DE VALORACIÓN
+    seePendingRatings() {
+      const self = this;
+      // Cojo token e id.
+      const token = localStorage.getItem("token");
+      const data = localStorage.getItem("id");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-  
+      console.log(token);
+      console.log(data);
 
-      created(){
-          this.getDataUser();
-          this.seeHistory();
-      }
-    };
-    
-    
+      // Petición get a mi ruta del Back para consultar inscripciones finalizadas, concatenamos el id.
+      axios
+        .get(
+          "http://localhost:3003/usuarios/concursos-pendientes-valoracion/" +
+            data
+        )
 
-        
-    
+        .then(function (response) {
+          console.log(response);
 
+          // En user tengo ahora el acceso directo a este usuario concreto.
+          self.pendientes = response.data.data;
+        })
 
+        .catch(function (error) {
+          Swal.fire({
+            title: "✅",
+            text: error.response.data.message,
+            confirmButtonText: "O.K",
+          }).then((result) => {
+            if (result.value) {
+              self.getDataUser();
+            }
+          });
+          console.log(error.response.data.message);
+        });
+    },
+
+    //FUNCIÓN PARA QUE EL USUARIO PUNTUE UN CONCURSO EN EL QUE HA PARTICIPADO
+
+    newRating(historia, rating) {
+      self = this;
+
+      const id_concurso = historia.CONCURSOS_id_concurso;
+
+      //Cojo token e id
+      const token = localStorage.getItem("token");
+      const data = localStorage.getItem("id");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios
+        .post("http://localhost:3003/valoraciones/" + id_concurso, {
+          valoracion: rating,
+        })
+
+        .then(function (response) {
+          // Enviamos mensaje de valoración
+          console.log(response);
+          Swal.fire({
+            title: "✅",
+            text: "Gracias por valorar este concurso",
+            confirmButtonText: "O.K",
+          }).catch(function (error) {
+            /*  console.log(error.response.data); */
+            Swal.fire({
+              title: "⚠️",
+              text:
+                "Ha habido un error, es posible que ya hayas valorado este concurso",
+              confirmButtonText: "O.K",
+            });
+          });
+        });
+    },
+
+    checkDate(fecha) {
+      if (moment().isAfter("fecha")) return true;
+    },
+  },
+
+  created() {
+    this.getDataUser();
+  },
+};
 </script>
 
-<style>
+<style scoped>
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 150px;
+  width: 100%;
+}
+
+.modalbox {
+  background: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 50px;
+  border: solid 2px black;
+  box-shadow: 0 0 1px rgb(12, 12, 12);
+}
 </style>

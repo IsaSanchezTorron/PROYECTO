@@ -23,7 +23,7 @@ async function newRating(req, res, next) {
     if (!current.length) {
       throw generateError(
         'Sólo puedes votar una vez cada concurso en que has participado.',
-        404
+        436
       );
     }
 
@@ -40,6 +40,7 @@ async function newRating(req, res, next) {
         'Has valorado este concurso, esperamos que tu experiencia haya sido positiva.'
     });
   } catch (error) {
+    console.log(error);
     next(error);
   } finally {
     if (connection) {

@@ -22,7 +22,11 @@
       <br />
 
       <!--Input para campo password -->
-      <input type="password" placeholder="Tu contraseña" v-model="contrasenha" />
+      <input
+        type="password"
+        placeholder="Tu contraseña"
+        v-model="contrasenha"
+      />
       <br />
       <br />
       <!-- Botón con llamada a la función Login -->
@@ -34,13 +38,10 @@
   </div>
 </template>
 
-
-  
-
-<script> 
+<script>
 //IMPORTACIONES PARA
 // componentes locales
-import menucustom from "@/components/MenuCustom.vue"
+import menucustom from "@/components/MenuCustom.vue";
 // Títulos de página visibles en navegador
 import vueHeadful from "vue-headful";
 // Mensajes custom
@@ -49,26 +50,25 @@ import Swal from "sweetalert2";
 import axios from "axios";
 
 export default {
-    name: "register",
-    components: {vueHeadful, menucustom},
+  name: "register",
+  components: { vueHeadful, menucustom },
 
-    data(){
-        return {
-            // Inicializamos strings vacíos para los campos que vamos a procesar.
-            nombre:"",
-            apellidos:"",
-            mail: "",
-            contrasenha: "",
-            // Con el uso de este booleano hacemos la verificación de si hay campos vacíos
-            correctData: false,
-            // Con el uso de este booleano podemos manejar el v-show que hace visible un mensaje de alerta en el HTML
-            required: false,
-        }
-    },
+  data() {
+    return {
+      // Inicializamos strings vacíos para los campos que vamos a procesar.
+      nombre: "",
+      apellidos: "",
+      mail: "",
+      contrasenha: "",
+      // Con el uso de este booleano hacemos la verificación de si hay campos vacíos
+      correctData: false,
+      // Con el uso de este booleano podemos manejar el v-show que hace visible un mensaje de alerta en el HTML
+      required: false,
+    };
+  },
 
-    methods:{
-
-    //Validamos que no haya datos sin rellenar  
+  methods: {
+    //Validamos que no haya datos sin rellenar
     validatingData() {
       if (
         this.nombre === "" ||
@@ -85,63 +85,62 @@ export default {
       }
     },
 
-
     //FUNCIÓN PARA AÑADIR USUARIO CON LOS PARÁMETROS REQUERIDOS
-    registerUser(nombre, apellidos, mail, contrasenha){
-        //Comprobamos que todos los datos están cumplimentados
-            this.validatingData();
-            if(this.correctData === true){
-                let self = this;
-                //Si es correcto enviamos la petición post con los datos del formulario
-                axios.post ("http://localhost:3003/usuarios",{
-                    nombre: self.nombre,
-                    apellidos: self.apellidos,
-                    mail: self.mail,
-                    contrasenha: self.contrasenha,
-                })
-                //Limpiamos los campos
-                .then (function(response){
-                     // Enviamos mensaje de confirmación de registro
-                     Swal.fire({
-                    title: "✅",
-                    text: "Te has registrado con éxito",
-                    confirmButtonText: "O.K",
-                    timer: 3000,
-                });
-                    self.emptyFields();
-                    console.log(response);
-                })
-                //Recogemos posibles errores
-                .catch(function(error){
-                    console.log(error);
+    registerUser(nombre, apellidos, mail, contrasenha) {
+      //Comprobamos que todos los datos están cumplimentados
+      this.validatingData();
+      if (this.correctData === true) {
+        let self = this;
+        //Si es correcto enviamos la petición post con los datos del formulario
+        axios
+          .post("http://localhost:3003/usuarios", {
+            nombre: self.nombre,
+            apellidos: self.apellidos,
+            mail: self.mail,
+            contrasenha: self.contrasenha,
+          })
 
-                    Swal.fire({
-                    title: "⚠️",
-                    text: "Ha habido un error, es posible que este usuario ya esté registrado",
-                    confirmButtonText: "O.K",
-                    timer: 3000,
-                });
-                });
-                
+          .then(function (response) {
+            // Enviamos mensaje de confirmación de registro
+            Swal.fire({
+              title: "✅",
+              text: "Te has registrado con éxito",
+              confirmButtonText: "O.K",
+              timer: 3000,
+            });
+            //Limpiamos los campos
+            self.emptyFields();
+            console.log(response);
+          })
+          //Recogemos posibles errores
+          .catch(function (error) {
+            console.log(error);
 
-            //Si faltan campos por rellenar se viene por aquí y avisa.
-            } else {
+            Swal.fire({
+              title: "⚠️",
+              text:
+                "Ha habido un error, es posible que este usuario ya esté registrado",
+              confirmButtonText: "O.K",
+              timer: 3000,
+            });
+          });
 
-                Swal.fire({
-                    title: "⚠️",
-                    text: "Debes rellenar todos los campos",
-                    timer: 3000,
-                });
-
-            }
-        },
-        //Función para dejar los campos del formulario limpios
-        emptyFields(){
-            this.nombre="",
-            this.apellidos="",
-            this.mail="",
-            this.contrasenha=""
-        },
+        //Si faltan campos por rellenar se viene por aquí y avisa.
+      } else {
+        Swal.fire({
+          title: "⚠️",
+          text: "Debes rellenar todos los campos",
+          timer: 3000,
+        });
+      }
     },
+    //Función para dejar los campos del formulario limpios
+    emptyFields() {
+      (this.nombre = ""),
+        (this.apellidos = ""),
+        (this.mail = ""),
+        (this.contrasenha = "");
+    },
+  },
 };
 </script>

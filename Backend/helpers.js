@@ -45,7 +45,7 @@ async function sendEmail({ email, title, content }) {
   await sgMail.send(msg);
 }
 
-async function processAndSavePhoto(uploadedImage) {
+async function SavePhoto(uploadedImage) {
   const savedFileName = `${uuid.v1()}.jpg`;
 
   await fs.ensureDir(imageUploadPath);
@@ -70,6 +70,6 @@ module.exports = {
   sendEmail,
   generateError,
   randomString,
-  processAndSavePhoto,
+  //processAndSavePhoto,
   deletePhoto
 };

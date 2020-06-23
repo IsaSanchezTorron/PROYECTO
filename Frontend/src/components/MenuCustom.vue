@@ -15,7 +15,9 @@
       </a>
 
       <a>
-        <router-link :to="{ name: 'Allconcourses' }">Todos los concursos</router-link>
+        <router-link :to="{ name: 'Allconcourses' }"
+          >Todos los concursos</router-link
+        >
       </a>
       <a>
         <router-link :to="{ name: 'About' }">Contacto</router-link>
@@ -25,7 +27,7 @@
       </a>
       <!-- No funciona PENDIENTE DE REVISAR -->
       <div class="verboton" v-show="!seeButton">
-        <!--Botón que llama a la función de LogOut -->
+        <!--Botón que llama a la función de Logout -->
 
         <button @click="logoutUser()">Logout</button>
       </div>
@@ -34,33 +36,26 @@
 </template>
 
 <script>
-import {clearLogin} from "../api/utils";
-
+import { clearLogin } from "../api/utils";
 
 export default {
-    name: "menucustom",
+  name: "menucustom",
 
-    return:{
-      seeButton: false,
-    },
-
-
-methods:{
-  //Función de LogOut
-  logoutUser(){
-  
-    //Nos lleva al login
-    this.$router.push("/");
-     // No deja datos en el logueo, vacío.
-    self.seeButton = true;
-    return clearLogin();
-    
-   
+  return: {
+    seeButton: false,
   },
- 
-},
 
-}
+  methods: {
+    //Función de LogOut
+    logoutUser() {
+      //Nos lleva al login
+      this.$router.push("/");
+      // No deja datos en el logueo, vacío.
+      self.seeButton = true;
+      return clearLogin();
+    },
+  },
+};
 </script>
 
 <style scoped>
