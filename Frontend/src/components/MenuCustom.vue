@@ -4,9 +4,11 @@
     <div id="contenedorMenu">
       <!-- Los enlaces se hacen de manera dinámica, puede cambiar la ruta pero se mantiene el componente
       al invocarlo por su nombre-->
+
       <a>
         <router-link :to="{ name: 'Landing' }">Home</router-link>
       </a>
+
       <a>
         <router-link :to="{ name: 'Login' }">Login</router-link>
       </a>
@@ -19,6 +21,7 @@
           >Todos los concursos</router-link
         >
       </a>
+
       <a>
         <router-link :to="{ name: 'About' }">Contacto</router-link>
       </a>
@@ -60,10 +63,19 @@ export default {
 
 <style scoped>
 #contenedorMenu {
-  width: 80%;
+  width: 97%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin: 0 auto;
+  color: black;
+  font-size: 1em;
+  padding: 1em;
+}
+
+#contenedorMenu a {
+  color: rgb(20, 20, 20);
+  font-size: 1.2em;
+  text-decoration: none;
 }
 </style>

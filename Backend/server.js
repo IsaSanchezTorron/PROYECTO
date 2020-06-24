@@ -115,7 +115,7 @@ app.delete(
   deleteConcourse
 ); // Borrar concurso
 app.get('/concursos/listado', listingConcourses); //Listado de todos los concursos
-app.get('/concursos/proximamente', nextConcourses); //Listado de próximos concursos
+app.get('/concursos/proximamente/:id', userIsAuthenticated, nextConcourses); //Listado de próximos concursos
 app.get('/concursos/finalizados', finishedConcourses); //Listado de concursos ya finalizados.
 app.put(
   '/concursos/asignar_ganador', //Asignar ganador

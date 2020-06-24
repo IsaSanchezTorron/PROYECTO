@@ -8,22 +8,23 @@ async function nextConcourses(req, res, next) {
 
   try {
     connection = await getConnection();
+    const { id } = req.auth;
 
     const dateToday = formatDateToDB(new Date());
     console.log(dateToday);
 
     const [result] = await connection.query(
-      `SELECT CONCURSOS.nombre, CONCURSOS.descripcion, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, CONCURSOS.genero, CONCURSOS.modalidad, CONCURSOS.ciudad, ROUND(AVG(INSCRIPCIONES.valoracion))
+      `SELECT CONCURSOS.nombre, CONCURSOS.descripcion, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, CONCURSOS.genero, CONCURSOS.modalidad, CONCURSOS.ciudad
       FROM CONCURSOS
       LEFT JOIN INSCRIPCIONES ON CONCURSOS.id_concurso = INSCRIPCIONES.CONCURSOS_id_concurso
-      WHERE CONCURSOS.fecha_final >= ?
+      WHERE CONCURSOS.fecha_final >= ? AND INSCRIPCIONES.USUARIOS_id_usuario = ?
       GROUP BY CONCURSOS.id_concurso
       ORDER BY CONCURSOS.fecha_inicio`,
-      [dateToday]
+      [dateToday, id]
     );
 
     if (!result.length) {
-      throw generateError(`No existen concursos próximamente`, 404);
+      throw generateError(`No tienes ningún concurso en activo`, 404);
     }
 
     res.send({

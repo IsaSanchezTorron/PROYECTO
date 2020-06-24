@@ -52,6 +52,9 @@
         </button>
       </form>
     </div>
+    <transition>
+      <barradebienvenida></barradebienvenida>
+    </transition>
     <barraredessociales></barraredessociales>
   </div>
 </template>
@@ -59,25 +62,27 @@
 <script>
 import menucustom from "@/components/MenuCustom.vue";
 import barraredessociales from "@/components/BarraRedesSociales.vue";
+import barradebienvenida from "@/components/BarraBienvenida.vue";
 
 export default {
   name: "landing",
   components: {
     menucustom,
     barraredessociales,
+    barradebienvenida,
   },
 };
 </script>
 
 <style scoped>
 #fotoinformativa {
-  width: 700px;
-  height: 700px;
-  transition: transform 0.5s ease-in-out;
+  width: 500px;
+  height: 500px;
+  transition: transform 0.9s ease-in-out;
   border-radius: 30px;
 }
 img:hover {
-  transform: scale(1.15);
+  transform: scale(1.5);
 }
 
 #principallanding {
@@ -86,7 +91,9 @@ img:hover {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  box-shadow: 0 0 10px rgb(12, 12, 12);
+  box-shadow: 0 0 10px rgb(0, 0, 0);
+  height: 500px;
+  width: 100%;
 }
 h2 {
   color: #030303;
@@ -97,7 +104,7 @@ input {
   border-radius: 5px;
 }
 form p {
-  font-size: 1.1em;
+  font-size: 0.8em;
 }
 button {
   padding: 0.7em;

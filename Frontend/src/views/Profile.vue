@@ -10,7 +10,7 @@
     <div class="informacionusuario">
       <h3>👤 Hola {{ user.nombre }}</h3>
       <img :src="user.url_foto" alt="Foto de perfil de usuario" />
-      <p>Miembro desde {{ user.fecha_registro.slice(0, 10) }}</p>
+      <p>Miembro desde {{ user.fecha_registro | moment(" D-MM-YYYY") }}</p>
       <p>Miembro con rol de: {{ user.rol }}</p>
     </div>
     <!-- Pendiente de revisión la edición de usuario, especialmente por las fotos -->
@@ -75,10 +75,10 @@
           </li>
           <li><b>Bases:</b> {{ historia.descripcion }}</li>
           <li>
-            <b>Apertura:</b> {{ historia.fecha_inicio | moment(" D MM YYYY") }}
+            <b>Apertura:</b> {{ historia.fecha_inicio | moment(" D-MM-YYYY") }}
           </li>
           <li>
-            <b>Cierre:</b> {{ historia.fecha_final | moment(" D MM YYYY") }}
+            <b>Cierre:</b> {{ historia.fecha_final | moment(" D-MM-YYYY") }}
           </li>
           <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
           <div v-if="historia.valoracion > 0">
@@ -138,6 +138,34 @@
         Ver concursos ya terminados
       </button>
     </div>
+    <hr />
+
+    <div class="proximosConcursos">
+      <h3>Concursos en activo</h3>
+      <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
+      <ul v-for="(proxconcurso, index) in proxconcursos" :key="proxconcurso.id">
+        <li>
+          <b>{{ proxconcurso.nombre }}</b>
+        </li>
+        <li><b>Bases:</b> {{ proxconcurso.descripcion }}</li>
+        <li>
+          Apertura:
+          {{ proxconcurso.fecha_inicio | moment(" D-MM-YYYY") }}
+        </li>
+        <li>
+          <b>Cierre:</b> {{ proxconcurso.fecha_final | moment(" D-MM-YYYY") }}
+        </li>
+        <button @click="cancelSuscription(index)">
+          Cancelar suscripción
+        </button>
+        <li>--------------------------------------------------</li>
+      </ul>
+      <!-- Botón que llama a la función para ver el historial -->
+      <button @click="seeNextConcourses()">
+        Pŕoximos concursos
+      </button>
+      <hr />
+    </div>
   </div>
 </template>
 
@@ -183,6 +211,7 @@ export default {
       mostrarvotables: false,
       fecha: new Date(),
       pendientes: [],
+      proxconcursos: [],
     };
   },
 
@@ -351,6 +380,7 @@ export default {
         .then(function (response) {
           // Enviamos mensaje de valoración
           console.log(response);
+
           Swal.fire({
             title: "✅",
             text: "Gracias por valorar este concurso",
@@ -369,6 +399,73 @@ export default {
 
     checkDate(fecha) {
       if (moment().isAfter("fecha")) return true;
+    },
+
+    seeNextConcourses() {
+      const self = this;
+      // Cojo token e id.
+      const token = localStorage.getItem("token");
+      const data = localStorage.getItem("id");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      console.log(token);
+      console.log(data);
+
+      // Petición get a mi ruta del Back para consultar próximos concursos en los que no está todavía inscrito
+      axios
+        .get("http://localhost:3003/concursos/proximamente/" + data)
+
+        .then(function (response) {
+          console.log(response);
+
+          // En user tengo ahora el acceso directo a este usuario concreto.
+          self.proxconcursos = response.data.data;
+        })
+
+        .catch(function (error) {
+          Swal.fire({
+            title: "✅",
+            text: error.response.data.message,
+            confirmButtonText: "O.K",
+          }).then((result) => {
+            if (result.value) {
+              self.getDataUser();
+            }
+          });
+          console.log(error.response.data.message);
+        });
+    },
+
+    cancelSuscription(index) {
+      const self = this;
+      /*  const id_concurso = self.proxconcursos[index].id_concurso; */
+      const id_concurso = self.proxconcursos[index].id_concurso;
+      //Cojo token e id
+      const token = localStorage.getItem("token");
+      const data = localStorage.getItem("id");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios
+        .delete(
+          "http://localhost:3003/concursos/inscripciones/borrar/" + id_concurso
+        )
+
+        .then(function (response) {
+          // Enviamos mensaje de valoración
+          console.log(response);
+          Swal.fire({
+            title: "✅",
+            text: "Hemos tramitado tu baja correctamente",
+            confirmButtonText: "O.K",
+          }).catch(function (error) {
+            /*  console.log(error.response.data); */
+            Swal.fire({
+              title: "⚠️",
+              text:
+                "Ha habido un error, es posible que ya no estés suscrita a este concurso",
+              confirmButtonText: "O.K",
+            });
+          });
+        });
     },
   },
 
