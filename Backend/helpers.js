@@ -45,7 +45,7 @@ async function sendEmail({ email, title, content }) {
   await sgMail.send(msg);
 }
 
-async function SavePhoto(uploadedImage) {
+async function processAndSavePhoto(uploadedImage) {
   const savedFileName = `${uuid.v1()}.jpg`;
 
   await fs.ensureDir(imageUploadPath);
@@ -62,7 +62,70 @@ async function SavePhoto(uploadedImage) {
 }
 
 async function deletePhoto(imagePath) {
-  await fs.unlink(path.join(imageUploadPath, imagePath));
+  if (imagePath !== 'perfil.png') {
+    await fs.unlink(path.join(imageUploadPath, imagePath));
+  }
+}
+
+function searchConcourses(queryParams) {
+  let query = `SELECT CONCURSOS.id_concurso, CONCURSOS.nombre, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, CONCURSOS.url_foto, CONCURSOS.descripcion, CONCURSOS.modalidad, CONCURSOS.genero, CONCURSOS.ciudad,  CONCURSOS.id_ganador, CONCURSOS.fecha_asignacion_ganador, USUARIOS.nombre as nombre_ganador, USUARIOS.apellidos, ROUND(AVG(INSCRIPCIONES.valoracion),1) as valoracionmedia
+    FROM CONCURSOS
+    LEFT JOIN USUARIOS ON USUARIOS.id_usuario = CONCURSOS.id_ganador
+    LEFT JOIN INSCRIPCIONES ON INSCRIPCIONES.CONCURSOS_id_concurso = CONCURSOS.id_concurso
+    `;
+
+  const params = [];
+  const {
+    nombre,
+    fecha_inicio,
+    fecha_final,
+    genero,
+    modalidad,
+    ciudad
+  } = queryParams;
+
+  if (nombre || fecha_inicio || fecha_final || genero || modalidad || ciudad) {
+    query = `${query} WHERE`;
+    const conditions = [];
+
+    if (nombre) {
+      conditions.push('CONCURSOS.nombre LIKE ?');
+      params.push(`%${nombre}%`);
+    }
+
+    if (fecha_inicio) {
+      conditions.push('CONCURSOS.fecha_final >= ?');
+      params.push(fecha_inicio);
+    }
+
+    if (fecha_final) {
+      conditions.push('CONCURSOS.fecha_final <= ?');
+      params.push(fecha_final);
+    }
+
+    if (genero) {
+      conditions.push('CONCURSOS.genero like = ?');
+      params.push(`%${genero}%`);
+    }
+
+    if (ciudad) {
+      conditions.push('CONCURSOS.ciudad like = ?');
+      params.push(`%${ciudad}%`);
+    }
+
+    if (modalidad) {
+      conditions.push('CONCURSOS.modalidad = ?');
+      params.push(modalidad);
+    }
+
+    query = `${query} ${conditions.join(' AND ')} `;
+  }
+  query = `${query} GROUP BY CONCURSOS.id_concurso
+    ORDER BY CONCURSOS.fecha_inicio`;
+  return {
+    query,
+    params
+  };
 }
 
 module.exports = {
@@ -70,6 +133,7 @@ module.exports = {
   sendEmail,
   generateError,
   randomString,
-  //processAndSavePhoto,
-  deletePhoto
+  processAndSavePhoto,
+  deletePhoto,
+  searchConcourses
 };

@@ -12,7 +12,7 @@ async function getInscriptionHistoryUser(req, res, next) {
     const { id } = req.auth;
     // Pido la lista de concursos a las que el usuario está inscrito haciendo join con tabla de concursos y usuarios.
     const [result] = await connection.query(
-      `SELECT USUARIOS.id_usuario, USUARIOS.nombre, USUARIOS.apellidos, CONCURSOS_id_concurso,
+      `SELECT USUARIOS.id_usuario, USUARIOS.nombre, USUARIOS.apellidos, INSCRIPCIONES.CONCURSOS_id_concurso,
              CONCURSOS.nombre as nombre_concurso, CONCURSOS.descripcion, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, INSCRIPCIONES.valoracion
              FROM USUARIOS 
              INNER JOIN INSCRIPCIONES ON USUARIOS.id_usuario = INSCRIPCIONES.USUARIOS_id_usuario 

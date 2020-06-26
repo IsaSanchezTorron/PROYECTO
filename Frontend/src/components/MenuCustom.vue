@@ -10,30 +10,28 @@
       </a>
 
       <a>
-        <router-link :to="{ name: 'Login' }">Login</router-link>
-      </a>
-      <a>
-        <router-link :to="{ name: 'Register' }">Registro</router-link>
-      </a>
-
-      <a>
-        <router-link :to="{ name: 'Allconcourses' }"
-          >Todos los concursos</router-link
-        >
+        <router-link :to="{ name: 'Allconcourses' }">Todos los concursos</router-link>
       </a>
 
       <a>
         <router-link :to="{ name: 'About' }">Contacto</router-link>
       </a>
+
       <a>
-        <router-link :to="{ name: 'Profile' }">Mi Perfil</router-link>
+        <router-link :to="{ name: 'Login' }">Login</router-link>
+      </a>
+
+      <a>
+        <router-link :to="{ name: 'Profile' }">👤 Perfil</router-link>
+      </a>
+      <a>
+        <router-link :to="{ name: 'Admin' }">⚙️ Administrador</router-link>
       </a>
       <!-- No funciona PENDIENTE DE REVISAR -->
-      <div class="verboton" v-show="!seeButton">
-        <!--Botón que llama a la función de Logout -->
 
-        <button @click="logoutUser()">Logout</button>
-      </div>
+      <!--Botón que llama a la función de Logout -->
+
+      <button @click="logoutUser()">Logout</button>
     </div>
   </div>
 </template>
@@ -45,19 +43,41 @@ export default {
   name: "menucustom",
 
   return: {
-    seeButton: false,
+   
+    
   },
 
   methods: {
+
+
     //Función de LogOut
-    logoutUser() {
+  logoutUser() {
       //Nos lleva al login
       this.$router.push("/");
-      // No deja datos en el logueo, vacío.
-      self.seeButton = true;
+      // No deja datos en el logueo, vacío
       return clearLogin();
+    
     },
-  },
+  
+
+/* showProfileButton(seeProfileButton) {
+const role = localStorage.getItem("rol");
+  if (role === "escritor") {
+    this.seeProfileButton = false;
+    return this.seeProfileButton;
+  }
+
+ this.seeProfileButton=false;
+  return this.seeProfileButton;
+},
+
+
+  created(){
+    this.showProfileButton();
+  }, */
+},
+
+
 };
 </script>
 

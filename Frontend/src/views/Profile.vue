@@ -27,13 +27,7 @@
 
     <div class="editar" v-show="seeEditable">
       <label for="nombre">Tu nombre:</label>
-      <input
-        type="text"
-        id="nombre"
-        name="nombre"
-        v-model="nuevoNombre"
-        placeholder="nombre"
-      />
+      <input type="text" id="nombre" name="nombre" v-model="nuevoNombre" placeholder="nombre" />
       <br />
 
       <label for="apellidos">Tus apellidos:</label>
@@ -73,12 +67,17 @@
           <li>
             <b>{{ historia.nombre_concurso }}</b>
           </li>
-          <li><b>Bases:</b> {{ historia.descripcion }}</li>
           <li>
-            <b>Apertura:</b> {{ historia.fecha_inicio | moment(" D-MM-YYYY") }}
+            <b>Bases:</b>
+            {{ historia.descripcion }}
           </li>
           <li>
-            <b>Cierre:</b> {{ historia.fecha_final | moment(" D-MM-YYYY") }}
+            <b>Apertura:</b>
+            {{ historia.fecha_inicio | moment(" D-MM-YYYY") }}
+          </li>
+          <li>
+            <b>Cierre:</b>
+            {{ historia.fecha_final | moment(" D-MM-YYYY") }}
           </li>
           <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
           <div v-if="historia.valoracion > 0">
@@ -90,9 +89,7 @@
           <li>--------------------------------------------------</li>
         </ul>
         <!-- Botón que llama a la función para ver el historial -->
-        <button v-if="historial" @click="seeHistory()">
-          Ver historial
-        </button>
+        <button v-if="historial" @click="seeHistory()">Ver historial</button>
         <hr />
       </div>
     </div>
@@ -104,75 +101,89 @@
         <li>
           <b>{{ pendiente.nombre_concurso }}</b>
         </li>
-        <li><b>Bases:</b> {{ pendiente.descripcion }}</li>
         <li>
-          <b>Apertura:</b> {{ pendiente.fecha_inicio | moment(" D MM YYYY") }}
+          <b>Bases:</b>
+          {{ pendiente.descripcion }}
         </li>
         <li>
-          <b>Cierre:</b> {{ pendiente.fecha_final | moment(" D MM YYYY") }}
+          <b>Apertura:</b>
+          {{ pendiente.fecha_inicio | moment(" D MM YYYY") }}
+        </li>
+        <li>
+          <b>Cierre:</b>
+          {{ pendiente.fecha_final | moment(" D MM YYYY") }}
         </li>
         <!-- El botón de votar se muestra si no hay voto -->
         <button
-          v-if="pendiente.valoracion !== number"
+          v-if="pendiente.valoracion !== 1 || pendiente.valoracion!==2 || pendiente.valoracion!==3 || pendiente.valoracion!==4 || pendiente.valoracion!==5"
           @click="openModal(index)"
-        >
-          VOTAR
-        </button>
+        >VOTAR</button>
         <div v-show="modal" class="modal">
           <div class="modalbox">
             <h3>¿Cómo valoras tu experiencia?</h3>
 
-            <star-rating
-              @rating-selected="rating = $event"
-              :rating="rating"
-              v-bind:star-size="20"
-            ></star-rating>
-            <button @click="newRating(votedConcourse, rating)">
-              Este es mi voto!
-            </button>
+            <star-rating @rating-selected="rating = $event" :rating="rating" v-bind:star-size="20"></star-rating>
+            <button @click="newRating(votedConcourse, rating)">Este es mi voto!</button>
             <button @click="closeModal()">Cerrar</button>
           </div>
         </div>
       </ul>
-      <button @click="seePendingRatings()">
-        Ver concursos ya terminados
-      </button>
+      <button @click="seePendingRatings()">Pendientes de valoracion</button>
     </div>
     <hr />
 
     <div class="proximosConcursos">
       <h3>Concursos en activo</h3>
       <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
-      <ul v-for="(proxconcurso, index) in proxconcursos" :key="proxconcurso.id">
+      <ul v-for="proxconcurso in proxconcursos" :key="proxconcurso.id">
         <li>
           <b>{{ proxconcurso.nombre }}</b>
         </li>
-        <li><b>Bases:</b> {{ proxconcurso.descripcion }}</li>
+        <li>
+          <b>Bases:</b>
+          {{ proxconcurso.descripcion }}
+        </li>
         <li>
           Apertura:
           {{ proxconcurso.fecha_inicio | moment(" D-MM-YYYY") }}
         </li>
         <li>
-          <b>Cierre:</b> {{ proxconcurso.fecha_final | moment(" D-MM-YYYY") }}
+          <b>Cierre:</b>
+          {{ proxconcurso.fecha_final | moment(" D-MM-YYYY") }}
         </li>
-        <button @click="cancelSuscription(index)">
-          Cancelar suscripción
-        </button>
+        <button @click="cancelSuscription(proxconcurso)">Cancelar suscripción</button>
         <li>--------------------------------------------------</li>
       </ul>
       <!-- Botón que llama a la función para ver el historial -->
-      <button @click="seeNextConcourses()">
-        Pŕoximos concursos
-      </button>
+      <button @click="seeNextConcourses()">Pŕoximos concursos</button>
       <hr />
+    </div>
+
+    <div class="topconcursos">
+      <h3>Ranking de concursos mejor valorados</h3>
+      <ul v-for="top in tops" :key="top.id">
+        <li>
+          <b>{{ top.nombre }}</b>
+        </li>
+
+        <li>
+          <b>Cerrado el :</b>
+          {{top.fecha_final | moment(" D MM YYYY") }}
+        </li>
+        <li>
+          <b>Nota media :</b>
+          {{ top.valoracion}}⭐️
+        </li>
+      </ul>
+
+      <button @click="seeRaking()">Ver concursos mejor valorados</button>
     </div>
   </div>
 </template>
 
 <script>
 // EXPORTAMOS PARA
-// Libreria para uso de modales
-import VModal from "vue-js-modal";
+
 // Gestión de fechas
 import VueMoment from "vue-moment";
 
@@ -212,13 +223,15 @@ export default {
       fecha: new Date(),
       pendientes: [],
       proxconcursos: [],
+      tops: [],
     };
   },
 
   methods: {
+    
     openModal(index) {
       this.modal = true;
-      this.votedConcourse = this.historial[index];
+      this.votedConcourse = this.pendientes[index];
     },
 
     closeModal() {
@@ -267,7 +280,7 @@ export default {
           nombre: self.nuevoNombre,
           apellidos: self.nuevoApellido,
           descripcion: self.nuevaDescripcion,
-          url_foto: self.data.url_foto,
+          //url_foto: self.data.url_foto,
         })
         .then(function (response) {
           self.seeEditable = true;
@@ -283,7 +296,7 @@ export default {
       this.nuevoNombre = this.user.nombre;
       this.nuevoApellido = this.user.apellidos;
       this.nuevaDescripcion = this.user.descripcion;
-      this.url_foto = this.user.url_foto;
+      //this.url_foto = this.user.url_foto;
       console.log(this.user.nombre);
     },
 
@@ -297,7 +310,7 @@ export default {
       console.log(token);
       console.log(data);
 
-      // Petición get a mi ruta del Back para consultar inscripciones, concatenamos el id.
+      // Petición get a mi ruta del Back para consultar historial de  inscripciones, concatenamos el id.
       axios
         .get("http://localhost:3003/usuarios/historial/" + data)
 
@@ -349,7 +362,7 @@ export default {
 
         .catch(function (error) {
           Swal.fire({
-            title: "✅",
+            title: "⁉️",
             text: error.response.data.message,
             confirmButtonText: "O.K",
           }).then((result) => {
@@ -363,10 +376,11 @@ export default {
 
     //FUNCIÓN PARA QUE EL USUARIO PUNTUE UN CONCURSO EN EL QUE HA PARTICIPADO
 
-    newRating(historia, rating) {
-      self = this;
-
-      const id_concurso = historia.CONCURSOS_id_concurso;
+    newRating(pendiente, rating) {
+      console.log(pendiente);
+      const self = this;
+      const id_concurso = pendiente.CONCURSOS_id_concurso;
+       /* console.log(id_concurso); */
 
       //Cojo token e id
       const token = localStorage.getItem("token");
@@ -378,6 +392,7 @@ export default {
         })
 
         .then(function (response) {
+          location.reload();
           // Enviamos mensaje de valoración
           console.log(response);
 
@@ -385,7 +400,11 @@ export default {
             title: "✅",
             text: "Gracias por valorar este concurso",
             confirmButtonText: "O.K",
-          }).catch(function (error) {
+          })
+          
+          
+          })
+          .catch(function (error) {
             /*  console.log(error.response.data); */
             Swal.fire({
               title: "⚠️",
@@ -394,8 +413,8 @@ export default {
               confirmButtonText: "O.K",
             });
           });
-        });
-    },
+        },
+    
 
     checkDate(fecha) {
       if (moment().isAfter("fecha")) return true;
@@ -436,42 +455,95 @@ export default {
         });
     },
 
-    cancelSuscription(index) {
+    cancelSuscription(proxconcurso) {
+      
       const self = this;
-      /*  const id_concurso = self.proxconcursos[index].id_concurso; */
-      const id_concurso = self.proxconcursos[index].id_concurso;
+      const id_concurso = proxconcurso.id_concurso;
+     ;
       //Cojo token e id
+      const token = localStorage.getItem("token");
+      const data = localStorage.getItem("id")
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      
+
+Swal.fire({
+        title:"🤓",
+        text: "Vas a cancelar tu suscripción a este concurso ¿Estás segura?",
+        showCancelButton: true,
+        confirmButtonColor: "#1CA1F2",
+        cancelButtonColor: "#EB5784",
+        confirmButtonText: "Quiero cancelar esta suscripción",
+        cancelButtonText: "Mantengo mi suscripción",
+        
+      }).then((result) => {
+        if (result.value) {
+          axios
+            .delete( "http://localhost:3003/concursos/inscripciones/borrar/" + id_concurso)
+            .then(function(response) {
+              
+            })
+            .catch(function(error) {
+              console.error(error.response.data.message);
+            });
+          Swal.fire({
+            title: "✅",
+            text: "Se ha cancelado tu suscripción",
+            confirmButtonText: "O.K",
+            timer: 4000
+          })
+
+
+          location.reload();
+        }
+      });
+    },
+
+     
+
+     seeRaking() {
+      const self = this;
+      
+      // Cojo token e id.
       const token = localStorage.getItem("token");
       const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      axios
-        .delete(
-          "http://localhost:3003/concursos/inscripciones/borrar/" + id_concurso
-        )
 
+      axios
+        .get(
+          "http://localhost:3003/valoraciones/ranking/"
+
+        )
+      // Petición get a mi ruta del Back para consultar inscripciones finalizadas, concatenamos el id.
         .then(function (response) {
-          // Enviamos mensaje de valoración
           console.log(response);
+
+          // En user tengo ahora el acceso directo a este usuario concreto.
+          self.tops = response.data.data;
+        })
+
+        .catch(function (error) {
           Swal.fire({
             title: "✅",
-            text: "Hemos tramitado tu baja correctamente",
+            text: error.response.data.message,
             confirmButtonText: "O.K",
-          }).catch(function (error) {
-            /*  console.log(error.response.data); */
-            Swal.fire({
-              title: "⚠️",
-              text:
-                "Ha habido un error, es posible que ya no estés suscrita a este concurso",
-              confirmButtonText: "O.K",
-            });
+          }).then((result) => {
+            if (result.value) {
+              self.getDataUser();
+            }
           });
+          console.log(error.response.data.message);
         });
     },
+
+
+
   },
 
-  created() {
-    this.getDataUser();
-  },
+created(){
+  this.getDataUser();
+}
+
+
 };
 </script>
 
@@ -498,5 +570,10 @@ export default {
   border-radius: 50px;
   border: solid 2px black;
   box-shadow: 0 0 1px rgb(12, 12, 12);
+}
+
+h3 {
+  text-transform: uppercase;
+  font-size: 1.4em;
 }
 </style>

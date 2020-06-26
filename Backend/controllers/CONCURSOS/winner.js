@@ -54,7 +54,7 @@ async function setWinner(req, res, next) {
     }
 
     await connection.query(
-      `UPDATE CONCURSOS SET id_ganador=? WHERE id_concurso=?`,
+      `UPDATE CONCURSOS SET id_ganador=?. fecha_asignacion_ganador = NOW() WHERE id_concurso=?`,
       [id_usuario, id_concurso]
     );
 

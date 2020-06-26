@@ -22,11 +22,7 @@
       <br />
 
       <!--Input para campo password -->
-      <input
-        type="password"
-        placeholder="Tu contraseña"
-        v-model="contrasenha"
-      />
+      <input type="password" placeholder="Tu contraseña" v-model="contrasenha" />
       <br />
       <br />
       <!-- Botón con llamada a la función Login -->
@@ -103,10 +99,11 @@ export default {
           .then(function (response) {
             // Enviamos mensaje de confirmación de registro
             Swal.fire({
-              title: "✅",
-              text: "Te has registrado con éxito",
+              title: "✔️",
+              text: "Te has registrado con éxito, debes abrir tu correo electrónico y validar tu cuenta pinchando en el enlace que te enviamos. Una vez que esté activada puedes loguearte con tus datos.",
               confirmButtonText: "O.K",
-              timer: 3000,
+              confirmButtonColor: "#1CA1F2",
+             
             });
             //Limpiamos los campos
             self.emptyFields();

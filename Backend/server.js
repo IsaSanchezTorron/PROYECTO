@@ -65,6 +65,10 @@ const { viewRating } = require('./controllers/VALORACIONES/view_rating');
 
 const { viewRanking } = require('./controllers/VALORACIONES/view_ranking');
 
+const {
+  searchingConcourses
+} = require('./controllers/CONCURSOS/search_concourses');
+
 // ################## RUTAS DE USUARIO ##############################
 
 app.post('/usuarios', newUser); // Crear nuevo usuario
@@ -138,6 +142,9 @@ app.get('/concursos/inscripciones/:id', userIsAuthenticated, getInscribed); // L
 app.post('/valoraciones/:id', userIsAuthenticated, newRating); // Nueva valoracion
 app.get('/valoraciones/ver/:id', viewRating); // Ver valoración de un concurso
 app.get('/valoraciones/ranking', viewRanking); // Ver ranking de concursos
+
+//############## BUSCADOR ############################################
+app.get('/busqueda', searchingConcourses); // Buscador completo
 
 // ############ Middlewares de error ##################################
 

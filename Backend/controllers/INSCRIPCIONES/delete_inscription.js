@@ -11,7 +11,7 @@ async function deleteInscription(req, res, next) {
     connection = await getConnection();
 
     await connection.query(
-      'DELETE FROM INSCRIPCIONES WHERE id_usuario=? & concourse_id=?',
+      'DELETE FROM INSCRIPCIONES WHERE USUARIOS_id_usuario=? AND CONCURSOS_id_concurso = ?',
       [userid, concourseid]
     );
 

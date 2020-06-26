@@ -11,11 +11,16 @@ async function viewRanking(req, res, next) {
     // const id_concurso = req.params.id;
 
     const [current] = await connection.query(
-      `SELECT CONCURSOS_id_concurso, AVG(valoracion)  FROM INSCRIPCIONES WHERE valoracion IS NOT NULL GROUP BY CONCURSOS_id_concurso ORDER BY AVG(valoracion) DESC`
+      `SELECT INSCRIPCIONES.CONCURSOS_id_concurso, CONCURSOS.id_concurso, CONCURSOS.nombre, CONCURSOS.fecha_final, AVG(INSCRIPCIONES.valoracion) as valoracion
+FROM INSCRIPCIONES
+INNER JOIN CONCURSOS ON INSCRIPCIONES.CONCURSOS_id_concurso = CONCURSOS.id_concurso
+WHERE valoracion IS NOT NULL
+GROUP BY CONCURSOS_id_concurso ORDER BY AVG(valoracion) DESC;
+      `
     );
     if (!current.length) {
       throw generateError(
-        'Sólo puedes votar una vez cada concurso en que has participado.',
+        'No existen votaciones disponibles para hacer un ranking',
         404
       );
     }

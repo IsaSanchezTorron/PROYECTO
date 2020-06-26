@@ -14,7 +14,7 @@ async function nextConcourses(req, res, next) {
     console.log(dateToday);
 
     const [result] = await connection.query(
-      `SELECT CONCURSOS.nombre, CONCURSOS.descripcion, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, CONCURSOS.genero, CONCURSOS.modalidad, CONCURSOS.ciudad
+      `SELECT CONCURSOS.nombre, CONCURSOS.id_concurso, CONCURSOS.descripcion, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, CONCURSOS.genero, CONCURSOS.modalidad, CONCURSOS.ciudad
       FROM CONCURSOS
       LEFT JOIN INSCRIPCIONES ON CONCURSOS.id_concurso = INSCRIPCIONES.CONCURSOS_id_concurso
       WHERE CONCURSOS.fecha_final >= ? AND INSCRIPCIONES.USUARIOS_id_usuario = ?

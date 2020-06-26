@@ -18,25 +18,16 @@
     <div class="contenedor">
       <br />
       <!-- Contenedor para dar formato a la ficha de productos, lo cargamos con el array de productos filtrados -->
-      <div
-        class="concursoscontenedor"
-        v-for="concurso in concursosFiltrados"
-        :key="concurso.id"
-      >
+      <div class="concursoscontenedor" v-for="concurso in concursosFiltrados" :key="concurso.id">
         <p>
-          <b>id.:</b>
+          📌
           {{ concurso.id_concurso }}
         </p>
+        <h3>
+          <b>{{ concurso.nombre }}</b>
+        </h3>
         <p>
           <img :src="concurso.url_foto" />
-        </p>
-        <p>
-          <b>Nombre:</b>
-          {{ concurso.nombre }}
-        </p>
-        <p>
-          <b>Abierto a suscripción desde:</b>
-          {{ concurso.fecha_inicio.slice(0, 10) }}
         </p>
 
         <!-- REVISAR estas clases dinámicas dependientes de FECHA -->
@@ -46,35 +37,46 @@
             red: concurso.fecha_final <= 'datetoday',
           }"
         >-->
-        <b>Cierre de suscripción:</b>
-        {{ concurso.fecha_final.slice(0, 10) }}
-        <!--  </p> -->
+
+        <p style="color:red">
+          <b>📆 Cierre de suscripción:</b>
+          {{ concurso.fecha_final.slice(0, 10) }}
+        </p>
 
         <p>
-          <b>Información y bases:</b>
-          {{ concurso.descripcion }}
-        </p>
-        <p>
-          <b>Modalidad:</b>
+          <b>🏠 Modalidad:</b>
           {{ concurso.modalidad }}
         </p>
+
         <p>
-          <b>Genero:</b>
+          <b>🎭 Genero:</b>
           {{ concurso.genero }}
         </p>
-        <p>
-          <b>Ciudad:</b>
+
+        <p v-if="concurso.ciudad">
+          <b>🌆 Ciudad:</b>
           {{ concurso.ciudad }}
         </p>
-        <p>
-          <b>Valoración media:</b>
+        <p v-if="concurso.fecha_asignacion_ganador">
+          <b>📅 Publicación de ganadores:</b>
+          {{ concurso.fecha_asignacion_ganador }}
+        </p>
+        <p v-if="concurso.nombre_ganador">
+          <b>🥇 Ganador:</b>
+          {{concurso.nombre_ganador}}
+        </p>
+        <p v-if="concurso.valoracion">
+          <b>🌠 Valoración media:</b>
           {{ concurso.valoracion }}
         </p>
-
         <!-- Con una clase dinámica manejo los colores en función de la vigencia del concurso -->
-        <hr />
+
         <!-- El botón de inscribir DE MENTIRIJILLAS AUN, hace una llamada a la función que nos envía un Sweet Alert -->
-        <button @click="confirmInscription(concurso)">INSCRIBIRME</button>
+
+        <button @click="openModal()">VER BASES</button>
+        <br />
+        <br />
+        <button @click="confirmInscription(concurso)">QUIERO INSCRIBIRME</button>
       </div>
     </div>
   </div>
@@ -129,14 +131,29 @@ export default {
   },
 
   methods: {
-    // Método para el botón de "comprar"
+
+
+    // MÉTODO PARA EL BOTÓN DE INSCRIPCIÓN EN CONCURSO.
+
     confirmInscription(concurso) {
+
       const self = this;
-      console.log(concurso);
+      
       // Cojo token e id.
       const token = localStorage.getItem("token");
       const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      Swal.fire({
+        title: "🤓",
+        text: "¿Quieres suscribirte a este concurso?",
+        showCancelButton: true,
+         confirmButtonColor: "#1CA1F2",
+        cancelButtonColor: "#EB5784",
+        confirmButtonText: "Sí, quiero suscribirme.",
+        cancelButtonText: "Volver",
+      }).then(result => {
+        if (result.value) {
 
       axios
         .post(
@@ -148,11 +165,12 @@ export default {
           }
         )
         .then(function (response) {
-          console.log("login ok");
-          console.log(response);
-          // Enviamos mensaje de confirmación de registro
+        
+          
+          // Enviamos mensaje de confirmación de inscripción
           Swal.fire({
-            title: "✅",
+            title: "❓",
+            
             text: "Te has inscrito en el concurso con éxito",
             confirmButtonText: "O.K",
             timer: 3000,
@@ -160,7 +178,7 @@ export default {
         })
         //Recogemos posibles errores
         .catch(function (error) {
-          console.log(error);
+          console.log(error.response.data.message);
 
           Swal.fire({
             title: "⚠️",
@@ -169,7 +187,9 @@ export default {
             timer: 3000,
           });
         });
-    },
+    };
+      },
+      )},
   },
 };
 </script>
@@ -188,6 +208,9 @@ export default {
   width: 300px;
   margin: 10px auto;
   border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .contenedor {
@@ -210,5 +233,10 @@ img:hover {
 
 #formulariobusqueda {
   padding: 2em;
+}
+
+h3 {
+  text-transform: uppercase;
+  font-size: 1.4em;
 }
 </style>

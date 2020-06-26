@@ -21,7 +21,8 @@ async function newConcourse(req, res, next) {
       fecha_final,
       descripcion,
       modalidad,
-      genero
+      genero,
+      fecha_publicacion
     } = req.body;
 
     let savedFileName;
@@ -61,8 +62,8 @@ async function newConcourse(req, res, next) {
     //
 
     await connection.query(
-      `INSERT INTO CONCURSOS ( nombre, fecha_inicio, fecha_final, url_foto, descripcion, modalidad, genero, ciudad )
-      VALUES (?,?,?,?,?,?,?,?)`,
+      `INSERT INTO CONCURSOS ( nombre, fecha_inicio, fecha_final, url_foto, descripcion, modalidad, genero, ciudad, fecha_publicacion )
+      VALUES (?,?,?,?,?,?,?,?, NOW()`,
       [
         nombre,
 
@@ -72,7 +73,8 @@ async function newConcourse(req, res, next) {
         descripcion,
         modalidad,
         genero,
-        ciudad
+        ciudad,
+        fecha_publicacion
       ]
     );
 

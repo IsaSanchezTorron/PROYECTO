@@ -15,12 +15,12 @@ async function editUser(req, res, next) {
     connection = await getConnection();
     const { id } = req.params;
 
-    const { nombre, apellidos, mail, descripcion } = req.body;
+    const { nombre, apellidos, descripcion } = req.body;
 
     const [
       current
     ] = await connection.query(
-      `SELECT id_usuario, url_foto  FROM USUARIOS  WHERE id_usuario =?`,
+      `SELECT id_usuario  FROM USUARIOS  WHERE id_usuario =?`,
       [id]
     );
 
@@ -52,8 +52,8 @@ async function editUser(req, res, next) {
     }
 
     await connection.query(
-      ` UPDATE USUARIOS SET nombre=?, apellidos =?, mail= ?, descripcion=?, url_foto =? WHERE id_usuario=?`,
-      [nombre, apellidos, mail, descripcion, savedFileName, id]
+      ` UPDATE USUARIOS SET nombre=?, apellidos =?, descripcion=?, url_foto =? WHERE id_usuario=?`,
+      [nombre, apellidos, descripcion, savedFileName, id]
     );
 
     res.send({
