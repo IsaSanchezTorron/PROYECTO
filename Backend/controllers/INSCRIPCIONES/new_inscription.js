@@ -1,40 +1,48 @@
 require('dotenv').config();
 
-const { generateError } = require('../../helpers');
+const { generateError, formatDateToDB } = require('../../helpers');
 const { getConnection } = require('../../DB');
 
 async function newInscription(req, res, next) {
   let connection;
 
   try {
+    //Establece
     connection = await getConnection();
-    const userid = req.auth.id;
-    const concourseid = req.params.id;
 
-    //Pendiente depurar la comprobación de duplicidad aunque la propia BD impide que se repita la combinación de las dos FK.
-    /*
+    const idusuario = req.auth.id;
+
+    const idconcurso = req.params.id;
+
     const [
-      existingInscription
+      current
     ] = await connection.query(
-      'SELECT CONCURSOS_id_concurso, USUARIOS_id_usuario from INSCRIPCIONES where CONCURSOS_id_concurso=? & USUARIOS_id_usuario=?',
-      [concourseid, userid]
+      `SELECT id_concurso, fecha_final FROM CONCURSOS WHERE id_concurso=?`,
+      [idconcurso]
     );
 
-    if (existingInscription.length) {
-      throw generateError('Ya te has inscrito a este concurso', 409);
+    const today = new Date();
+    console.log(current[0].fecha_final < today);
+    console.log(today);
+
+    if (current[0].fecha_final < today) {
+      throw generateError(
+        '¡No puedes escribirte en un concurso que ya ha terminado!'
+      );
     }
-*/
 
-    await connection.query(
-      `INSERT INTO INSCRIPCIONES ( CONCURSOS_id_concurso, USUARIOS_id_usuario, fecha_inscripcion)
+    if (current[0].fecha_final >= today) {
+      await connection.query(
+        `INSERT INTO INSCRIPCIONES ( CONCURSOS_id_concurso, USUARIOS_id_usuario, fecha_inscripcion)
       VALUES (?, ?, NOW()) `,
-      [concourseid, userid]
-    );
-    console.log('prueba1');
-    res.send({
-      status: 'ok',
-      message: 'Te has inscrito correctamente a este concurso'
-    });
+        [idconcurso, idusuario]
+      );
+
+      res.send({
+        status: 'ok',
+        message: 'Te has inscrito correctamente a este concurso'
+      });
+    }
   } catch (error) {
     next(error);
   } finally {

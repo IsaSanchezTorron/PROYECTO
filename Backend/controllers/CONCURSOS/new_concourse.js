@@ -17,7 +17,6 @@ async function newConcourse(req, res, next) {
     // Defino los campos mínimos a rellenar para dar de alta un concurso. Todos "NOT NULL"
     const {
       nombre,
-      fecha_inicio,
       fecha_final,
       descripcion,
       modalidad,
@@ -62,12 +61,10 @@ async function newConcourse(req, res, next) {
     //
 
     await connection.query(
-      `INSERT INTO CONCURSOS ( nombre, fecha_inicio, fecha_final, url_foto, descripcion, modalidad, genero, ciudad, fecha_publicacion )
-      VALUES (?,?,?,?,?,?,?,?, NOW()`,
+      `INSERT INTO CONCURSOS ( nombre, fecha_final, url_foto, descripcion, modalidad, genero, ciudad, fecha_publicacion )
+      VALUES (?,?,?,?,?,?,?, NOW()`,
       [
         nombre,
-
-        fecha_inicio,
         fecha_final,
         savedFileName,
         descripcion,

@@ -6,177 +6,194 @@
     <!-- Inserción del componente menú en la cabecera de la vista -->
     <menucustom></menucustom>
 
-    <!--Sección de datos personales -->
-    <div class="informacionusuario">
-      <h3>👤 Hola {{ user.nombre }}</h3>
-      <img :src="user.url_foto" alt="Foto de perfil de usuario" />
-      <p>Miembro desde {{ user.fecha_registro | moment(" D-MM-YYYY") }}</p>
-      <p>Miembro con rol de: {{ user.rol }}</p>
-    </div>
-    <!-- Pendiente de revisión la edición de usuario, especialmente por las fotos -->
-    <div v-show="!seeEditable">
-      <div class="datosparaeditar">
-        <p class="nombre">{{ user.nombre }}</p>
-        <p class="apellidos">{{ user.apellidos }}</p>
-        <!--  <p class="url_foto">{{ user.url_foto }}</p> -->
-        <p class="descripcion">{{ user.descripcion }}</p>
-      </div>
-    </div>
-    <button @click="showEditable()">Actualiza tu perfil</button>
-    <hr />
-
-    <div class="editar" v-show="seeEditable">
-      <label for="nombre">Tu nombre:</label>
-      <input type="text" id="nombre" name="nombre" v-model="nuevoNombre" placeholder="nombre" />
-      <br />
-
-      <label for="apellidos">Tus apellidos:</label>
-      <input
-        type="text"
-        id="apellidos"
-        name="apellidos"
-        v-model="nuevoApellido"
-        placeholder="apellidos"
-      />
-      <br />
-
-      <label for="file">Selecciona tu nueva foto:</label>
-      <input type="file" id="file" name="file" />
-      <br />
-      <label for="descripcion">Sobre ti:</label>
-      <input
-        type="text"
-        id="descripcion"
-        name="descripcion"
-        v-model="nuevaDescripcion"
-        placeholder="descripcion"
-      />
-      <br />
-      <br />
-      <button @click="confirmEditUser()">Guardar</button>
-      <hr />
-
-      <hr />
-    </div>
-    <div>
-      <!-- Aquí mostramos el historial de concursos del usuario -->
-      <div class="historialConcurso">
-        <h3>Historial de concursos</h3>
-        <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
-        <ul v-for="historia in historial" :key="historia.id">
-          <li>
-            <b>{{ historia.nombre_concurso }}</b>
-          </li>
-          <li>
-            <b>Bases:</b>
-            {{ historia.descripcion }}
-          </li>
-          <li>
-            <b>Apertura:</b>
-            {{ historia.fecha_inicio | moment(" D-MM-YYYY") }}
-          </li>
-          <li>
-            <b>Cierre:</b>
-            {{ historia.fecha_final | moment(" D-MM-YYYY") }}
-          </li>
-          <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
-          <div v-if="historia.valoracion > 0">
-            <li>
-              Has valorado este concurso con
-              {{ historia.valoracion }} ⭐️
-            </li>
-          </div>
-          <li>--------------------------------------------------</li>
-        </ul>
+    <div id="contenedorperfil">
+      <div id="menubotones">
+        <img :src="user.url_foto" alt="Foto de perfil de usuario" />
+        <button v-if="historial" @click="seeHistory()">📚 Historial completo</button>
+        <button @click="seePendingRatings()">⭐️ Pendientes de valoracion</button>
         <!-- Botón que llama a la función para ver el historial -->
-        <button v-if="historial" @click="seeHistory()">Ver historial</button>
-        <hr />
+        <button @click="seeNextConcourses()">⏭ Pŕoximos concursos</button>
+        <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button>
+        <button>
+          <router-link :to="{ name: 'Allconcourses' }">📌 Todos los concursos</router-link>
+        </button>
+        <button @click="showEditProfile()" style="color:#3CA17A">⚙️ Editar perfil</button>
+        <button @click="logoutUser()">👋 Logout</button>
       </div>
-    </div>
-    <div class="historialpendientes">
-      <h3>Tus concursos pendientes de valoración</h3>
-      <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito -->
-      <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
-      <ul v-for="(pendiente, index) in pendientes" :key="pendiente.id">
-        <li>
-          <b>{{ pendiente.nombre_concurso }}</b>
-        </li>
-        <li>
-          <b>Bases:</b>
-          {{ pendiente.descripcion }}
-        </li>
-        <li>
-          <b>Apertura:</b>
-          {{ pendiente.fecha_inicio | moment(" D MM YYYY") }}
-        </li>
-        <li>
-          <b>Cierre:</b>
-          {{ pendiente.fecha_final | moment(" D MM YYYY") }}
-        </li>
-        <!-- El botón de votar se muestra si no hay voto -->
-        <button
-          v-if="pendiente.valoracion !== 1 || pendiente.valoracion!==2 || pendiente.valoracion!==3 || pendiente.valoracion!==4 || pendiente.valoracion!==5"
-          @click="openModal(index)"
-        >VOTAR</button>
-        <div v-show="modal" class="modal">
-          <div class="modalbox">
-            <h3>¿Cómo valoras tu experiencia?</h3>
 
-            <star-rating @rating-selected="rating = $event" :rating="rating" v-bind:star-size="20"></star-rating>
-            <button @click="newRating(votedConcourse, rating)">Este es mi voto!</button>
-            <button @click="closeModal()">Cerrar</button>
+      <div id="perfilusuario">
+        <!--Sección de datos personales -->
+        <div class="informacionusuario" v-show="!showEdit">
+          <h3>👤 Hola {{ user.nombre }}</h3>
+
+          <p>Miembro desde {{ user.fecha_registro | moment(" D-MM-YYYY") }}</p>
+          <p>Miembro con rol de: {{ user.rol }}</p>
+        </div>
+
+        <hr />
+
+        <div class="editar" v-show="showEdit">
+          <label for="nombre">Tu nombre:</label>
+          <input type="text" id="nombre" name="nombre" v-model="nuevoNombre" placeholder="nombre" />
+          <br />
+
+          <label for="apellidos">Tus apellidos:</label>
+          <input
+            type="text"
+            id="apellidos"
+            name="apellidos"
+            v-model="nuevoApellido"
+            placeholder="apellidos"
+          />
+          <br />
+
+          <label for="descripcion">Sobre ti:</label>
+          <textarea
+            type="textarea"
+            id="descripcion"
+            name="descripcion"
+            v-model="nuevaDescripcion"
+            placeholder="descripcion"
+          />
+          <div id="selecciondefoto">
+            <label for="file">👤 Selecciona tu nueva foto 👉 📸 .</label>
+            <input
+              type="file"
+              id="url_foto"
+              name="url_foto"
+              ref="url_foto"
+              @change="handleFileUpload()"
+            />
+          </div>
+          <br />
+
+          <button id="botonesedicion" @click="editUser()">Guardar</button>
+
+          <div class="editarfotousuario">
+            <button id="botonesedicion" @click="showEdit=false">Volver</button>
+            <hr />
+          </div>
+
+          <hr />
+        </div>
+
+        <div>
+          <!-- Aquí mostramos el historial de concursos del usuario -->
+          <div class="historialConcurso">
+            <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
+            <ul v-for="historia in historial" :key="historia.id">
+              <li>
+                <b>{{ historia.nombre_concurso }}</b>
+              </li>
+              <li>
+                <b>Bases:</b>
+                {{ historia.descripcion }}
+              </li>
+              <li>
+                <b>Apertura:</b>
+                {{ historia.fecha_publicacion | moment(" D-MM-YYYY") }}
+              </li>
+              <li>
+                <b>Cierre:</b>
+                {{ historia.fecha_final | moment(" D-MM-YYYY") }}
+              </li>
+              <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
+              <div v-if="historia.valoracion > 0">
+                <li>
+                  Has valorado este concurso con
+                  {{ historia.valoracion }} ⭐️
+                </li>
+              </div>
+              <li>--------------------------------------------------</li>
+            </ul>
+            <!-- Botón que llama a la función para ver el historial -->
+
+            <hr />
           </div>
         </div>
-      </ul>
-      <button @click="seePendingRatings()">Pendientes de valoracion</button>
-    </div>
-    <hr />
+        <div class="historialpendientes">
+          <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito -->
+          <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
+          <ul v-for="(pendiente, index) in pendientes" :key="pendiente.id">
+            <li>
+              <b>{{ pendiente.nombre_concurso }}</b>
+            </li>
+            <li>
+              <b>Bases:</b>
+              {{ pendiente.descripcion }}
+            </li>
+            <li>
+              <b>Apertura:</b>
+              {{ pendiente.fecha_publicacion | moment(" D MM YYYY") }}
+            </li>
+            <li>
+              <b>Cierre:</b>
+              {{ pendiente.fecha_final | moment(" D MM YYYY") }}
+            </li>
+            <!-- El botón de votar se muestra si no hay voto -->
+            <button
+              v-if="pendiente.valoracion !== 1 || pendiente.valoracion!==2 || pendiente.valoracion!==3 || pendiente.valoracion!==4 || pendiente.valoracion!==5"
+              @click="openModal(index)"
+            >VOTAR</button>
+            <div v-show="modal" class="modal">
+              <div class="modalbox">
+                <h3>¿Cómo valoras tu experiencia?</h3>
 
-    <div class="proximosConcursos">
-      <h3>Concursos en activo</h3>
-      <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
-      <ul v-for="proxconcurso in proxconcursos" :key="proxconcurso.id">
-        <li>
-          <b>{{ proxconcurso.nombre }}</b>
-        </li>
-        <li>
-          <b>Bases:</b>
-          {{ proxconcurso.descripcion }}
-        </li>
-        <li>
-          Apertura:
-          {{ proxconcurso.fecha_inicio | moment(" D-MM-YYYY") }}
-        </li>
-        <li>
-          <b>Cierre:</b>
-          {{ proxconcurso.fecha_final | moment(" D-MM-YYYY") }}
-        </li>
-        <button @click="cancelSuscription(proxconcurso)">Cancelar suscripción</button>
-        <li>--------------------------------------------------</li>
-      </ul>
-      <!-- Botón que llama a la función para ver el historial -->
-      <button @click="seeNextConcourses()">Pŕoximos concursos</button>
-      <hr />
-    </div>
+                <star-rating
+                  @rating-selected="rating = $event"
+                  :rating="rating"
+                  v-bind:star-size="20"
+                ></star-rating>
+                <button @click="newRating(votedConcourse, rating)">Este es mi voto!</button>
+                <button @click="closeModal()">Cerrar</button>
+              </div>
+            </div>
+          </ul>
+        </div>
+        <hr />
 
-    <div class="topconcursos">
-      <h3>Ranking de concursos mejor valorados</h3>
-      <ul v-for="top in tops" :key="top.id">
-        <li>
-          <b>{{ top.nombre }}</b>
-        </li>
+        <div class="proximosConcursos">
+          <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
+          <ul v-for="proxconcurso in proxconcursos" :key="proxconcurso.id">
+            <li>
+              <b>{{ proxconcurso.nombre }}</b>
+            </li>
+            <li>
+              <b>Bases:</b>
+              {{ proxconcurso.descripcion }}
+            </li>
+            <li>
+              Apertura:
+              {{ proxconcurso.fecha_publicacion | moment(" D-MM-YYYY") }}
+            </li>
+            <li>
+              <b>Cierre:</b>
+              {{ proxconcurso.fecha_final | moment(" D-MM-YYYY") }}
+            </li>
+            <button @click="cancelSuscription(proxconcurso)">Cancelar suscripción</button>
+            <li>--------------------------------------------------</li>
+          </ul>
 
-        <li>
-          <b>Cerrado el :</b>
-          {{top.fecha_final | moment(" D MM YYYY") }}
-        </li>
-        <li>
-          <b>Nota media :</b>
-          {{ top.valoracion}}⭐️
-        </li>
-      </ul>
+          <hr />
+        </div>
 
-      <button @click="seeRaking()">Ver concursos mejor valorados</button>
+        <div class="topconcursos">
+          <ul v-for="top in tops" :key="top.id">
+            <li>
+              <b>{{ top.nombre }}</b>
+            </li>
+
+            <li>
+              <b>Cerrado el :</b>
+              {{top.fecha_final | moment(" D MM YYYY") }}
+            </li>
+            <li>
+              <b>Nota media :</b>
+              {{ top.valoracion}}⭐️
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -186,7 +203,8 @@
 
 // Gestión de fechas
 import VueMoment from "vue-moment";
-
+// Función para el Log Out, eliminar los datos del LOCALSTORAGE.
+import { clearLogin } from "../api/utils";
 // Mensajes customizados
 import Swal from "sweetalert2";
 // Incluir valoraciones mediante estrellitas
@@ -197,6 +215,7 @@ import vueHeadful from "vue-headful";
 import axios from "axios";
 // Componentes internos
 import menucustom from "@/components/MenuCustom.vue";
+import VModal from 'vue-js-modal'
 
 export default {
   name: "Profile",
@@ -207,10 +226,12 @@ export default {
       // Declaración de variables que voy a utilizar para recoger la información
       id: null,
       user: {},
+      userData:{},
       nuevoNombre: "",
       nuevoApellido: "",
       nuevaDescripcion: "",
       // Booleano para controlar el v-show que contiene el formulario de edición.
+      showEdit: false,
       seeEditable: false,
       url_foto: "",
       historial: [],
@@ -220,18 +241,37 @@ export default {
       votedConcourse: {},
       seeIsVoted: false,
       mostrarvotables: false,
-      fecha: new Date(),
+      
       pendientes: [],
       proxconcursos: [],
       tops: [],
+      
+
     };
   },
 
   methods: {
+
+
+    logoutUser() {
+      //Nos lleva al login
+      this.$router.push("/");
+      // No deja datos en el logueo, vacío
+      return clearLogin();
+    
+    },
+
+    handleFileUpload(){
+    this.url_foto = this.$refs.url_foto.files[0];
+  },
     
     openModal(index) {
       this.modal = true;
       this.votedConcourse = this.pendientes[index];
+    },
+
+    openModalTwo(){
+      this.modal=true;
     },
 
     closeModal() {
@@ -249,7 +289,7 @@ export default {
 
       // Petición get a mi ruta del Back para editar usuarios, concatenamos el id.
       axios
-        .get("http://localhost:3003/usuarios/" + data)
+        .get("http://localhost:3003/usuarios/perfil/" + data)
 
         .then(function (response) {
           console.log(response);
@@ -268,22 +308,38 @@ export default {
     },
 
     // FUNCIÓN PARA GUARDAR LOS CAMBIOS
-    confirmEditUser() {
+    editUser() {
       const self = this;
       //Tengo la autenticación...
       const data = localStorage.getItem("id");
       const token = localStorage.getItem("token");
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      
+
+     let formData = new FormData();
+      formData.append("url_foto", self.url_foto);
+      formData.append("descripcion", self.nuevaDescripcion);
+      formData.append("nombre", self.nuevoNombre);
+      formData.append("apellidos", self.nuevoApellido);
+
+
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       //Hago la petición a servidor
+
       axios
-        .put("http://localhost:3003/usuarios/editar/" + data, {
-          nombre: self.nuevoNombre,
-          apellidos: self.nuevoApellido,
-          descripcion: self.nuevaDescripcion,
-          //url_foto: self.data.url_foto,
+        .put("http://localhost:3003/usuarios/editar/" + data, formData, {
+          headers:{
+             "Content-Type": "multipart/form-data",
+          },
         })
         .then(function (response) {
-          self.seeEditable = true;
+          self.showEdit = true;
+
+          Swal.fire({
+            icon: "✔️",
+            title: "Has editado tus datos correctamente.",
+            timer: "5000"
+          });
+        location.reload();
         })
         .catch(function (error) {
           console.error(error);
@@ -291,13 +347,13 @@ export default {
         });
     },
 
-    showEditable() {
-      this.seeEditable = true;
-      this.nuevoNombre = this.user.nombre;
-      this.nuevoApellido = this.user.apellidos;
-      this.nuevaDescripcion = this.user.descripcion;
-      //this.url_foto = this.user.url_foto;
-      console.log(this.user.nombre);
+    showEditProfile() {
+     
+      this.nuevoNombre = this.userData.nombre;
+      this.nuevoApellido = this.userData.apellidos;
+      this.nuevaDescripcion = this.userData.descripcion;
+      this.showEdit = true;
+     
     },
 
     seeHistory() {
@@ -315,7 +371,7 @@ export default {
         .get("http://localhost:3003/usuarios/historial/" + data)
 
         .then(function (response) {
-          console.log(response);
+        /*   console.log(response); */
 
           // En user tengo ahora el acceso directo a este usuario concreto.
           self.historial = response.data.data;
@@ -330,7 +386,7 @@ export default {
             if (result.value) {
               self.getDataUser();
             }
-          });
+          }); 
           console.log(error.response.data.message);
         });
     },
@@ -409,16 +465,13 @@ export default {
             Swal.fire({
               title: "⚠️",
               text:
-                "Ha habido un error, es posible que ya hayas valorado este concurso",
+                "Ya has valorado este concurso",
               confirmButtonText: "O.K",
             });
           });
         },
     
 
-    checkDate(fecha) {
-      if (moment().isAfter("fecha")) return true;
-    },
 
     seeNextConcourses() {
       const self = this;
@@ -563,17 +616,100 @@ created(){
   padding: 20px;
   border: 1px solid #888;
   width: 40%;
+  height: 40%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   border-radius: 50px;
-  border: solid 2px black;
+  border: solid 1px black;
   box-shadow: 0 0 1px rgb(12, 12, 12);
 }
 
 h3 {
   text-transform: uppercase;
   font-size: 1.4em;
+}
+
+.editar {
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.editar input {
+  width: 500px;
+  height: 30px;
+  border-radius: 5px;
+  align-self: center;
+}
+
+.editar textarea {
+  width: 500px;
+  height: 100px;
+  border-radius: 5px;
+  align-self: center;
+}
+
+.editar button {
+  width: 100px;
+  align-self: center;
+}
+
+.editarfotousuario button {
+  width: 100px;
+  align-self: flex-start;
+}
+
+#selecciondefoto {
+  margin: 0 auto;
+  padding: 0.5em;
+}
+
+#botonesedicion {
+  margin: 10px;
+}
+
+img {
+  border-radius: 50px;
+  width: 250px;
+  height: 250px;
+  margin: 50px;
+  box-shadow: 0 0 10px rgb(12, 12, 12);
+}
+
+#menubotones button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 400px;
+  height: 60px;
+  font-size: 1.5em;
+
+  /*  box-shadow: 0 0 10px rgb(12, 12, 12); */
+  margin: 10px;
+  background-color: transparent;
+  font-family: "Ubuntu", sans-serif;
+  color: #1a99e7;
+  transition: background-color 0.3s;
+}
+
+#menubotones button:hover {
+  background-color: #171616;
+}
+#menubotones button:active {
+  background-color: #171616;
+}
+
+a {
+  color: rgb(134, 92, 200);
+  text-decoration: none;
+}
+
+#contenedorperfil {
+  display: flex;
+  justify-content: space-around;
+  padding: 10em;
 }
 </style>

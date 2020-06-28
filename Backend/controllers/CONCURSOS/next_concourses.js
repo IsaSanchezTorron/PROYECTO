@@ -19,7 +19,7 @@ async function nextConcourses(req, res, next) {
       LEFT JOIN INSCRIPCIONES ON CONCURSOS.id_concurso = INSCRIPCIONES.CONCURSOS_id_concurso
       WHERE CONCURSOS.fecha_final >= ? AND INSCRIPCIONES.USUARIOS_id_usuario = ?
       GROUP BY CONCURSOS.id_concurso
-      ORDER BY CONCURSOS.fecha_inicio`,
+      ORDER BY CONCURSOS.fecha_final`,
       [dateToday, id]
     );
 

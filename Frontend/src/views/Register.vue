@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- Título para la pestaña del navegador -->
+    <vue-headful title="Registro" description="Registro de nuevo usuario" />
     <!-- Inserción del componente menú en la cabecera de la vista -->
     <menucustom></menucustom>
 

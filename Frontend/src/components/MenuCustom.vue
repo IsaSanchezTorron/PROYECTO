@@ -10,10 +10,6 @@
       </a>
 
       <a>
-        <router-link :to="{ name: 'Allconcourses' }">Todos los concursos</router-link>
-      </a>
-
-      <a>
         <router-link :to="{ name: 'About' }">Contacto</router-link>
       </a>
 
@@ -27,17 +23,14 @@
       <a>
         <router-link :to="{ name: 'Admin' }">⚙️ Administrador</router-link>
       </a>
-      <!-- No funciona PENDIENTE DE REVISAR -->
 
       <!--Botón que llama a la función de Logout -->
-
-      <button @click="logoutUser()">Logout</button>
     </div>
   </div>
 </template>
 
 <script>
-import { clearLogin } from "../api/utils";
+
 
 export default {
   name: "menucustom",
@@ -51,13 +44,7 @@ export default {
 
 
     //Función de LogOut
-  logoutUser() {
-      //Nos lleva al login
-      this.$router.push("/");
-      // No deja datos en el logueo, vacío
-      return clearLogin();
-    
-    },
+  
   
 
 /* showProfileButton(seeProfileButton) {

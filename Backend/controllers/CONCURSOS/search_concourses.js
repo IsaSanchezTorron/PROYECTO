@@ -11,6 +11,7 @@ async function searchingConcourses(req, res, next) {
 
     console.log(query);
     console.log(params);
+
     const [result] = await connection.query(query, params);
     if (!result.length) {
       throw generateError(

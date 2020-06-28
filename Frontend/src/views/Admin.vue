@@ -5,9 +5,12 @@
 
     <!-- Inserción del componente menú en la cabecera de la vista -->
     <menucustom></menucustom>
+
+    <!--Aquí es donde cargo todos los concursos con una computed -->
     <div id="concursoscontenedor">
       <h2>Todos los concursos hasta la fecha</h2>
 
+      <!--Aquí un contenedor para centrar en la parte superior el botón y el buscador -->
       <div id="contenedorbuscadoryañadirconcurso">
         <!-- Forumulario de búsqueda -->
         <div id="formulariobusqueda">
@@ -21,9 +24,45 @@
             placeholder="🔍 Nombre/Descripción..."
           />
         </div>
-
-        <button>AÑADIR CONCURSO NUEVO</button>
       </div>
+
+      <!--Este es el modal donde el Admin va a añadir un nuevo concurso -->
+      <div class="modal" v-show="seeNewConcourse">
+        <div class="modalBox">
+          <form>
+            <label for="nombre">Nombre:</label>
+            <br />
+            <input type="text" name="nombre" id="nombre" v-model="nombre" />
+
+            <label for="fecha_final">Fecha de cierre:</label>
+            <br />
+            <input type="date" name="fecha_final" id="fecha_final" v-model="fecha_final" />
+
+            <label for="descripcion">Información y Bases:</label>
+            <br />
+            <input type="text" name="descripcion" id="descripcion" v-model="descripcion" />
+
+            <label for="modalidad">Modalidad:</label>
+            <br />
+            <input type="text" name="modalidad" id="modalidad" v-model="modalidad" />
+
+            <label for="genero">Género:</label>
+            <br />
+            <input type="text" name="genero" id="genero" v-model="genero" />
+
+            <label for="fecha_publicacion">Publicado el:</label>
+            <br />
+            <input
+              type="date"
+              name="fecha_publicacion"
+              id="fecha_publicacion"
+              v-model="fecha_publicacion"
+            />
+          </form>
+        </div>
+      </div>
+      <button @click="createNewConcourse()">AÑADIR CONCURSO NUEVO</button>
+
       <div class="contenedor">
         <br />
         <!-- Contenedor para dar formato a la ficha de productos, lo cargamos con el array de productos filtrados -->
@@ -99,8 +138,15 @@ export default {
 
     data(){
         return{
-            concursos :[],
-            search:"",
+        concursos :[],
+        search:"",
+        nombre: "",
+        fecha_final: "",
+        descripcion: "",
+        modalidad:"",
+        genero:"",
+        fecha_publicacion:"",
+        seeNewConcourse: false,
         };
     },
 
@@ -199,6 +245,37 @@ Swal.fire({
         }
       });
     },
+
+
+
+
+ createNewConcourse() {
+      
+      var self = this;
+      const token = localStorage.getItem("token");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios
+        .post("http://localhost:3003/concursos/nuevo_concurso", {
+
+        nombre: self.nombre,
+        fecha_final: self.date,
+        descripcion: self.descripcion,
+        modalidad:self.modalidad,
+        genero:self.genero,
+        fecha_publicacion: self.fecha_publicacion,
+        })
+        .then(function(response) {
+          Swal.fire({
+            title: "El concurso ha sido agregado correctamente",
+          });
+          
+          self.seeNewConcourse = false;
+          location.reload();
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    },   
 
  
 

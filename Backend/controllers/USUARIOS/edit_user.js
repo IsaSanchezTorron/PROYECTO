@@ -20,7 +20,7 @@ async function editUser(req, res, next) {
     const [
       current
     ] = await connection.query(
-      `SELECT id_usuario  FROM USUARIOS  WHERE id_usuario =?`,
+      `SELECT id_usuario, url_foto  FROM USUARIOS  WHERE id_usuario =?`,
       [id]
     );
 
@@ -38,17 +38,18 @@ async function editUser(req, res, next) {
     let savedFileName;
     console.log(req.files);
     console.log(req.files.url_foto);
+
     if (req.files && req.files.url_foto) {
       try {
         savedFileName = await processAndSavePhoto(req.files.url_foto);
-        if (current && current[0].url_foto) {
-          await deletePhoto(current[0].url_foto);
+        if (current && current.url_foto) {
+          await deletePhoto(current.url_foto);
         }
       } catch (error) {
         throw generateError('No se puede procesar la imagen.', 400);
       }
     } else {
-      savedFileName = current[0].url_foto;
+      savedFileName = current.url_foto;
     }
 
     await connection.query(

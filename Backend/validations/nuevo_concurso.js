@@ -8,15 +8,6 @@ const newConcourseSchema = Joi.object().keys({
       new Error('El nombre del concurso no debe exceder de los 500 caracteres')
     ),
 
-  fecha_inicio: Joi.date()
-    .format('YYYY-MM-DD')
-    .utc()
-    .required()
-    .error(
-      new Error(
-        'El formato de la fecha no es correcto o se ha producido algún error relacionado'
-      )
-    ),
   fecha_final: Joi.date()
     .format('YYYY-MM-DD')
     .utc()
@@ -27,11 +18,11 @@ const newConcourseSchema = Joi.object().keys({
       )
     ),
   descripcion: Joi.string()
-    .max(5000)
+    .max(50000)
     .required()
     .error(
       new Error(
-        'La descripción de los concursos debe tener un máximo de 5000 caracteres'
+        'La descripción de los concursos debe tener un máximo de 50000 caracteres'
       )
     ),
   modalidad: Joi.string()

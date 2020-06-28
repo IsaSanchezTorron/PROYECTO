@@ -1,29 +1,37 @@
 <template>
-  <div class="contenedorlogin">
+  <div>
+    <!-- Nombre en pestaña del navegador -->
+    <vue-headful title="Login" description="Login de usuario" />
     <!--Inserción del menú en parte superior de página -->
     <menucustom></menucustom>
     <!-- Uso del vue headful para nombrar los títulos de pag. visibles en navegador -->
-    <vue-headful title="Login" description="Página de login" />
-    <h2>Haz login 👇</h2>
-    <br />
-    <!-- Input para campo email -->
-    <input type="text" placeholder="Tu usuario" v-model="mail" />
-    <br />
-    <br />
-    <!--Input para campo password -->
-    <input type="password" placeholder="Tu contraseña" v-model="contrasenha" />
-    <br />
-    <br />
-    <!-- Botón con llamada a la función Login -->
-    <button @click="login(mail, contrasenha)">LOGIN</button>
-    <br />
-    <br />
+    <div class="contenedorlogin">
+      <h2>Haz login 👇</h2>
+      <br />
+      <br />
+      <!-- Input para campo email -->
+      <input type="text" placeholder="Tu usuario" v-model="mail" />
+      <br />
+      <br />
+      <br />
+      <!--Input para campo password -->
+      <input type="password" placeholder="Tu contraseña" v-model="contrasenha" />
+      <br />
+      <br />
+      <br />
+      <!-- Botón con llamada a la función Login -->
+      <button @click="login(mail, contrasenha)">LOGIN</button>
+      <br />
+      <br />
+    </div>
 
     <div id="nav">
       <!-- Enlace a la vista de Registro desde el Login -->
-      <p>Si no tienes cuenta, regístrate aquí 👇</p>
+      <p>Si no tienes cuenta, regístrate aquí</p>
       <!-- Todavía no existe ruta -->
-      <router-link :to="{ name: 'Register' }">Registro</router-link>
+      <a>
+        <router-link :to="{ name: 'Register' }">👉 Registro</router-link>
+      </a>
     </div>
   </div>
 </template>
@@ -90,6 +98,16 @@ Toast.fire({
  self.$router.push("/profile");
         })
         .catch(function(error){
+
+           Swal.fire({
+            title: "⚠️",
+            text: error.response.data.message,
+            confirmButtonText: "O.K",
+
+          })
+
+
+
           console.log("ha habido un error")
         });
 
@@ -100,5 +118,25 @@ Toast.fire({
 
 </script>
 
-<style>
+<style scoped>
+.contenedorlogin {
+  margin-top: 150px;
+}
+input {
+  width: 500px;
+  height: 30px;
+  font-size: 1.2em;
+}
+button {
+  width: 300px;
+}
+
+p {
+  font-size: 1.3em;
+}
+
+a {
+  text-decoration: none;
+  font-size: 1.1em;
+}
 </style>

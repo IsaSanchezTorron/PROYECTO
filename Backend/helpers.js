@@ -49,7 +49,9 @@ async function processAndSavePhoto(uploadedImage) {
   const savedFileName = `${uuid.v1()}.jpg`;
 
   await fs.ensureDir(imageUploadPath);
+
   const finalImage = sharp(uploadedImage.data);
+
   const imageInfo = await finalImage.metadata();
 
   if (imageInfo.width > 450) {
@@ -68,7 +70,7 @@ async function deletePhoto(imagePath) {
 }
 
 function searchConcourses(queryParams) {
-  let query = `SELECT CONCURSOS.id_concurso, CONCURSOS.nombre, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, CONCURSOS.url_foto, CONCURSOS.descripcion, CONCURSOS.modalidad, CONCURSOS.genero, CONCURSOS.ciudad,  CONCURSOS.id_ganador, CONCURSOS.fecha_asignacion_ganador, USUARIOS.nombre as nombre_ganador, USUARIOS.apellidos, ROUND(AVG(INSCRIPCIONES.valoracion),1) as valoracionmedia
+  let query = `SELECT CONCURSOS.id_concurso, CONCURSOS.nombre, CONCURSOS.fecha_publicacion, CONCURSOS.fecha_final, CONCURSOS.url_foto, CONCURSOS.descripcion, CONCURSOS.modalidad, CONCURSOS.genero, CONCURSOS.ciudad,  CONCURSOS.id_ganador, CONCURSOS.fecha_asignacion_ganador, USUARIOS.nombre as nombre_ganador, USUARIOS.apellidos, ROUND(AVG(INSCRIPCIONES.valoracion),1) as valoracionmedia
     FROM CONCURSOS
     LEFT JOIN USUARIOS ON USUARIOS.id_usuario = CONCURSOS.id_ganador
     LEFT JOIN INSCRIPCIONES ON INSCRIPCIONES.CONCURSOS_id_concurso = CONCURSOS.id_concurso
@@ -77,14 +79,21 @@ function searchConcourses(queryParams) {
   const params = [];
   const {
     nombre,
-    fecha_inicio,
+    fecha_publicacion,
     fecha_final,
     genero,
     modalidad,
     ciudad
   } = queryParams;
 
-  if (nombre || fecha_inicio || fecha_final || genero || modalidad || ciudad) {
+  if (
+    nombre ||
+    fecha_publicacion ||
+    fecha_final ||
+    genero ||
+    modalidad ||
+    ciudad
+  ) {
     query = `${query} WHERE`;
     const conditions = [];
 
@@ -93,13 +102,13 @@ function searchConcourses(queryParams) {
       params.push(`%${nombre}%`);
     }
 
-    if (fecha_inicio) {
+    if (fecha_publicacion) {
       conditions.push('CONCURSOS.fecha_final >= ?');
-      params.push(fecha_inicio);
+      params.push(fecha_publicacion);
     }
 
     if (fecha_final) {
-      conditions.push('CONCURSOS.fecha_final <= ?');
+      conditions.push('CONCURSOS.fecha_final >= ?');
       params.push(fecha_final);
     }
 
@@ -121,7 +130,7 @@ function searchConcourses(queryParams) {
     query = `${query} ${conditions.join(' AND ')} `;
   }
   query = `${query} GROUP BY CONCURSOS.id_concurso
-    ORDER BY CONCURSOS.fecha_inicio`;
+    ORDER BY CONCURSOS.fecha_publicacion`;
   return {
     query,
     params

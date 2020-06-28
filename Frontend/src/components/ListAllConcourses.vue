@@ -1,7 +1,8 @@
 <template>
   <div>
     <!--Encabezado de página -->
-    <h2>Todos los concursos hasta la fecha</h2>
+    <h1>Todos los concursos hasta la fecha</h1>
+
     <!-- Forumulario de búsqueda -->
     <div id="formulariobusqueda">
       <label for="bySearch">Búsqueda</label>
@@ -11,7 +12,7 @@
         id="search"
         name="bySearch"
         type="search"
-        placeholder="🔍 Nombre/Descripción..."
+        placeholder="🔍 Nombre/Descripción, Modalidad, Genero..."
       />
     </div>
 
@@ -19,6 +20,7 @@
       <br />
       <!-- Contenedor para dar formato a la ficha de productos, lo cargamos con el array de productos filtrados -->
       <div class="concursoscontenedor" v-for="concurso in concursosFiltrados" :key="concurso.id">
+        <p v-show="finalizado">CONCURSO FINALIZADO</p>
         <p>
           📌
           {{ concurso.id_concurso }}
@@ -38,11 +40,6 @@
           }"
         >-->
 
-        <p style="color:red">
-          <b>📆 Cierre de suscripción:</b>
-          {{ concurso.fecha_final.slice(0, 10) }}
-        </p>
-
         <p>
           <b>🏠 Modalidad:</b>
           {{ concurso.modalidad }}
@@ -59,7 +56,7 @@
         </p>
         <p v-if="concurso.fecha_asignacion_ganador">
           <b>📅 Publicación de ganadores:</b>
-          {{ concurso.fecha_asignacion_ganador }}
+          {{ concurso.fecha_asignacion_ganador | moment(" D-MM-YYYY") }}
         </p>
         <p v-if="concurso.nombre_ganador">
           <b>🥇 Ganador:</b>
@@ -69,10 +66,12 @@
           <b>🌠 Valoración media:</b>
           {{ concurso.valoracion }}
         </p>
+        <p>{{concurso.fecha_publicacion}}</p>
+        <p style="color:red">
+          <b>📆 Cierre de suscripción:</b>
+          {{ concurso.fecha_final | moment(" D-MM-YYYY")}}
+        </p>
         <!-- Con una clase dinámica manejo los colores en función de la vigencia del concurso -->
-
-        <!-- El botón de inscribir DE MENTIRIJILLAS AUN, hace una llamada a la función que nos envía un Sweet Alert -->
-
         <button @click="openModal()">VER BASES</button>
         <br />
         <br />
@@ -84,6 +83,8 @@
 
 <script>
 // IMPORTAMOS PARA
+// formatear fechas
+import VueMoment from "vue-moment";
 // enviar mensajes custom
 import Swal from "sweetalert2";
 // manejo de rutas y endpoints
@@ -101,8 +102,8 @@ export default {
     return {
       // Inicializamos un string vacío que contendrá la búsqueda.
       search: "",
-
       id: null,
+      finalizado: false,
     };
   },
 
@@ -128,70 +129,97 @@ export default {
         // concurso.ciudad.toLowerCase().includes(this.search.toLowerCase())
       );
     },
+/* 
+      checkDate(finalizado){
+        console.log("comprueba la fecha");
+        const today = new Date();
+        if (concurso.fecha_final < today){
+         
+          return true;
+        }else{
+          return false;
+        }
+        
+      },
+ */
+
+
   },
+
+
 
   methods: {
 
 
-    // MÉTODO PARA EL BOTÓN DE INSCRIPCIÓN EN CONCURSO.
+// MÉTODO PARA EL BOTÓN DE INSCRIPCIÓN EN CONCURSO.
 
-    confirmInscription(concurso) {
+confirmInscription(concurso) {
+  console.log(concurso.id_concurso);
+ const self = this; 
+ 
 
-      const self = this;
-      
       // Cojo token e id.
       const token = localStorage.getItem("token");
       const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+     
 
-      Swal.fire({
+     Swal.fire({
         title: "🤓",
         text: "¿Quieres suscribirte a este concurso?",
         showCancelButton: true,
-         confirmButtonColor: "#1CA1F2",
+        confirmButtonColor: "#1CA1F2",
         cancelButtonColor: "#EB5784",
         confirmButtonText: "Sí, quiero suscribirme.",
         cancelButtonText: "Volver",
-      }).then(result => {
+      })
+      
+      
+      .then(result => {
         if (result.value) {
-
+ 
       axios
         .post(
-          "http://localhost:3003/concursos/inscripciones/" +
+          "http://localhost:3003/concursos/inscripciones/inscribirme/" +
             concurso.id_concurso,
-          {
-            id_concurso: self.id_concurso,
-            id_usuario: data,
-          }
+           
+          
         )
         .then(function (response) {
         
           
           // Enviamos mensaje de confirmación de inscripción
           Swal.fire({
-            title: "❓",
-            
+            title: "✔️",
             text: "Te has inscrito en el concurso con éxito",
             confirmButtonText: "O.K",
             timer: 3000,
           });
         })
+        
         //Recogemos posibles errores
         .catch(function (error) {
-          console.log(error.response.data.message);
-
+          console.log(error.response.data.message); 
+        
+        
+ 
           Swal.fire({
             title: "⚠️",
-            text: "Ha habido un error, es posible que ya estés inscrito",
+            text: error.response.data.message,
             confirmButtonText: "O.K",
             timer: 3000,
-          });
-        });
-    };
-      },
-      )},
+
+          })
+        })
+        }},
+      )}
   },
-};
+  
+
+    
+  };
+
+
 </script>
 
 <style scoped>
@@ -206,7 +234,8 @@ export default {
   box-shadow: 0 0 10px rgb(12, 12, 12);
   padding: 3em;
   width: 300px;
-  margin: 10px auto;
+  margin: 50px auto;
+  flex-wrap: wrap;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -238,5 +267,14 @@ img:hover {
 h3 {
   text-transform: uppercase;
   font-size: 1.4em;
+}
+button {
+  color: white;
+}
+
+input {
+  width: 500px;
+  height: 50px;
+  font-size: 1.5em;
 }
 </style>

@@ -75,7 +75,7 @@ app.post('/usuarios', newUser); // Crear nuevo usuario
 app.post('/usuarios/login', loginUser); // Hacer login
 app.get('/usuarios/validar', validateUser); // Validar cuenta
 app.put('/usuarios/editar/:id', userIsAuthenticated, editUser); //Editar usuario
-app.get('/usuarios/:id', userIsAuthenticated, getUser); //Obtener datos de un usuario
+app.get('/usuarios/perfil/:id', userIsAuthenticated, getUser); //Obtener datos de un usuario
 app.put('/usuarios/password/:id', userIsAuthenticated, updatePassword); //Cambiar contraseña de usuario
 app.put('/usuarios/disable/:id', userIsAuthenticated, disableUser); // Deshabilitar usuario
 app.delete(
@@ -99,7 +99,7 @@ app.get(
 // ################### RUTAS DE CONCURSO ###########################
 
 app.post(
-  '/concursos/new_concourse', //Añadir concurso
+  '/concursos/nuevo_concurso', //Añadir concurso
 
   newConcourse,
   userIsAuthenticated,
@@ -130,7 +130,11 @@ app.put(
 
 //################ RUTAS DE INSCRIPCIONES #############################
 
-app.post('/concursos/inscripciones/:id', userIsAuthenticated, newInscription); // Nueva inscripción
+app.post(
+  '/concursos/inscripciones/inscribirme/:id',
+  userIsAuthenticated,
+  newInscription
+); // Nueva inscripción
 app.delete(
   '/concursos/inscripciones/borrar/:id',
   userIsAuthenticated,

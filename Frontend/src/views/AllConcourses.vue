@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- Título en la pestaña del navegador -->
+    <vue-headful title="Todos los concursos" description="Todos los concursos" />
     <!-- Inserción del componente menú en el encabezado de la página -->
     <menucustom></menucustom>
     <div class="allconcourses">
@@ -17,6 +19,7 @@
 
 <script>
 // Importaciones para 
+
 // manejar rutas, endpoints...
 import axios from "axios";
 // manejar títulos de página visibles en navegador.
@@ -35,6 +38,7 @@ components:{
     vueHeadful,
     listallconcourses,
     menucustom,
+   
 },
 
 // El array que manejamos con los concursos

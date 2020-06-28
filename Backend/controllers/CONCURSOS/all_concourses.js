@@ -12,12 +12,12 @@ async function listingConcourses(req, res, next) {
     const { id } = req.params;
 
     const [result] = await connection.query(
-      `SELECT CONCURSOS.id_concurso, CONCURSOS.nombre, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, CONCURSOS.url_foto, CONCURSOS.descripcion, CONCURSOS.modalidad, CONCURSOS.genero, CONCURSOS.ciudad, ROUND(AVG(INSCRIPCIONES.valoracion), 1) AS valoracion, CONCURSOS.id_ganador, CONCURSOS.fecha_asignacion_ganador, USUARIOS.nombre AS nombre_ganador, USUARIOS.apellidos
+      `SELECT CONCURSOS.id_concurso, CONCURSOS.nombre, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, CONCURSOS.fecha_publicacion, CONCURSOS.url_foto, CONCURSOS.descripcion, CONCURSOS.modalidad, CONCURSOS.genero, CONCURSOS.ciudad, ROUND(AVG(INSCRIPCIONES.valoracion), 1) AS valoracion, CONCURSOS.id_ganador, CONCURSOS.fecha_asignacion_ganador, USUARIOS.nombre AS nombre_ganador, USUARIOS.apellidos
     FROM CONCURSOS
     LEFT JOIN INSCRIPCIONES ON  INSCRIPCIONES.CONCURSOS_id_concurso = CONCURSOS.id_concurso 
     LEFT JOIN USUARIOS ON USUARIOS.id_usuario = CONCURSOS.id_ganador
     GROUP BY CONCURSOS.id_concurso
-    ORDER BY CONCURSOS.fecha_inicio`
+    ORDER BY CONCURSOS.fecha_final ASC`
     );
 
     if (!result.length) {

@@ -1,10 +1,12 @@
 <template>
   <div>
+    <!-- Título para la pestaña del navegador -->
+    <vue-headful title="INTERTEXTUAL" description="Landing" />
     <menucustom></menucustom>
     <br />
 
     <div id="principallanding">
-      <img id="fotoinformativa" src="../assets/images/intertextual5.png" />
+      <img id="fotoinformativa" src="../assets/images/intertextual5.png" alt="foto informativa" />
       <div id="buscador">
         <form>
           <h2>🔎 Puedes utilizar nuestro buscador 👇</h2>
@@ -25,7 +27,7 @@
           <p>
             <b>Entre esta fecha 👉</b>
 
-            <input v-model="fecha_inicio" type="date" name="fecha_inicio" min="2010" />
+            <input v-model="fecha_publicacion" type="date" name="fecha_publicacion" min="2010" />
           </p>
           <p>
             <b>y esta otra fecha 👉</b>
@@ -69,7 +71,7 @@
 
           <li>
             <b>📆 Apertura:</b>
-            {{resultadobusqueda.fecha_inicio | moment(" D-MM-YYYY") }}
+            {{resultadobusqueda.fecha_publicacion | moment(" D-MM-YYYY") }}
           </li>
 
           <li>
@@ -119,6 +121,8 @@ import barradebienvenida from "@/components/BarraBienvenida.vue";
 import axios from "axios";
 // customizar mensajes
 import Swal from "sweetalert2";
+// Texto visible en pestaña del navegador
+import vueHeadful from "vue-headful";
 
 export default {
   name: "landing",
@@ -133,7 +137,7 @@ export default {
       resultadobusquedas: [],
       search:{},
       nombre:"",
-      fecha_inicio: "",
+      fecha_publicacion: "",
       fecha_final: "",  
       genero: "",
       modalidad:"",
@@ -164,9 +168,9 @@ if(!!this.nombre){
   params.append("nombre", this.nombre);
 
 }
-if(!!this.fecha_inicio){
-  params.append("fecha_inicio", this.fecha_inicio);
-
+if(!!this.fecha_publicacion){
+  params.append("fecha_publicacion", this.fecha_publicacion);
+ 
 }
 
 if(!!this.fecha_final){
@@ -210,12 +214,14 @@ searching(){
           console.log(response);
           self.resultadobusquedas = response.data.data;
           console.log(self.resultadobusquedas);
+  
          
         })
 
         .catch(function (error) {
           console.error(error);
           console.log(error.response.data.message);
+          console.log("aqui");
         });
 
   }
@@ -252,7 +258,10 @@ img:hover {
   box-shadow: 0 0 10px rgb(0, 0, 0);
   height: 500px;
   width: 100%;
-  padding: 1em;
+  padding: 0em;
+  margin: 0 auto;
+  padding-top: 30px;
+  padding-bottom: 40px;
 }
 h2 {
   color: #fedd0a;
@@ -264,7 +273,7 @@ input {
 }
 form p {
   font-size: 1.1em;
-  color: #1ca1f2;
+  color: #f3f3f3;
 }
 button {
   padding: 0.7em;

@@ -54,4 +54,21 @@ div #linkregistrousuario a {
 .fade-leave-active {
   opacity: 0;
 }
+
+button {
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 10px;
+  background-color: rgb(32, 33, 34);
+  font-family: "Ubuntu", sans-serif;
+  color: #1a99e7;
+  box-shadow: 0 0 2px rgb(12, 12, 12);
+}
+
+h1 {
+  font-size: 3em;
+  color: #1ca1f2;
+  -webkit-text-stroke: 1.8px black;
+}
 </style>

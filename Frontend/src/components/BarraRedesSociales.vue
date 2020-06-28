@@ -1,10 +1,25 @@
 <template>
   <div id="contenedorredessociales">
-    <img src="../assets/images/facebook.png" alt="Facebook" />
-    <img src="../assets/images/mail.png" alt="Correo electrónico" />
-    <img src="../assets/images/twitter.png" alt="Twitter" />
-    <img src="../assets/images/linkedin.png" alt="LinkedIn" />
-    <img src="../assets/images/github.png" alt="GitHub" />
+    <img
+      src="../assets/images/mail.png"
+      alt="Correo electrónico"
+      title="isasancheztorron@gmail.com"
+    />
+
+    <a title="Twitter" href="https://twitter.com/isa56k1">
+      <img src="../assets/images/twitter.png" alt="Twitter" />
+    </a>
+
+    <a
+      title="Linkedin"
+      href="https://www.linkedin.com/in/isabel-s%C3%A1nchez-torr%C3%B3n-b988161a2/"
+    >
+      <img src="../assets/images/linkedin.png" alt="LinkedIn" />
+    </a>
+
+    <a title="Github" href="https://github.com/IsaSanchezTorron">
+      <img src="../assets/images/github.png" alt="Github" />
+    </a>
   </div>
 </template>
 
