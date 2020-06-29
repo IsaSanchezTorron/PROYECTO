@@ -27,6 +27,8 @@
         <!-- Botón que llama a la función para ver el historial -->
 
         <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button>
+        <button @click="openModalWinners()">🏆 Últimas ganadoras nombradas</button>
+
         <button>
           <router-link style="color:#EB5885" :to="{ name: 'Allconcourses' }">📌 Todos los concursos</router-link>
         </button>
@@ -158,6 +160,19 @@
         <!-- Hasta aquí la valoración -->
         <hr />
 
+        <!-- Aquí mostramos con un modal los últimos ganadores nombrados -->
+
+        <div class="modal" v-show="verganadores">
+          <div class="modalBox">
+            <h2>Estas son las últimas nombradas</h2>
+            <ul class="resultadosganadores" v-for="ganador in ganadores" :key="ganador.id">
+              <li>👤 {{ganador.nombreusuario}} {{ganador.apellidos}} ha ganado el {{ganador.nombreconcurso}} el {{ganador.fecha_asignacion_ganador | moment(" D-MM-YYYY")}}</li>
+
+              <hr />
+            </ul>
+          </div>
+        </div>
+
         <!-- Visualizar Próximos concursos en los que el usuario está inscrito, puede deshacer su suscripción --->
 
         <div class="proximosconcursos">
@@ -257,7 +272,8 @@ export default {
       pendientes: [],
       proxconcursos: [],
       tops: [],
-      
+      ganadores:[],
+      verganadores : false,
 
     };
   },
@@ -282,12 +298,17 @@ export default {
       this.votedConcourse = this.pendientes[index];
     },
 
-    openModalTwo(){
+   /*  openModalTwo(){
       this.modal=true;
-    },
+    }, */
 
     closeModal() {
       this.modal = false;
+    },
+
+    openModalWinners(){
+      this.verganadores = true;
+      this.seeLastWinners();
     },
 
     // FUNCIÓN PARA HACER LA PETICIÓN AL SERVIDOR.
@@ -605,6 +626,48 @@ Swal.fire({
 
 
 
+
+seeLastWinners() {
+      const self = this;
+      
+      // Cojo token e id.
+      const token = localStorage.getItem("token");
+      const data = localStorage.getItem("id");
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      axios
+        .get(
+          "http://localhost:3003/concursos/ultimosganadores/"
+        )
+      // Petición get a mi ruta del Back para consultar inscripciones finalizadas, concatenamos el id.
+        .then(function (response) {
+          console.log(response);
+
+          // En user tengo ahora el acceso directo a este usuario concreto.
+          self.ganadores = response.data.data;
+        })
+
+        .catch(function (error) {
+          Swal.fire({
+            title: "✅",
+            text: error.response.data.message,
+            confirmButtonText: "O.K",
+          }).then((result) => {
+            if (result.value) {
+              self.getDataUser();
+            }
+          });
+          console.log(error.response.data.message);
+        });
+    },
+
+
+
+
+
+
+
+
   },
 
 created(){
@@ -625,7 +688,7 @@ created(){
   width: 100%;
 }
 
-.modalbox {
+.modalBox {
   background: #fefefe;
   margin: 15% auto;
   padding: 20px;

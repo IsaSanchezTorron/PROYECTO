@@ -35,7 +35,7 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  background-color: var(--yellow);
+  background-color: var(--black);
   box-shadow: 0 0 10px var(--black);
   padding: 1em;
 }

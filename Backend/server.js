@@ -47,6 +47,7 @@ const {
   finishedConcourses
 } = require('./controllers/CONCURSOS/finished_concourses');
 const { setWinner } = require('./controllers/CONCURSOS/winner');
+const { seelastwinners } = require('./controllers/CONCURSOS/lastwinners');
 
 //############# Funciones importadas relativas a INSCRIPCIONES ##############
 const {
@@ -120,13 +121,14 @@ app.delete(
 ); // Borrar concurso
 app.get('/concursos/listado', listingConcourses); //Listado de todos los concursos
 app.get('/concursos/proximamente/:id', userIsAuthenticated, nextConcourses); //Listado de próximos concursos
-app.get('/concursos/finalizados', finishedConcourses); //Listado de concursos ya finalizados.
+app.get('/concursos/finalizados', userIsAuthenticated, finishedConcourses); //Listado de concursos ya finalizados.
 app.put(
   '/concursos/asignar_ganador', //Asignar ganador
   userIsAuthenticated,
   userIsAdmin,
   setWinner
 );
+app.get('/concursos/ultimosganadores', userIsAuthenticated, seelastwinners); //Ver los últimos ganadores nombrados.
 
 //################ RUTAS DE INSCRIPCIONES #############################
 

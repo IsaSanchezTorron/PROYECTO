@@ -123,7 +123,6 @@
             {{ concurso.valoracion }}
           </p>
           <button @click="deleteConcourse(index)">🗑 Eliminar</button>
-          <button @click="editConcourse()">✍️Editar</button>
 
           <!-- Botón para abrir modal para ver participantes del concurso -->
           <button @click="openModalInscripciones(index)">👥 Ver listado de participantes</button>
