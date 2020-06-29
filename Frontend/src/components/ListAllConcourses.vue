@@ -66,7 +66,7 @@
           <b>🌠 Valoración media:</b>
           {{ concurso.valoracion }}
         </p>
-        <p>{{concurso.fecha_publicacion}}</p>
+        <p>Publicado el: {{concurso.fecha_publicacion | moment(" D-MM-YYYY") }}</p>
         <p style="color:red">
           <b>📆 Cierre de suscripción:</b>
           {{ concurso.fecha_final | moment(" D-MM-YYYY")}}
@@ -96,6 +96,7 @@ export default {
   props: {
     // Le indicamos que está recibiendo un array.
     concursos: Array,
+    
   },
 
   data() {
@@ -137,7 +138,7 @@ export default {
          
           return true;
         }else{
-          return false;
+          return false;concursos
         }
         
       },

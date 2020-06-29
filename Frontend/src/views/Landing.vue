@@ -88,7 +88,9 @@
           </div>
 
           <div v-if="resultadobusqueda.nombre_ganador">
-            <li>Nombrada ganadora: {{resultadobusqueda.nombre_ganador}} {{resultadobusqueda.apellidos }} el {{resultadobusqueda.fecha_asignacion_ganador}}</li>
+            <li>
+              <b>Nombrada ganadora: {{resultadobusqueda.nombre_ganador}} {{resultadobusqueda.apellidos }} el {{resultadobusqueda.fecha_asignacion_ganador.slice(1,10) }}</b>
+            </li>
           </div>
 
           <li>
@@ -142,7 +144,9 @@ export default {
       genero: "",
       modalidad:"",
       ciudad: "",
+      url_foto:"",
       modal : false,
+      
 
     }
   },
@@ -151,7 +155,7 @@ export default {
 methods: {
    openModal(index) {
       this.modal = true;
-      return index;
+      /* return resultadobusqueda; */
       
 
    },
@@ -212,14 +216,16 @@ searching(){
 
         .then(function (response) {
           console.log(response);
-          self.resultadobusquedas = response.data.data;
-          console.log(self.resultadobusquedas);
-  
-         
+          self.resultadobusquedas = response.data.data.map((resultadobusqueda) =>{
+            resultadobusqueda.url_foto = "http://localhost:3003/images/" + resultadobusqueda.url_foto;
+
+          return resultadobusqueda;
+          });
+        
         })
 
         .catch(function (error) {
-          console.error(error);
+          
           console.log(error.response.data.message);
           console.log("aqui");
         });

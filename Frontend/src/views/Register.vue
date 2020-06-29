@@ -5,10 +5,10 @@
     <!-- Inserción del componente menú en la cabecera de la vista -->
     <menucustom></menucustom>
 
-    <div class="contenedorlogin">
+    <div class="contenedoregisto">
       <!-- Uso del vue headful para nombrar los títulos de pag. visibles en navegador -->
       <vue-headful title="Registro" description="Registro de nuevo usuario" />
-      <h2>Completa todos los campos para registrarte 👇</h2>
+      <h1>Completa todos los campos para registrarte 👇</h1>
       <br />
       <!-- Input para campo nombre -->
       <input type="text" placeholder="Tu nombre" v-model="nombre" />
@@ -143,3 +143,26 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.contenedorregisto {
+  margin-top: 150px;
+}
+input {
+  width: 500px;
+  height: 30px;
+  font-size: 1.2em;
+}
+button {
+  width: 300px;
+}
+
+p {
+  font-size: 1.3em;
+}
+
+a {
+  text-decoration: none;
+  font-size: 1.1em;
+}
+</style>

@@ -7,31 +7,36 @@
     <menucustom></menucustom>
 
     <div id="contenedorperfil">
+      <!-- Menú de navegación del pergil de usuario -->
+
       <div id="menubotones">
-        <img :src="user.url_foto" alt="Foto de perfil de usuario" />
-        <button v-if="historial" @click="seeHistory()">📚 Historial completo</button>
-        <button @click="seePendingRatings()">⭐️ Pendientes de valoracion</button>
-        <!-- Botón que llama a la función para ver el historial -->
-        <button @click="seeNextConcourses()">⏭ Pŕoximos concursos</button>
-        <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button>
-        <button>
-          <router-link :to="{ name: 'Allconcourses' }">📌 Todos los concursos</router-link>
-        </button>
-        <button @click="showEditProfile()" style="color:#3CA17A">⚙️ Editar perfil</button>
-        <button @click="logoutUser()">👋 Logout</button>
-      </div>
+        <div id="perfilusuario">
+          <!--Sección de datos personales -->
+          <div class="informacionusuario">
+            <h3>👤 Hola {{ user.nombre }}</h3>
 
-      <div id="perfilusuario">
-        <!--Sección de datos personales -->
-        <div class="informacionusuario" v-show="!showEdit">
-          <h3>👤 Hola {{ user.nombre }}</h3>
-
-          <p>Miembro desde {{ user.fecha_registro | moment(" D-MM-YYYY") }}</p>
-          <p>Miembro con rol de: {{ user.rol }}</p>
+            <p>Miembro desde {{ user.fecha_registro | moment(" D-MM-YYYY") }}</p>
+            <p>Miembro con rol de: {{ user.rol }}</p>
+          </div>
         </div>
 
-        <hr />
+        <img :src="user.url_foto" alt="Foto de perfil de usuario" />
+        <button v-if="historial" @click="seeHistory()">📚 Mi historial completo</button>
+        <button @click="seeNextConcourses()">📖 Gestionar inscripciones activas</button>
+        <button @click="seePendingRatings()">⭐️ Valorar mis concursos finalizados</button>
+        <!-- Botón que llama a la función para ver el historial -->
 
+        <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button>
+        <button>
+          <router-link style="color:#EB5885" :to="{ name: 'Allconcourses' }">📌 Todos los concursos</router-link>
+        </button>
+        <button @click="showEditProfile()" style="color:#3CA17A">⚙️ Editar perfil</button>
+        <button @click="logoutUser()" style="color:#3CA17A">👋 Logout</button>
+      </div>
+
+      <!--Sección de datos personales editables -->
+
+      <div id="perfilusuario">
         <div class="editar" v-show="showEdit">
           <label for="nombre">Tu nombre:</label>
           <input type="text" id="nombre" name="nombre" v-model="nuevoNombre" placeholder="nombre" />
@@ -76,41 +81,39 @@
 
           <hr />
         </div>
+        <!-- Hasta aquí el contenedor de edición de usuario -->
 
-        <div>
-          <!-- Aquí mostramos el historial de concursos del usuario -->
-          <div class="historialConcurso">
-            <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
-            <ul v-for="historia in historial" :key="historia.id">
+        <!-- Aquí mostramos el historial de concursos del usuario -->
+        <div class="historialconcurso">
+          <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
+          <ul v-for="historia in historial" :key="historia.id">
+            <li>
+              <b>{{ historia.nombre_concurso }}</b>
+            </li>
+            <li>
+              <b>Apertura:</b>
+              {{ historia.fecha_publicacion | moment(" D-MM-YYYY") }}
+            </li>
+            <li>
+              <b>Cierre:</b>
+              {{ historia.fecha_final | moment(" D-MM-YYYY") }}
+            </li>
+            <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
+            <div v-if="historia.valoracion > 0">
               <li>
-                <b>{{ historia.nombre_concurso }}</b>
+                Has valorado este concurso con
+                {{ historia.valoracion }} ⭐️
               </li>
-              <li>
-                <b>Bases:</b>
-                {{ historia.descripcion }}
-              </li>
-              <li>
-                <b>Apertura:</b>
-                {{ historia.fecha_publicacion | moment(" D-MM-YYYY") }}
-              </li>
-              <li>
-                <b>Cierre:</b>
-                {{ historia.fecha_final | moment(" D-MM-YYYY") }}
-              </li>
-              <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
-              <div v-if="historia.valoracion > 0">
-                <li>
-                  Has valorado este concurso con
-                  {{ historia.valoracion }} ⭐️
-                </li>
-              </div>
-              <li>--------------------------------------------------</li>
-            </ul>
-            <!-- Botón que llama a la función para ver el historial -->
+            </div>
+          </ul>
 
-            <hr />
-          </div>
+          <hr />
         </div>
+
+        <!--Hasta aquí la sección del historial del concurso -->
+
+        <!-- Aquí muestro el historial de concursos pendientes de valoración y permito valorarlos mediante un modal -->
+
         <div class="historialpendientes">
           <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito -->
           <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
@@ -135,6 +138,7 @@
               v-if="pendiente.valoracion !== 1 || pendiente.valoracion!==2 || pendiente.valoracion!==3 || pendiente.valoracion!==4 || pendiente.valoracion!==5"
               @click="openModal(index)"
             >VOTAR</button>
+
             <div v-show="modal" class="modal">
               <div class="modalbox">
                 <h3>¿Cómo valoras tu experiencia?</h3>
@@ -144,15 +148,19 @@
                   :rating="rating"
                   v-bind:star-size="20"
                 ></star-rating>
+
                 <button @click="newRating(votedConcourse, rating)">Este es mi voto!</button>
                 <button @click="closeModal()">Cerrar</button>
               </div>
             </div>
           </ul>
         </div>
+        <!-- Hasta aquí la valoración -->
         <hr />
 
-        <div class="proximosConcursos">
+        <!-- Visualizar Próximos concursos en los que el usuario está inscrito, puede deshacer su suscripción --->
+
+        <div class="proximosconcursos">
           <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
           <ul v-for="proxconcurso in proxconcursos" :key="proxconcurso.id">
             <li>
@@ -177,6 +185,8 @@
           <hr />
         </div>
 
+        <!-- Visualizar los concursos mejor valorados por el público -->
+
         <div class="topconcursos">
           <ul v-for="top in tops" :key="top.id">
             <li>
@@ -193,6 +203,7 @@
             </li>
           </ul>
         </div>
+        <!--Hasta aquí el top concursos -->
       </div>
     </div>
   </div>
@@ -232,6 +243,7 @@ export default {
       nuevaDescripcion: "",
       // Booleano para controlar el v-show que contiene el formulario de edición.
       showEdit: false,
+      showHistorial:false,
       seeEditable: false,
       url_foto: "",
       historial: [],
@@ -375,6 +387,7 @@ export default {
 
           // En user tengo ahora el acceso directo a este usuario concreto.
           self.historial = response.data.data;
+          
         })
 
         .catch(function (error) {
@@ -386,7 +399,8 @@ export default {
             if (result.value) {
               self.getDataUser();
             }
-          }); 
+          });
+          
           console.log(error.response.data.message);
         });
     },
@@ -636,6 +650,7 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  border: solid 1px black;
 }
 
 .editar input {
@@ -665,6 +680,7 @@ h3 {
 #selecciondefoto {
   margin: 0 auto;
   padding: 0.5em;
+  border: 1px solid black;
 }
 
 #botonesedicion {
@@ -679,11 +695,14 @@ img {
   box-shadow: 0 0 10px rgb(12, 12, 12);
 }
 
+#menubotones {
+  border: solid 1px black;
+}
 #menubotones button {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  width: 400px;
+  width: 450px;
   height: 60px;
   font-size: 1.5em;
 
@@ -697,19 +716,34 @@ img {
 
 #menubotones button:hover {
   background-color: #171616;
+  color: white;
 }
 #menubotones button:active {
   background-color: #171616;
 }
 
-a {
-  color: rgb(134, 92, 200);
-  text-decoration: none;
+.historialconcurso {
+  border: 1px solid black;
+}
+.historialpendiente {
+  margin: 0 auto;
+}
+
+proximosconcursos {
+  margin: 0 auto;
+}
+
+topconcursos {
+  margin: 0 auto;
 }
 
 #contenedorperfil {
   display: flex;
-  justify-content: space-around;
-  padding: 10em;
+  flex-direction: row;
+}
+
+a {
+  color: #171616;
+  text-decoration: none;
 }
 </style>

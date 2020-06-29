@@ -6,11 +6,11 @@
     <menucustom></menucustom>
     <!-- Uso del vue headful para nombrar los títulos de pag. visibles en navegador -->
     <div class="contenedorlogin">
-      <h2>Haz login 👇</h2>
+      <h1>Haz login 👇</h1>
       <br />
       <br />
       <!-- Input para campo email -->
-      <input type="text" placeholder="Tu usuario" v-model="mail" />
+      <input type="text" placeholder="Tu correo electrónico" v-model="mail" />
       <br />
       <br />
       <br />
@@ -21,6 +21,7 @@
       <br />
       <!-- Botón con llamada a la función Login -->
       <button @click="login(mail, contrasenha)">LOGIN</button>
+      <br />
       <br />
       <br />
     </div>

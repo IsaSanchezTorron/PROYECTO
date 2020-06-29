@@ -1,6 +1,8 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
+import VModal from "vue-js-modal";
+Vue.use(VModal);
 Vue.use(require("vue-moment"));
 
 Vue.config.productionTip = false;

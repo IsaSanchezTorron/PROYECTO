@@ -11,8 +11,8 @@ const {
 async function newConcourse(req, res, next) {
   let connection;
   try {
-    connection = await getConnection();
     await newConcourseSchema.validateAsync(req.body);
+    connection = await getConnection();
 
     // Defino los campos mínimos a rellenar para dar de alta un concurso. Todos "NOT NULL"
     const {
@@ -21,33 +21,29 @@ async function newConcourse(req, res, next) {
       descripcion,
       modalidad,
       genero,
-      fecha_publicacion
+      ciudad
     } = req.body;
 
     let savedFileName;
+    console.log(req.files);
+    console.log(req.files.url_foto);
 
     if (req.files && req.files.url_foto) {
       try {
         savedFileName = await processAndSavePhoto(req.files.url_foto);
-
-        if (current && current.url_foto) {
-          await deletePhoto(current.url_foto);
-        }
       } catch (error) {
         throw generateError(
           'Ha habido un error en el procesado, inténtalo más tarde.',
           400
         );
       }
-    } else {
-      savedFileName = current.url_foto;
     }
 
     //Compruebo que la descripción del concurso no exista para que no se produzcan duplicidades
     //por error
     const [
       existingConcourse
-    ] = await connection.query('SELECT nombre FROM CONCURSOS WHERE nombre=?', [
+    ] = await connection.query(`SELECT nombre FROM CONCURSOS WHERE nombre=?`, [
       nombre
     ]);
 
@@ -62,7 +58,7 @@ async function newConcourse(req, res, next) {
 
     await connection.query(
       `INSERT INTO CONCURSOS ( nombre, fecha_final, url_foto, descripcion, modalidad, genero, ciudad, fecha_publicacion )
-      VALUES (?,?,?,?,?,?,?, NOW()`,
+      VALUES (?,?,?,?,?,?,?, NOW())`,
       [
         nombre,
         fecha_final,
@@ -70,8 +66,7 @@ async function newConcourse(req, res, next) {
         descripcion,
         modalidad,
         genero,
-        ciudad,
-        fecha_publicacion
+        ciudad
       ]
     );
 

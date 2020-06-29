@@ -17,7 +17,7 @@ async function listingConcourses(req, res, next) {
     LEFT JOIN INSCRIPCIONES ON  INSCRIPCIONES.CONCURSOS_id_concurso = CONCURSOS.id_concurso 
     LEFT JOIN USUARIOS ON USUARIOS.id_usuario = CONCURSOS.id_ganador
     GROUP BY CONCURSOS.id_concurso
-    ORDER BY CONCURSOS.fecha_final ASC`
+    ORDER BY CONCURSOS.fecha_final DESC`
     );
 
     if (!result.length) {

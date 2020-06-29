@@ -15,7 +15,7 @@ const imageUploadPath = path.join(__dirname, process.env.UPLOADS_DIR);
 console.log(path);
 
 function formatDateToDB(date) {
-  return format(date, 'yyyy-MM-dd HH:mm:ss');
+  return format(date, 'yyyy-MM-dd');
 }
 
 function generateError(message, code) {
@@ -64,9 +64,7 @@ async function processAndSavePhoto(uploadedImage) {
 }
 
 async function deletePhoto(imagePath) {
-  if (imagePath !== 'perfil.png') {
-    await fs.unlink(path.join(imageUploadPath, imagePath));
-  }
+  await fs.unlink(path.join(imageUploadPath, imagePath));
 }
 
 function searchConcourses(queryParams) {
@@ -130,7 +128,7 @@ function searchConcourses(queryParams) {
     query = `${query} ${conditions.join(' AND ')} `;
   }
   query = `${query} GROUP BY CONCURSOS.id_concurso
-    ORDER BY CONCURSOS.fecha_publicacion`;
+    ORDER BY CONCURSOS.fecha_final DESC`;
   return {
     query,
     params

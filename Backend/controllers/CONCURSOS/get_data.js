@@ -13,12 +13,12 @@ async function getConcourse(req, res, next) {
 
     const [result] = await connection.query(
       `
-    SELECT id_concurso, nombre, fecha_inicio,fecha_final, url_foto, descripcion, modalidad, genero, ciudad, ROUND(AVG(INSCRIPCIONES.valoracion), 1) AS valoracion
+    SELECT id_concurso, nombre, fecha_publicacion,fecha_final, url_foto, descripcion, modalidad, genero, ciudad, ROUND(AVG(INSCRIPCIONES.valoracion), 1) AS valoracion
     FROM CONCURSOS
     INNER JOIN INSCRIPCIONES 
     ON  INSCRIPCIONES.CONCURSOS_id_concurso = CONCURSOS_id_concurso 
     WHERE id_concurso= ?
-    ORDER BY fecha_inicio`,
+    ORDER BY fecha_publicacion`,
       [id]
     );
 

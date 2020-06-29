@@ -57,22 +57,29 @@ showAllConcourses (){
         .get("http://localhost:3003/concursos/listado")
         //SI SALE BIEN
         .then(function (response) {
-          self.concursos = response.data.data;
+          
+
+           self.concursos = response.data.data.map((concurso) =>{
+            concurso.url_foto = "http://localhost:3003/images/" + concurso.url_foto;
+
+          return concurso;
           console.log(response);
+           });
         })
+
         //SI SALE MAL
         .catch(function (error) {
           console.error(error);
         });
-    },
-  },
-  // LA LLAMADA A LA FUNCIÓN EN LA CARGA
-  created() {
-    this.showAllConcourses();
-    
+    }
 },
-
+  // LA LLAMADA A LA FUNCIÓN EN LA CARGA
+created() {
+    this.showAllConcourses();
+}
 };
+
+
 </script>
 
 <style>

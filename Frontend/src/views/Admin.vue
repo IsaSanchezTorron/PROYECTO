@@ -8,7 +8,7 @@
 
     <!--Aquí es donde cargo todos los concursos con una computed -->
     <div id="concursoscontenedor">
-      <h2>Todos los concursos hasta la fecha</h2>
+      <h1>Todos los concursos hasta la fecha</h1>
 
       <!--Aquí un contenedor para centrar en la parte superior el botón y el buscador -->
       <div id="contenedorbuscadoryañadirconcurso">
@@ -21,47 +21,56 @@
             id="search"
             name="bySearch"
             type="search"
-            placeholder="🔍 Nombre/Descripción..."
+            placeholder="🔍 Nombre/Descripción/Género/Modalidad..."
           />
         </div>
       </div>
 
       <!--Este es el modal donde el Admin va a añadir un nuevo concurso -->
-      <div class="modal" v-show="seeNewConcourse">
+      <div class="modal" v-show="modal">
         <div class="modalBox">
-          <form>
-            <label for="nombre">Nombre:</label>
-            <br />
-            <input type="text" name="nombre" id="nombre" v-model="nombre" />
+          <label for="nombre">Nombre:</label>
+          <input type="text" name="nombre" id="nombre" v-model="nombre" />
 
-            <label for="fecha_final">Fecha de cierre:</label>
-            <br />
-            <input type="date" name="fecha_final" id="fecha_final" v-model="fecha_final" />
+          <br />
+          <label for="fecha_final">Fecha de cierre en formato "YYYY-MM-MM":</label>
+          <input type="date" name="fecha_final" id="fecha_final" v-model="fecha_final" />
 
-            <label for="descripcion">Información y Bases:</label>
-            <br />
-            <input type="text" name="descripcion" id="descripcion" v-model="descripcion" />
+          <br />
+          <label for="descripcion" size="500">Información y Bases:</label>
+          <input type="text" name="descripcion" id="descripcion" v-model="descripcion" />
 
-            <label for="modalidad">Modalidad:</label>
-            <br />
-            <input type="text" name="modalidad" id="modalidad" v-model="modalidad" />
+          <br />
+          <label for="modalidad">Modalidad:</label>
+          <input v-model="modalidad" type="radio" name="modalidad" value="online" /> Online
+          <input v-model="modalidad" type="radio" name="modalidad" value="presencial" />
+          Presencial
+          <br />
+          <label for="genero">Género:</label>
+          <input type="text" name="genero" id="genero" v-model="genero" />
 
-            <label for="genero">Género:</label>
-            <br />
-            <input type="text" name="genero" id="genero" v-model="genero" />
+          <br />
+          <label for="ciudad">Ciudad:</label>
+          <input type="text" name="ciudad" id="ciudad" v-model="ciudad" />
 
-            <label for="fecha_publicacion">Publicado el:</label>
-            <br />
+          <br />
+
+          <div id="selecciondefoto">
+            <label for="file">👤 Selecciona tu nueva foto 👉 📸 .</label>
             <input
-              type="date"
-              name="fecha_publicacion"
-              id="fecha_publicacion"
-              v-model="fecha_publicacion"
+              type="file"
+              id="url_foto"
+              name="url_foto"
+              ref="url_foto"
+              @change="handleFileUpload()"
             />
-          </form>
+          </div>
+
+          <button @click="createNewConcourse()">💾 Guardar</button>
+          <button @click="closeModal()">⬅️ Cerrar</button>
         </div>
       </div>
-      <button @click="createNewConcourse()">AÑADIR CONCURSO NUEVO</button>
+      <button @click="openModal()">➕ AÑADIR CONCURSO NUEVO</button>
 
       <div class="contenedor">
         <br />
@@ -145,8 +154,10 @@ export default {
         descripcion: "",
         modalidad:"",
         genero:"",
+        ciudad:"",
         fecha_publicacion:"",
-        seeNewConcourse: false,
+        modal: false,
+        
         };
     },
 
@@ -176,15 +187,19 @@ computed: {
   },
 
 
-
-
-
-
-
-
-
-
     methods: {
+
+
+    
+   openModal() {
+      this.modal = true;
+      
+
+   },
+   closeModal(){
+     this.modal = false;
+   },
+
 
  showAllConcourses(){
     let self= this;
@@ -192,14 +207,20 @@ computed: {
         .get("http://localhost:3003/concursos/listado")
         //SI SALE BIEN
         .then(function (response) {
-          self.concursos = response.data.data;
+          
+            self.concursos = response.data.data.map((concurso) =>{
+            concurso.url_foto = "http://localhost:3003/images/" + concurso.url_foto;
+
+          return concurso;
           console.log(response);
+        });
         })
         //SI SALE MAL
         .catch(function (error) {
           console.error(error);
         });
-    },
+        }
+ },
   
  
 
@@ -235,7 +256,12 @@ Swal.fire({
             });
           Swal.fire({
             title: "✅",
-            text: "Se ha eliminado correctamente",
+            text: "Se ha eliminado correctamente", nombre: Joi.string()
+    .max(500)
+    .required()
+    .error(
+      new Error('El nombre del concurso no debe exceder de los 500 caracteres')
+    ),
             confirmButtonText: "O.K",
             timer: 4000
           })
@@ -247,42 +273,54 @@ Swal.fire({
     },
 
 
+     handleFileUpload(){
+    this.url_foto = this.$refs.url_foto.files[0];
+  },
+
+
 
 
  createNewConcourse() {
       
       var self = this;
       const token = localStorage.getItem("token");
+       const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      axios
-        .post("http://localhost:3003/concursos/nuevo_concurso", {
 
-        nombre: self.nombre,
-        fecha_final: self.date,
-        descripcion: self.descripcion,
-        modalidad:self.modalidad,
-        genero:self.genero,
-        fecha_publicacion: self.fecha_publicacion,
-        })
+      let formData = new FormData();
+      formData.append("url_foto", self.url_foto);
+      formData.append("nombre", self.nombre);
+      formData.append("fecha_final", self.fecha_final)
+      formData.append("descripcion", self.descripcion);
+      formData.append("modalidad", self.modalidad);
+      formData.append("genero", self.genero);
+      formData.append("ciudad", self.ciudad);
+      
+
+      axios
+        .post("http://localhost:3003/concursos/nuevo_concurso", formData,{
+        
+        headers:{
+             "Content-Type": "multipart/form-data",
+          },  
+      
+        } )
         .then(function(response) {
+          self.closeModal();
           Swal.fire({
             title: "El concurso ha sido agregado correctamente",
           });
-          
-          self.seeNewConcourse = false;
+        setTimeout(function(){
           location.reload();
+        },2000)
+          
         })
         .catch(function(error) {
-          console.error(error);
+          console.error(error.response.data.message);
         });
     },   
 
  
-
-        
-
-
-    },
 // LA LLAMADA A LA FUNCIÓN EN LA CARGA
   created() {
     this.showAllConcourses();
@@ -327,6 +365,11 @@ img:hover {
   padding: 2em;
 }
 
+#formulariobusqueda input {
+  width: 500px;
+  height: 40px;
+}
+
 h3 {
   text-transform: uppercase;
   font-size: 1.3em;
@@ -339,5 +382,31 @@ p {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 150px;
+  width: 100%;
+}
+
+.modalBox {
+  background: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 50px;
+  border: solid 4px black;
+  box-shadow: 0 0 10px rgb(12, 12, 12);
+  font-size: 1.8em;
 }
 </style>

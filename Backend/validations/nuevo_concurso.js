@@ -38,6 +38,13 @@ const newConcourseSchema = Joi.object().keys({
 
     .error(
       new Error('El género del concurso debe tener un máximo de 100 caracteres')
+    ),
+  ciudad: Joi.string()
+    .max(200)
+
+    .error(
+      new Error('El género del concurso debe tener un máximo de 100 caracteres')
     )
 });
+
 module.exports = { newConcourseSchema };
