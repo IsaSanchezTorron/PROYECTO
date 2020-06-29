@@ -124,7 +124,30 @@
           </p>
           <button @click="deleteConcourse(index)">🗑 Eliminar</button>
           <button @click="editConcourse()">✍️Editar</button>
-          <button @click="seeParticipants()">👥 Ver listado de participantes</button>
+
+          <!-- Botón para abrir modal para ver participantes del concurso -->
+          <button @click="openModalInscripciones(index)">👥 Ver listado de participantes</button>
+          <!-- El modal con los datos de las inscripciones -->
+          <div class="modal" v-show="verInscripciones">
+            <div class="modalBox">
+              <h2>Estas son las personas inscritas</h2>
+              <ul
+                class="resultadosinscripciones"
+                v-for="inscripcion in inscripciones"
+                :key="inscripcion.id"
+              >
+                <li>👤 Id.: {{inscripcion.id_usuario}} - Nombre: {{inscripcion.nombre}} {{inscripcion.apellidos}}</li>
+                <li v-if="inscripcion.id_ganador">
+                  <hr />
+                  <b>Nombrada ganadora la persona con id: {{inscripcion.id_ganador}} el {{inscripcion.fecha_asignacion_ganador | moment(" D-MM-YYYY")}}</b>
+                </li>
+                <hr />
+              </ul>
+
+              <button @click="asignWinner()">💾 Guardar</button>
+              <button @click="closeModalInscripciones()">⬅️ Cerrar</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -157,6 +180,9 @@ export default {
         ciudad:"",
         fecha_publicacion:"",
         modal: false,
+        verInscripciones: false,
+        inscripciones: [],
+        concursoinscripciones:{},
         
         };
     },
@@ -191,17 +217,28 @@ computed: {
 
 
     
-   openModal() {
+openModal() {
       this.modal = true;
-      
-
    },
-   closeModal(){
+
+closeModal(){
      this.modal = false;
    },
 
+openModalInscripciones(index){
+    
+    this.verInscripciones = true;
+    this.concursoinscripciones=this.concursos[index];
+    console.log(this.concursoinscripciones);
+    this.showInscribed();
+   },
 
- showAllConcourses(){
+closeModalInscripciones(){
+     this.verInscripciones = false;
+   },
+
+
+showAllConcourses(){
     let self= this;
     axios
         .get("http://localhost:3003/concursos/listado")
@@ -219,11 +256,11 @@ computed: {
         .catch(function (error) {
           console.error(error);
         });
-        }
- },
-  
- 
 
+
+        },
+
+  
 deleteConcourse(index){
  
       const self = this;
@@ -256,12 +293,7 @@ Swal.fire({
             });
           Swal.fire({
             title: "✅",
-            text: "Se ha eliminado correctamente", nombre: Joi.string()
-    .max(500)
-    .required()
-    .error(
-      new Error('El nombre del concurso no debe exceder de los 500 caracteres')
-    ),
+            text: "Se ha eliminado correctamente",
             confirmButtonText: "O.K",
             timer: 4000
           })
@@ -273,10 +305,43 @@ Swal.fire({
     },
 
 
-     handleFileUpload(){
+handleFileUpload(){
     this.url_foto = this.$refs.url_foto.files[0];
   },
 
+
+showInscribed(){
+      const self = this;
+      // Cojo token e id de concurso.
+      const token = localStorage.getItem("token");
+     
+      const data = self.concursoinscripciones.id_concurso;
+      
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    
+    axios
+        .get("http://localhost:3003/concursos/inscripciones/" + data) 
+        //SI SALE BIEN
+        .then(function (response) {
+          
+          self.inscripciones = response.data.data;
+          console.log(response.data.data);
+         
+          
+          console.log(response);
+        })
+      
+        //SI SALE MAL
+        .catch(function (error) {
+          console.error(error.response.data.message);
+        });
+        },
+
+
+ /* setWinner(index){
+
+ }  ,    */  
+ 
 
 
 
@@ -320,9 +385,9 @@ Swal.fire({
         });
     },   
 
- 
+    },
 // LA LLAMADA A LA FUNCIÓN EN LA CARGA
-  created() {
+created() {
     this.showAllConcourses();
     
 },
@@ -333,7 +398,7 @@ Swal.fire({
 
 <style scoped>
 .concursoscontenedor {
-  box-shadow: 0 0 10px rgb(12, 12, 12);
+  box-shadow: 0 0 10px var(--black);
   padding: 2em;
   width: 250px;
   margin: 10px auto;
@@ -378,6 +443,10 @@ p {
   font-size: 0.8em;
 }
 
+ul {
+  list-style: none;
+}
+
 #contenedorbuscadoryañadirconcurso {
   display: flex;
   flex-direction: row;
@@ -394,19 +463,25 @@ p {
 }
 
 .modalBox {
-  background: #fefefe;
+  background: var(--white);
   margin: 15% auto;
-  padding: 20px;
+  padding: 10px;
   border: 1px solid #888;
-  width: 50%;
-  height: 50%;
+  width: 40%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   border-radius: 50px;
-  border: solid 4px black;
-  box-shadow: 0 0 10px rgb(12, 12, 12);
+  border: solid 1px rgba(22, 22, 22, 0.753);
+  box-shadow: 0 0 5px rgba(39, 37, 37, 0.548);
   font-size: 1.8em;
+}
+
+hr {
+  height: 10px;
+  border: 0;
+  box-shadow: 0 10px 10px -10px #8c8b8b inset;
 }
 </style>

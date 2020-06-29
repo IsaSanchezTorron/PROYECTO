@@ -309,6 +309,7 @@ export default {
           // En user tengo ahora el acceso directo a este usuario concreto.
           self.user = response.data.data;
           // Monto la ruta para poder visualizar la imagen que está en la BBDD con un nombre de archivo.
+            
           self.user.url_foto =
             "http://localhost:3003/images/" + self.user.url_foto;
         })
@@ -636,8 +637,8 @@ created(){
   justify-content: space-evenly;
   align-items: center;
   border-radius: 50px;
-  border: solid 1px black;
-  box-shadow: 0 0 1px rgb(12, 12, 12);
+  border: solid 1px var(--black);
+  box-shadow: 0 0 1px var(--black);
 }
 
 h3 {
@@ -650,7 +651,7 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: solid 1px black;
+  border: solid 1px var(--black);
 }
 
 .editar input {
@@ -680,7 +681,7 @@ h3 {
 #selecciondefoto {
   margin: 0 auto;
   padding: 0.5em;
-  border: 1px solid black;
+  border: 1px solid var(--black);
 }
 
 #botonesedicion {
@@ -692,11 +693,11 @@ img {
   width: 250px;
   height: 250px;
   margin: 50px;
-  box-shadow: 0 0 10px rgb(12, 12, 12);
+  box-shadow: 0 0 10px var(--black);
 }
 
 #menubotones {
-  border: solid 1px black;
+  border: solid 1px var(--black);
 }
 #menubotones button {
   display: flex;
@@ -710,20 +711,20 @@ img {
   margin: 10px;
   background-color: transparent;
   font-family: "Ubuntu", sans-serif;
-  color: #1a99e7;
+  color: var(--blue);
   transition: background-color 0.3s;
 }
 
 #menubotones button:hover {
-  background-color: #171616;
-  color: white;
+  background-color: var(--black);
+  color: var(--white);
 }
 #menubotones button:active {
-  background-color: #171616;
+  background-color: var(--black);
 }
 
 .historialconcurso {
-  border: 1px solid black;
+  border: 1px solid var(--black);
 }
 .historialpendiente {
   margin: 0 auto;
@@ -743,7 +744,7 @@ topconcursos {
 }
 
 a {
-  color: #171616;
+  color: var(--black);
   text-decoration: none;
 }
 </style>

@@ -19,7 +19,11 @@
     <div class="contenedor">
       <br />
       <!-- Contenedor para dar formato a la ficha de productos, lo cargamos con el array de productos filtrados -->
-      <div class="concursoscontenedor" v-for="concurso in concursosFiltrados" :key="concurso.id">
+      <div
+        class="concursoscontenedor"
+        v-for="(concurso, index) in concursosFiltrados"
+        :key="concurso.id"
+      >
         <p v-show="finalizado">CONCURSO FINALIZADO</p>
         <p>
           📌
@@ -71,8 +75,17 @@
           <b>📆 Cierre de suscripción:</b>
           {{ concurso.fecha_final | moment(" D-MM-YYYY")}}
         </p>
-        <!-- Con una clase dinámica manejo los colores en función de la vigencia del concurso -->
-        <button @click="openModal()">VER BASES</button>
+        <!-- Un modal para consultar las bases del concurso -->
+        <button @click="openModal(index)">VER BASES</button>
+
+        <div v-show="modal" class="modal">
+          <div class="modalbox">
+            <h1>Bases del concurso</h1>
+            <p>{{concursobases.descripcion}}</p>
+            <button @click="closeModal()">Cerrar</button>
+          </div>
+        </div>
+
         <br />
         <br />
         <button @click="confirmInscription(concurso)">QUIERO INSCRIBIRME</button>
@@ -105,6 +118,9 @@ export default {
       search: "",
       id: null,
       finalizado: false,
+      concursobases: {},
+      modal: false,
+      descripcion:"",
     };
   },
 
@@ -150,6 +166,20 @@ export default {
 
 
   methods: {
+openModal(index) {
+      this.modal = true;
+      this.concursobases=this.concursos[index];
+
+     
+      
+
+   },
+   closeModal(){
+     this.modal = false;
+   },
+
+
+
 
 
 // MÉTODO PARA EL BOTÓN DE INSCRIPCIÓN EN CONCURSO.
@@ -232,7 +262,7 @@ confirmInscription(concurso) {
   color: red;
 }
 .concursoscontenedor {
-  box-shadow: 0 0 10px rgb(12, 12, 12);
+  box-shadow: 0 0 10px var(--black);
   padding: 3em;
   width: 300px;
   margin: 50px auto;
@@ -277,5 +307,29 @@ input {
   width: 500px;
   height: 50px;
   font-size: 1.5em;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 150px;
+  width: 100%;
+}
+
+.modalbox {
+  background: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 50px;
+  border: solid 2px var(--black);
+  box-shadow: 0 0 1px var(--black);
 }
 </style>

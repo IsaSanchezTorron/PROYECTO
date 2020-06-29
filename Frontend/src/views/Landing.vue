@@ -2,6 +2,11 @@
   <div>
     <!-- Título para la pestaña del navegador -->
     <vue-headful title="INTERTEXTUAL" description="Landing" />
+    <div id="linkregistrousuario">
+      <router-link :to="{ name: 'Register' }">
+        <a>💙 Registro de nuevo usuario</a>
+      </router-link>
+    </div>
     <menucustom></menucustom>
     <br />
 
@@ -9,7 +14,7 @@
       <img id="fotoinformativa" src="../assets/images/intertextual5.png" alt="foto informativa" />
       <div id="buscador">
         <form>
-          <h2>🔎 Puedes utilizar nuestro buscador 👇</h2>
+          <h2>🔎 PUEDES UTILIZAR NUESTRO BUSCADOR 👇</h2>
           <p>
             <b>ENCUENTRA CONCURSOS SEGÚN TUS PREFERENCIAS</b>
           </p>
@@ -59,7 +64,7 @@
 
     <div id="contenedorbusqueda">
       <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
-      <ul v-for="resultadobusqueda in resultadobusquedas" :key="resultadobusqueda.id">
+      <ul v-for="(resultadobusqueda, index) in resultadobusquedas" :key="resultadobusqueda.id">
         <div class="resultadosbusqueda">
           <li>
             <h3>{{ resultadobusqueda.nombre }}</h3>
@@ -94,13 +99,18 @@
           </div>
 
           <li>
-            <button @click="openModal(index)">Ver Bases</button>
+            <button @click="openModal(index)">➕ Más información</button>
           </li>
 
           <div v-show="modal" class="modal">
             <div class="modalbox">
-              <h3>Bases del concurso</h3>
-              <p>{{resultadobusqueda.descripcion}}</p>
+              <h1>Bases del concurso</h1>
+              <h3>Recuerda que debes tener una cuenta con nosotras para inscribirte</h3>
+
+              <p>
+                <router-link :to="{ name: 'Register' }">🙋 Quiero registrarme en INTERTEXTUAL</router-link>
+              </p>
+              <p>{{concursobases.descripcion}}</p>
               <button @click="closeModal()">Cerrar</button>
             </div>
           </div>
@@ -146,6 +156,8 @@ export default {
       ciudad: "",
       url_foto:"",
       modal : false,
+      descripcion:"",
+      concursobases:{},
       
 
     }
@@ -155,7 +167,9 @@ export default {
 methods: {
    openModal(index) {
       this.modal = true;
-      /* return resultadobusqueda; */
+      this.concursobases=this.resultadobusquedas[index];
+
+     
       
 
    },
@@ -256,21 +270,18 @@ img:hover {
 }
 
 #principallanding {
-  background-color: #100f0d;
+  background-color: #171616;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  box-shadow: 0 0 10px rgb(0, 0, 0);
+  box-shadow: 0 0 10px var(--black);
   height: 500px;
   width: 100%;
   padding: 0em;
   margin: 0 auto;
   padding-top: 30px;
   padding-bottom: 40px;
-}
-h2 {
-  color: #fedd0a;
 }
 
 input {
@@ -279,20 +290,20 @@ input {
 }
 form p {
   font-size: 1.1em;
-  color: #f3f3f3;
+  color: var(--white);
 }
 button {
   padding: 0.7em;
 }
 
 #contenedoramarillo {
-  background-color: rgb(12, 12, 12);
-  color: white;
+  background-color: var(--black);
+  color: var(--white);
   margin: 50px;
 }
 
 .resultadosbusqueda {
-  box-shadow: 0 0 10px rgb(12, 12, 12);
+  box-shadow: 0 0 10px var(--black);
   padding: 2em;
   width: 300px;
   margin: 10px auto;
@@ -341,7 +352,7 @@ h3 {
 }
 
 .modalbox {
-  background: #fefefe;
+  background: var(--white);
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
@@ -351,7 +362,7 @@ h3 {
   justify-content: space-evenly;
   align-items: center;
   border-radius: 50px;
-  border: solid 2px black;
-  box-shadow: 0 0 1px rgb(12, 12, 12);
+  border: solid 2px var(--black);
+  box-shadow: 0 0 1px var(--black);
 }
 </style>

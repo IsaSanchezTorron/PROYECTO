@@ -75,13 +75,13 @@ const role = localStorage.getItem("rol");
   flex-direction: row;
   justify-content: space-around;
   margin: 0 auto;
-  color: black;
+  color: var(--black);
   font-size: 1em;
   padding: 1em;
 }
 
 #contenedorMenu a {
-  color: rgb(20, 20, 20);
+  color: var(--black);
   font-size: 1.2em;
   text-decoration: none;
 }

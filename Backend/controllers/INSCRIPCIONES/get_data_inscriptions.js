@@ -12,7 +12,7 @@ async function getInscribed(req, res, next) {
     const { id } = req.params;
 
     const [result] = await connection.query(
-      `SELECT CONCURSOS.id_concurso, CONCURSOS.nombre, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, USUARIOS.id_usuario, USUARIOS.nombre, USUARIOS.apellidos, INSCRIPCIONES.fecha_inscripcion
+      `SELECT CONCURSOS.id_concurso, CONCURSOS.id_ganador, CONCURSOS.nombre, CONCURSOS.fecha_inicio, CONCURSOS.fecha_final, USUARIOS.id_usuario, USUARIOS.nombre, USUARIOS.apellidos, INSCRIPCIONES.fecha_inscripcion, CONCURSOS.fecha_asignacion_ganador
 FROM USUARIOS
 INNER JOIN INSCRIPCIONES ON  INSCRIPCIONES.USUARIOS_id_usuario= USUARIOS.id_usuario
 INNER JOIN CONCURSOS  ON  CONCURSOS.id_concurso = INSCRIPCIONES.CONCURSOS_id_concurso

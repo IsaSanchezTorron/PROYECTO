@@ -1,11 +1,6 @@
 <template>
   <div id="app">
     <div id="nav">
-      <div id="linkregistrousuario">
-        <router-link :to="{ name: 'Register' }">
-          <a>📍Registro de nuevo usuario</a>
-        </router-link>
-      </div>
       <transition name="fade">
         <router-view />
       </transition>
@@ -24,6 +19,13 @@
   background-color: #f6f4f1;
 }
 
+html {
+  --black: #171616;
+  --blue: #1ca0f2;
+  --yellow: #fedd09;
+  --white: #f6f4f1;
+}
+
 #nav {
   padding: 30px;
 }
@@ -37,7 +39,8 @@ div #linkregistrousuario a {
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #204ecc;
+  font-size: 1.3em;
 }
 
 .fade-enter-active,
@@ -68,7 +71,18 @@ button {
 
 h1 {
   font-size: 3em;
-  color: #1ca1f2;
-  -webkit-text-stroke: 1.8px black;
+  color: var(--black);
+  -webkit-text-stroke: 0.5px var(--blue);
+  -webkit-box-reflect: below -30px -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(rgba(255, 255, 255, 0.26))
+    );
+}
+h2 {
+  font-size: 1.6em;
+  color: var(--blue);
 }
 </style>

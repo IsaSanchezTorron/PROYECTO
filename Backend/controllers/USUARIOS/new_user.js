@@ -27,7 +27,7 @@ async function newUser(req, res, next) {
     const dbPassword = await bcrypt.hash(contrasenha, 10);
 
     const registrationCode = randomString(40);
-    const validationURL = `${process.env.PUBLIC_HOST}controllers/USUARIOS/validate?code=${registrationCode}`;
+    const validationURL = `${process.env.PUBLIC_HOST}/USUARIOS/validate?code=${registrationCode}`;
 
     try {
       await sendEmail({

@@ -72,22 +72,34 @@ export default {
 <style scoped>
 #compañeros {
   font-size: 3em;
-  color: #1ca1f2;
-  -webkit-text-stroke: 1.8px black;
+  color: var(--blue);
+  -webkit-text-stroke: 1.8px var(--black);
 }
 #minombre {
-  color: #100f0d;
+  color: var(--black);
 }
 p {
   font-size: 1.6em;
-  color: #171616;
+  color: var(--black);
   text-align: left;
 }
 img {
   width: 200px;
   border-radius: 150px;
-  box-shadow: 0 0 10px rgb(0, 0, 0);
-  border: solid 1px black;
+  box-shadow: 0 0 10px var(--black);
+  border: solid 1px var(--black);
+  -webkit-box-reflect: below -120px -webkit-gradient(
+      linear,
+      left top,
+      left bottom,
+      from(transparent),
+      to(rgba(255, 255, 255, 0.26))
+    );
+  transition: transform 0.5s ease-in-out;
+}
+
+img:hover {
+  transform: scale(1.5);
 }
 
 #mipresentacion {
@@ -127,7 +139,7 @@ img {
   border-radius: 175px;
 }
 #mifoto {
-  border: 1px black;
+  border: 1px var(--black);
 }
 
 #informaciontecnologias {

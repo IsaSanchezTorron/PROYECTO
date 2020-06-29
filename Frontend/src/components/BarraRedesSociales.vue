@@ -35,8 +35,8 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  background-color: #fedd0a;
-  box-shadow: 0 0 10px rgb(12, 12, 12);
+  background-color: var(--yellow);
+  box-shadow: 0 0 10px var(--black);
   padding: 1em;
 }
 #contenedorredessociales img {

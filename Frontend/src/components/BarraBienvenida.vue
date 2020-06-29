@@ -23,8 +23,8 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  background-color: #ffffff;
-  box-shadow: 0 0 10px rgb(12, 12, 12);
+  background-color: var(--white);
+  box-shadow: 0 0 10px var(--black);
   padding: 1em;
 }
 </style>
