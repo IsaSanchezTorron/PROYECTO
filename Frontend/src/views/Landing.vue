@@ -282,6 +282,7 @@ img:hover {
   margin: 0 auto;
   padding-top: 30px;
   padding-bottom: 40px;
+  border-radius: 100px;
 }
 
 input {
@@ -299,7 +300,7 @@ button {
 #contenedoramarillo {
   background-color: var(--black);
   color: var(--white);
-  margin: 50px;
+  margin: 0px;
 }
 
 .resultadosbusqueda {

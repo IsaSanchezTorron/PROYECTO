@@ -1,14 +1,14 @@
 require('dotenv').config();
 
 const { getConnection } = require('../../DB');
-const { generateError } = require('../../helpers');
+const { generateError, formatDateToDB } = require('../../helpers');
 
 async function listingConcourses(req, res, next) {
   let connection;
 
   try {
     connection = await getConnection();
-
+    const dateToday = formatDateToDB(new Date());
     const { id } = req.params;
 
     const [result] = await connection.query(
@@ -16,8 +16,10 @@ async function listingConcourses(req, res, next) {
     FROM CONCURSOS
     LEFT JOIN INSCRIPCIONES ON  INSCRIPCIONES.CONCURSOS_id_concurso = CONCURSOS.id_concurso 
     LEFT JOIN USUARIOS ON USUARIOS.id_usuario = CONCURSOS.id_ganador
+    WHERE CONCURSOS.fecha_final > ?
     GROUP BY CONCURSOS.id_concurso
-    ORDER BY CONCURSOS.fecha_final DESC`
+    ORDER BY CONCURSOS.fecha_final DESC`,
+      [dateToday]
     );
 
     if (!result.length) {

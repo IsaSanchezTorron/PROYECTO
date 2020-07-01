@@ -154,9 +154,4 @@ img:hover {
   padding: 0.5em;
   margin-bottom: 1.3em;
 }
-hr {
-  height: 10px;
-  border: 0;
-  box-shadow: 0 10px 10px -10px #8c8b8b inset;
-}
 </style>

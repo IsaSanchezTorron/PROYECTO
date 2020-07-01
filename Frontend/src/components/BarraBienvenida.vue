@@ -26,5 +26,6 @@ export default {
   background-color: var(--white);
   box-shadow: 0 0 10px var(--black);
   padding: 1em;
+  border-radius: 100px;
 }
 </style>

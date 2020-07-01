@@ -85,4 +85,14 @@ h2 {
   font-size: 1.6em;
   color: var(--blue);
 }
+
+hr {
+  height: 10px;
+  border: 0;
+  box-shadow: 0 10px 10px -10px var(--yellow) inset;
+}
+
+ul li {
+  list-style: none;
+}
 </style>

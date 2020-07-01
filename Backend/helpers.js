@@ -101,12 +101,12 @@ function searchConcourses(queryParams) {
     }
 
     if (fecha_publicacion) {
-      conditions.push('CONCURSOS.fecha_final >= ?');
+      conditions.push('CONCURSOS.fecha_publicacion >= ?');
       params.push(fecha_publicacion);
     }
 
     if (fecha_final) {
-      conditions.push('CONCURSOS.fecha_final >= ?');
+      conditions.push('CONCURSOS.fecha_final <= ?');
       params.push(fecha_final);
     }
 

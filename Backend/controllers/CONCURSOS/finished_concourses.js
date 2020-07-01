@@ -13,10 +13,10 @@ async function finishedConcourses(req, res, next) {
     console.log(dateToday);
 
     const [result] = await connection.query(
-      `SELECT CONCURSOS.nombre, CONCURSOS.descripcion, CONCURSOS.fecha_publicacion, CONCURSOS.fecha_final, CONCURSOS.genero, CONCURSOS.modalidad, CONCURSOS.ciudad,  ROUND(AVG(INSCRIPCIONES.valoracion)) as valoracion
+      `SELECT CONCURSOS.nombre, CONCURSOS.descripcion, CONCURSOS.fecha_publicacion, CONCURSOS.fecha_final, CONCURSOS.url_foto,  CONCURSOS.genero, CONCURSOS.modalidad, CONCURSOS.ciudad,  ROUND(AVG(INSCRIPCIONES.valoracion)) as valoracion
 FROM CONCURSOS
 LEFT JOIN INSCRIPCIONES ON CONCURSOS.id_concurso = INSCRIPCIONES.CONCURSOS_id_concurso
-WHERE CONCURSOS.fecha_asignacion_ganador <= ? 
+WHERE CONCURSOS.fecha_final <= ? 
 GROUP BY CONCURSOS.id_concurso
 ORDER BY CONCURSOS.fecha_publicacion`,
       [dateToday]

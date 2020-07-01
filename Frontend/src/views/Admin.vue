@@ -29,6 +29,7 @@
       <!--Este es el modal donde el Admin va a añadir un nuevo concurso -->
       <div class="modal" v-show="modal">
         <div class="modalBox">
+          <h2>Introduce los datos del concurso</h2>
           <label for="nombre">Nombre:</label>
           <input type="text" name="nombre" id="nombre" v-model="nombre" />
 
@@ -41,11 +42,14 @@
           <input type="text" name="descripcion" id="descripcion" v-model="descripcion" />
 
           <br />
+
           <label for="modalidad">Modalidad:</label>
-          <input v-model="modalidad" type="radio" name="modalidad" value="online" /> Online
-          <input v-model="modalidad" type="radio" name="modalidad" value="presencial" />
-          Presencial
-          <br />
+          <div id="checks">
+            <input v-model="modalidad" type="radio" name="modalidad" value="online" /> Online
+            <input v-model="modalidad" type="radio" name="modalidad" value="presencial" />
+            Presencial
+            <br />
+          </div>
           <label for="genero">Género:</label>
           <input type="text" name="genero" id="genero" v-model="genero" />
 
@@ -463,11 +467,11 @@ ul {
 
 .modalBox {
   background: var(--white);
-  margin: 15% auto;
+  margin: 10% auto;
   padding: 10px;
   border: 1px solid #888;
   width: 40%;
-  height: 60%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -482,5 +486,16 @@ hr {
   height: 10px;
   border: 0;
   box-shadow: 0 10px 10px -10px #8c8b8b inset;
+}
+
+input {
+  height: 50px;
+  width: 500px;
+}
+
+#checks {
+  display: flex;
+  flex-direction: column;
+  margin: 13 auto;
 }
 </style>

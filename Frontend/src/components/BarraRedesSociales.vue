@@ -38,6 +38,7 @@ export default {
   background-color: var(--black);
   box-shadow: 0 0 10px var(--black);
   padding: 1em;
+  border-radius: 100px;
 }
 #contenedorredessociales img {
   width: 100px;
