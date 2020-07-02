@@ -19,13 +19,21 @@ export default {
 
 <style scoped>
 #contenedorparabienvenida {
-  margin: 30px;
+  /*  margin: 30px; */
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-around;
+  margin: 0 auto;
   background-color: var(--white);
-  box-shadow: 0 0 10px var(--black);
-  padding: 1em;
-  border-radius: 100px;
+  box-shadow: 0 0 30px rgb(44, 41, 41);
+  padding: 2em;
+  /*   border-radius: 100px; */
+  background: url("https://images.unsplash.com/photo-1578658544861-37dbf6d82ea3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
+  width: 97.7%;
+  margin-top: -19.8px;
+}
+
+img {
+  border-radius: 400px;
 }
 </style>

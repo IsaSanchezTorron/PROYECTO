@@ -8,7 +8,9 @@
 
     <!--Aquí es donde cargo todos los concursos con una computed -->
     <div id="concursoscontenedor">
-      <h1>Todos los concursos hasta la fecha</h1>
+      <br />
+      <br />
+      <h1>TODOS LOS CONCURSOS HASTA LA FECHA</h1>
 
       <!--Aquí un contenedor para centrar en la parte superior el botón y el buscador -->
       <div id="contenedorbuscadoryañadirconcurso">
@@ -74,7 +76,9 @@
           <button @click="closeModal()">⬅️ Cerrar</button>
         </div>
       </div>
-      <button @click="openModal()">➕ AÑADIR CONCURSO NUEVO</button>
+      <div id="contenedorboton">
+        <button @click="openModal()">➕ AÑADIR CONCURSO NUEVO</button>
+      </div>
 
       <div class="contenedor">
         <br />
@@ -403,12 +407,16 @@ created() {
 .concursoscontenedor {
   box-shadow: 0 0 10px var(--black);
   padding: 2em;
-  width: 250px;
-  margin: 10px auto;
+  width: 300px;
+  margin: 40px auto;
   border-radius: 20px;
+  width: 500px;
+  height: 900px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  line-height: 0.9;
+  background-color: var(--white);
 }
 
 .contenedor {
@@ -419,6 +427,7 @@ created() {
   width: 90%;
   margin: 10px auto;
 }
+
 img {
   width: 100px;
   height: 100px;
@@ -440,10 +449,11 @@ img:hover {
 
 h3 {
   text-transform: uppercase;
-  font-size: 1.3em;
+  font-size: 1.9em;
 }
+
 p {
-  font-size: 0.8em;
+  font-size: 1.3em;
 }
 
 ul {
@@ -456,7 +466,29 @@ ul {
   justify-content: space-evenly;
 }
 
-.modal {
+button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-self: center;
+  width: 450px;
+  height: 50px;
+  font-size: 1.5em;
+  padding: 0.4em;
+  box-shadow: 0 0 10px rgb(12, 12, 12);
+  margin: 10px;
+  font-family: "Ubuntu", sans-serif;
+  color: var(--white);
+  transition: background-color 0.3s;
+  background-color: var(--black);
+  border-radius: 100px;
+}
+
+h1 {
+  color: var(--blue);
+}
+
+/* .modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -479,8 +511,8 @@ ul {
   border-radius: 50px;
   border: solid 1px rgba(22, 22, 22, 0.753);
   box-shadow: 0 0 5px rgba(39, 37, 37, 0.548);
-  font-size: 1.8em;
-}
+  font-size: 1.3em;
+} */
 
 hr {
   height: 10px;
@@ -497,5 +529,21 @@ input {
   display: flex;
   flex-direction: column;
   margin: 13 auto;
+}
+
+img {
+  width: 250px;
+  height: 250px;
+  border-radius: 20px;
+  transition: transform 0.5s ease-in-out;
+}
+img:hover {
+  transform: scale(1.3);
+}
+
+#contenedorboton {
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
 }
 </style>

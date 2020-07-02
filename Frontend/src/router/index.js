@@ -30,6 +30,12 @@ const routes = [
     component: () => import("../views/AllConcourses.vue"),
   },
   {
+    path: "/finished",
+    name: "Allfinished",
+
+    component: () => import("../views/FinishedConcourses.vue"),
+  },
+  {
     path: "/login",
     name: "Login",
 
@@ -45,6 +51,12 @@ const routes = [
     path: "/admin",
     name: "Admin",
     component: () => import("../views/Admin.vue"),
+  },
+
+  {
+    path: "/ratings",
+    name: "Ratings",
+    component: () => import("../views/Valoraciones.vue"),
   },
 ];
 

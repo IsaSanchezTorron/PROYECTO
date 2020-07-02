@@ -165,4 +165,15 @@ a {
   text-decoration: none;
   font-size: 1.1em;
 }
+
+button {
+  border-radius: 5px;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 10px;
+  background-color: rgb(32, 33, 34);
+  font-family: "Ubuntu", sans-serif;
+  color: #1a99e7;
+  box-shadow: 0 0 2px rgb(12, 12, 12);
+}
 </style>

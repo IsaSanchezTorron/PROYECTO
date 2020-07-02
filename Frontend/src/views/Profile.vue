@@ -16,34 +16,46 @@
         </div>
 
         <!-- Menú de botones -->
-
+        <h3>TUS INSCRIPCIONES</h3>
         <!-- Este botón llama a la función de abrir modal que a su vez llama a la función para ver el historial -->
         <button @click="openModalHistory()">📚 Mi historial completo</button>
 
         <!-- Este botón llama a la función de abrir modal que a su vez llama a la función para ver el historialver inscripciones y poder cancelarlas -->
         <button @click="openModalNext()">📖 Gestionar inscripciones activas</button>
 
-        <!-- Ver los concursos en que estás inscritos, ya finalizados, pendientes de valoración -->
-        <button @click="seePendingRatings()">⭐️ Valorar mis concursos finalizados</button>
+        <button>
+          <router-link style="color:#1CA0F2" :to="{ name: 'Ratings' }">Votaciones y ranking</router-link>
+        </button>
 
+        <!-- Ver los concursos en que estás inscritos, ya finalizados, pendientes de valoración -->
+        <!--  <button @click="seePendingRatings()">⭐️ Valorar mis concursos finalizados</button> -->
+
+        <h3>NOVEDADES</h3>
         <!-- Botón que llama a la función para ver los concursos mejor valorados-->
         <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button>
 
         <!-- Botón que abre un modal para ver los últimos ganadores publicados -->
         <button @click="openModalWinners()">🏆 Últimas ganadoras nombradas</button>
 
+        <h3>CATÁLOGO</h3>
         <!-- Este botón es un enlace a todos los concursos hasta la fecha -->
         <button>
-          <router-link style="color:#EB5885" :to="{ name: 'Allconcourses' }">📌 Todos los concursos</router-link>
+          <router-link
+            style="color:#1CA0F2"
+            :to="{ name: 'Allconcourses' }"
+          >📌 Concursos activos actualmente</router-link>
         </button>
 
+        <button>
+          <router-link style="color:#1CA0F2" :to="{ name: 'Allfinished' }">📌 Concursos finalizados</router-link>
+        </button>
+        <h3>HERRAMIENTAS</h3>
         <!-- Botón para editar datos de usuario -->
-        <button @click="openEditModal()" style="color:#3CA17A">⚙️ Editar perfil</button>
+        <button @click="openEditModal()" style="color:#F35224">⚙️ Editar perfil</button>
 
         <!-- Botón para hacer LogOut -->
-        <button @click="logoutUser()" style="color:#3CA17A">👋 Logout</button>
+        <button @click="logoutUser()" style="color:#F35224">👋 Cerrar sesión</button>
       </div>
-
 
       <!--Sección de saludo y datos del usuario-->
       <div id="saludo">
@@ -51,16 +63,20 @@
         <!-- Imagen de perfil del usuario -->
         <img :src="user.url_foto" alt="Foto de perfil de usuario" />
         <p>Miembro desde {{ user.fecha_registro | moment(" D-MM-YYYY") }}</p>
-        <p>Miembro con rol de: {{ user.rol }}</p>
+        <p>Categoría: {{ user.rol }}</p>
         <div id="descripcion">{{user.descripcion}}</div>
+        <img
+          id="fotoayuda"
+          src="../assets/images/intertextualperfil.jpg"
+          alt="foto informativa"
+          title="intertextual@intertextual-concursos.com"
+        />
       </div>
 
       <!--Sección de datos personales editables -->
       <div class="modal" v-show="vereditar">
         <div class="modalBox">
-
           <div id="perfilusuario">
-
             <label for="nombre">Tu nombre:</label>
             <input type="text" id="nombre" name="nombre" v-model="nuevoNombre" placeholder="nombre" />
             <br />
@@ -104,172 +120,172 @@
 
             <hr />
           </div>
-          </div>
         </div>
-        <!-- Hasta aquí el contenedor de edición de usuario -->
+      </div>
+      <!-- Hasta aquí el contenedor de edición de usuario -->
 
-        <!-- Aquí mostramos el historial de concursos del usuario -->
-        <div class="modal" v-show="verhistorial">
-          <div class="modalBox">
-            <div class="historialconcurso">
-              <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
-              <h2>Tu historial</h2>
-              <ul v-for="historia in historial" :key="historia.id">
+      <!-- Aquí mostramos el historial de concursos del usuario -->
+      <div class="modal" v-show="verhistorial">
+        <div class="modalBox">
+          <div class="historialconcurso">
+            <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
+            <h2>ESTOS SON TODOS LOS CONCURSOS EN QUE HAS PARTICIPADO</h2>
+            <ul v-for="historia in historial" :key="historia.id">
+              <li>
+                <b>{{ historia.nombre_concurso }}</b>
+              </li>
+              <li>
+                <b>Apertura:</b>
+                {{ historia.fecha_publicacion | moment(" D-MM-YYYY") }}
+              </li>
+              <li>
+                <b>Cierre:</b>
+                {{ historia.fecha_final | moment(" D-MM-YYYY") }}
+              </li>
+              <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
+              <div v-if="historia.valoracion > 0">
                 <li>
-                  <b>{{ historia.nombre_concurso }}</b>
+                  Has valorado este concurso con
+                  {{ historia.valoracion }} ⭐️
                 </li>
-                <li>
-                  <b>Apertura:</b>
-                  {{ historia.fecha_publicacion | moment(" D-MM-YYYY") }}
-                </li>
-                <li>
-                  <b>Cierre:</b>
-                  {{ historia.fecha_final | moment(" D-MM-YYYY") }}
-                </li>
-                <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
-                <div v-if="historia.valoracion > 0">
-                  <li>
-                    Has valorado este concurso con
-                    {{ historia.valoracion }} ⭐️
-                  </li>
-                </div>
-                <hr />
-              </ul>
-              <button @click="closeModalHistory()">⬅️ VOLVER</button>
-            </div>
-          </div>
-        </div>
-
-        <!--Hasta aquí la sección del historial del concurso -->
-
-        <!-- Aquí muestro el historial de concursos pendientes de valoración y permito valorarlos mediante un modal -->
-        <div class="modal" v-show="verproximos">
-          <div class="modalBox">
-            <div class="historialpendientes">
-              <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito -->
-              <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
-
-              <ul v-for="(pendiente, index) in pendientes" :key="pendiente.id">
-                <li>
-                  <b>{{ pendiente.nombre_concurso }}</b>
-                </li>
-                <li>
-                  <b>Bases:</b>
-                  {{ pendiente.descripcion }}
-                </li>
-                <li>
-                  <b>Apertura:</b>
-                  {{ pendiente.fecha_publicacion | moment(" D MM YYYY") }}
-                </li>
-                <li>
-                  <b>Cierre:</b>
-                  {{ pendiente.fecha_final | moment(" D MM YYYY") }}
-                </li>
-                <!-- El botón de votar se muestra si no hay voto -->
-                <button
-                  v-if="pendiente.valoracion !== 1 || pendiente.valoracion!==2 || pendiente.valoracion!==3 || pendiente.valoracion!==4 || pendiente.valoracion!==5"
-                  @click="openModal(index)"
-                >VOTAR</button>
-
-                <div v-show="modal" class="modal">
-                  <div class="modalbox">
-                    <h3>¿Cómo valoras tu experiencia?</h3>
-
-                    <star-rating
-                      @rating-selected="rating = $event"
-                      :rating="rating"
-                      v-bind:star-size="20"
-                    ></star-rating>
-
-                    <button @click="newRating(votedConcourse, rating)">Este es mi voto!</button>
-                    <button @click="closeModal()">Cerrar</button>
-                  </div>
-                </div>
-              </ul>
-            </div>
-            <button @click="closeModaNext()">⬅️ VOLVER</button>
-          </div>
-        </div>
-        <!-- Hasta aquí la valoración -->
-        <hr />
-
-        <!-- Aquí mostramos con un modal los últimos ganadores nombrados -->
-
-        <div class="modal" v-show="verganadores">
-          <div class="modalBox">
-            <div v-if="ganadores">
-              <h1>NO HAY GANADORAS RECIENTES QUE MOSTRAR</h1>
-            </div>
-            <div v-if="!ganadores">
-              <h2>Estas son las últimas nombradas</h2>
-            </div>
-            <ul class="resultadosganadores" v-for="ganador in ganadores" :key="ganador.id">
-              <li>👤 {{ganador.nombreusuario}} {{ganador.apellidos}} ha ganado el {{ganador.nombreconcurso}} el {{ganador.fecha_asignacion_ganador | moment(" D-MM-YYYY")}}</li>
+              </div>
               <hr />
             </ul>
-            <button @click="closeModalWinners()">⬅️ VOLVER</button>
+            <button @click="closeModalHistory()">⬅️ VOLVER</button>
           </div>
         </div>
+      </div>
 
-        <!-- Visualizar Próximos concursos en los que el usuario está inscrito, puede deshacer su suscripción --->
+      <!--Hasta aquí la sección del historial del concurso -->
 
-        <div class="modal" v-show="verproximos">
-          <div class="modalBox">
-            <div class="proximosconcursos">
-              <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
-              <ul v-for="proxconcurso in proxconcursos" :key="proxconcurso.id">
-                <li>
-                  <b>{{ proxconcurso.nombre }}</b>
-                </li>
-                <!-- <li>
-                  <b>Bases:</b>
-                  {{ proxconcurso.descripcion }}
-                </li>-->
-                <li>
-                  Apertura:
-                  {{ proxconcurso.fecha_publicacion | moment(" D-MM-YYYY") }}
-                </li>
-                <li>
-                  <b>Cierre:</b>
-                  {{ proxconcurso.fecha_final | moment(" D-MM-YYYY") }}
-                </li>
-                <button @click="cancelSuscription(proxconcurso)">Cancelar suscripción</button>
-                <hr />
-              </ul>
-              <button @click="closeModalNext()">⬅️ VOLVER</button>
+      <!-- Aquí muestro el historial de concursos pendientes de valoración y permito valorarlos mediante un modal -->
+      <div class="modal" v-show="verproximos">
+        <div class="modalBox">
+          <div class="historialpendientes">
+            <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito -->
+            <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
 
-              <hr />
+            <ul v-for="(pendiente, index) in pendientes" :key="pendiente.id">
+              <li>
+                <b>{{ pendiente.nombre_concurso }}</b>
+              </li>
+              <li>
+                <b>Bases:</b>
+                {{ pendiente.descripcion }}
+              </li>
+              <!-- <li>
+                <b>Apertura:</b>
+                {{ pendiente.fecha_publicacion | moment(" D MM YYYY") }}
+              </li>-->
+              <!-- <li>
+                <b>Cierre:</b>
+                {{ pendiente.fecha_final | moment(" D MM YYYY") }}
+              </li>-->
+              <!-- El botón de votar se muestra si no hay voto -->
+              <!--   <button
+                v-if="pendiente.valoracion !== 1 || pendiente.valoracion!==2 || pendiente.valoracion!==3 || pendiente.valoracion!==4 || pendiente.valoracion!==5"
+                @click="openModal(index)"
+              >VOTAR</button>-->
+            </ul>
+
+            <div v-show="modal" class="modal">
+              <div class="modalbox">
+                <h3>¿Cómo valoras tu experiencia?</h3>
+
+                <star-rating
+                  @rating-selected="rating = $event"
+                  :rating="rating"
+                  v-bind:star-size="20"
+                ></star-rating>
+
+                <button @click="newRating(votedConcourse, rating)">Este es mi voto!</button>
+                <button @click="closeModal()">Cerrar</button>
+              </div>
             </div>
           </div>
+          <button @click="closeModaNext()">⬅️ VOLVER</button>
         </div>
-
-        <!-- Visualizar los concursos mejor valorados por el público -->
-
-        <div class="topconcursos">
-          <ul v-for="top in tops" :key="top.id">
-            <li>
-              <b>{{ top.nombre }}</b>
-            </li>
-
-            <li>
-              <b>Cerrado el :</b>
-              {{top.fecha_final | moment(" D MM YYYY") }}
-            </li>
-            <li>
-              <b>Nota media :</b>
-              {{ top.valoracion}}⭐️
-            </li>
-          </ul>
-        </div>
-        <!--Hasta aquí el top concursos -->
       </div>
+      <!-- Hasta aquí la valoración -->
+      <hr />
+
+      <!-- Aquí mostramos con un modal los últimos ganadores nombrados -->
+
+      <div class="modal" v-show="verganadores">
+        <div class="modalBox">
+          <div v-if="ganadores">
+            <h1>NO HAY GANADORAS RECIENTES QUE MOSTRAR</h1>
+          </div>
+          <div v-if="!ganadores">
+            <h2>Estas son las últimas nombradas</h2>
+          </div>
+          <ul class="resultadosganadores" v-for="ganador in ganadores" :key="ganador.id">
+            <li>👤 {{ganador.nombreusuario}} {{ganador.apellidos}} ha ganado el {{ganador.nombreconcurso}} el {{ganador.fecha_asignacion_ganador | moment(" D-MM-YYYY")}}</li>
+            <hr />
+          </ul>
+          <button @click="closeModalWinners()">⬅️ VOLVER</button>
+        </div>
+      </div>
+
+      <!-- Visualizar Próximos concursos en los que el usuario está inscrito, puede deshacer su suscripción --->
+
+      <div class="modal" v-show="verproximos">
+        <div class="modalBox">
+          <div class="proximosconcursos">
+            <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
+            <ul v-for="proxconcurso in proxconcursos" :key="proxconcurso.id">
+              <li>
+                <b>{{ proxconcurso.nombre }}</b>
+              </li>
+              <!-- <li>
+                  <b>Bases:</b>
+                  {{ proxconcurso.descripcion }}
+              </li>-->
+              <li>
+                Apertura:
+                {{ proxconcurso.fecha_publicacion | moment(" D-MM-YYYY") }}
+              </li>
+              <li>
+                <b>Cierre:</b>
+                {{ proxconcurso.fecha_final | moment(" D-MM-YYYY") }}
+              </li>
+              <button @click="cancelSuscription(proxconcurso)">Cancelar suscripción</button>
+              <hr />
+            </ul>
+            <button @click="closeModalNext()">⬅️ VOLVER</button>
+
+            <hr />
+          </div>
+        </div>
+      </div>
+
+      <!-- Visualizar los concursos mejor valorados por el público -->
+
+      <div class="topconcursos">
+        <ul v-for="top in tops" :key="top.id">
+          <li>
+            <b>{{ top.nombre }}</b>
+          </li>
+
+          <li>
+            <b>Cerrado el :</b>
+            {{top.fecha_final | moment(" D MM YYYY") }}
+          </li>
+          <li>
+            <b>Nota media :</b>
+            {{ top.valoracion}}⭐️
+          </li>
+        </ul>
+      </div>
+      <!--Hasta aquí el top concursos -->
     </div>
+    <barraredessociales></barraredessociales>
   </div>
 </template>
 
 <script>
 // EXPORTAMOS PARA
-
+import VModal from 'vue-js-modal'
 // Gestión de fechas
 import VueMoment from "vue-moment";
 // Función para el Log Out, eliminar los datos del LOCALSTORAGE.
@@ -284,12 +300,13 @@ import vueHeadful from "vue-headful";
 import axios from "axios";
 // Componentes internos
 import menucustom from "@/components/MenuCustom.vue";
-import VModal from 'vue-js-modal'
+import barraredessociales from "@/components/BarraRedesSociales.vue"
+
 
 export default {
   name: "Profile",
   // Componentes de la vista
-  components: { menucustom, vueHeadful, StarRating },
+  components: { menucustom, vueHeadful, StarRating,barraredessociales },
   data() {
     return {
       // Declaración de variables que voy a utilizar para recoger la información
@@ -836,7 +853,7 @@ img {
   border-radius: 150px;
   width: 250px;
   height: 250px;
-  margin: 50px;
+  margin: 40px;
   box-shadow: 0 0 50px rgba(19, 19, 19, 0.623);
   -webkit-box-reflect: below -30px -webkit-gradient(
       linear,
@@ -861,18 +878,15 @@ img {
   margin: 10px;
 
   font-family: "Ubuntu", sans-serif;
-  color: var(--blue);
+  color: var(--white);
   transition: background-color 0.3s;
-  background-color: rgba(12, 3, 3, 0.795);
-  border-radius:100px;
+  background-color: var(--black);
+  border-radius: 100px;
 }
 
 #menubotones button:hover {
-  background-color: var(--black);
-  color: var(--white);
-}
-#menubotones button:active {
-  background-color: var(--black);
+  background-color: var(--white);
+  color: var(--black);
 }
 
 a {
@@ -888,25 +902,56 @@ a {
   justify-self: center;
   align-items: center;
   align-content: center;
-  margin: 80px;
+  margin: 20px;
   background-image: url(https://images.unsplash.com/photo-1522794338816-ee3a17a00ae8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80);
   background-repeat: no-repeat;
 
   background-size: cover;
-  padding: 4em;
+  padding: 3em;
   box-shadow: 0 0 10px var(--black);
-  height: 70%;
-  border-radius:150px;
+
+  border-radius: 50px;
 }
 
 #saludo {
   padding-bottom: 30rem;
-  padding-right: 60rem;
-  padding-left: 650px;
+
+  padding-left: 701px;
 }
 
 p {
   font-size: 1.2em;
   font-weight: bold;
+}
+
+#fotoayuda {
+  position: fixed;
+  margin-top: -10px;
+  margin-left: 900px;
+  width: 600px;
+  height: 600px;
+  border-radius: 300px;
+}
+
+button {
+  justify-content: center;
+  margin: 0 auto;
+  width: 450px;
+  height: 60px;
+  font-size: 1.2em;
+
+  /*  box-shadow: 0 0 10px rgb(12, 12, 12); */
+  /* margin: 10px; */
+
+  font-family: "Ubuntu", sans-serif;
+  color: var(--white);
+  transition: background-color 0.3s;
+  background-color: var(--black);
+  border-radius: 100px;
+}
+
+button:hover {
+  background-color: var(--white);
+  color: var(--black);
 }
 </style>

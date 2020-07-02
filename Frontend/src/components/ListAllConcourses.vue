@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--Encabezado de página -->
-    <h1>Todos los concursos hasta la fecha</h1>
+    <h1>CONCURSOS ACTIVOS ACTUALMENTE</h1>
 
     <!-- Forumulario de búsqueda -->
     <div id="formulariobusqueda">
@@ -24,7 +24,6 @@
         v-for="(concurso, index) in concursosFiltrados"
         :key="concurso.id"
       >
-        <p v-show="finalizado">CONCURSO FINALIZADO</p>
         <p>
           📌
           {{ concurso.id_concurso }}
@@ -76,7 +75,7 @@
           {{ concurso.fecha_final | moment(" D-MM-YYYY")}}
         </p>
         <!-- Un modal para consultar las bases del concurso -->
-        <button @click="openModal(index)">VER BASES</button>
+        <button @click="openModal(index)">ℹ️ VER BASES</button>
 
         <div v-show="modal" class="modal">
           <div class="modalbox">
@@ -88,7 +87,7 @@
 
         <br />
         <br />
-        <button @click="confirmInscription(concurso)">QUIERO INSCRIBIRME</button>
+        <button @click="confirmInscription(concurso)">✅ QUIERO INSCRIBIRME</button>
       </div>
     </div>
   </div>
@@ -117,7 +116,7 @@ export default {
       // Inicializamos un string vacío que contendrá la búsqueda.
       search: "",
       id: null,
-      finalizado: false,
+      
       concursobases: {},
       modal: false,
       descripcion:"",
@@ -146,20 +145,6 @@ export default {
         // concurso.ciudad.toLowerCase().includes(this.search.toLowerCase())
       );
     },
-/* 
-      checkDate(finalizado){
-        console.log("comprueba la fecha");
-        const today = new Date();
-        if (concurso.fecha_final < today){
-         
-          return true;
-        }else{
-          return false;concursos
-        }
-        
-      },
- */
-
 
   },
 
@@ -236,7 +221,7 @@ confirmInscription(concurso) {
  
           Swal.fire({
             title: "⚠️",
-            text: error.response.data.message,
+            text: "Ya estás inscrita en este concurso.",
             confirmButtonText: "O.K",
             timer: 3000,
 
@@ -261,7 +246,7 @@ confirmInscription(concurso) {
 .red {
   color: red;
 }
-.concursoscontenedor {
+/* .concursoscontenedor {
   box-shadow: 0 0 10px var(--black);
   padding: 3em;
   width: 300px;
@@ -272,6 +257,21 @@ confirmInscription(concurso) {
   flex-direction: column;
   justify-content: space-around;
 }
+ */
+.concursoscontenedor {
+  box-shadow: 0 0 10px var(--black);
+  padding: 2em;
+  width: 300px;
+  margin: 40px auto;
+  border-radius: 20px;
+  width: 500px;
+  height: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  line-height: 0.9;
+  background-color: var(--white);
+}
 
 .contenedor {
   display: flex;
@@ -281,6 +281,19 @@ confirmInscription(concurso) {
   width: 90%;
   margin: 10px auto;
 }
+
+p {
+  font-size: 1.3em;
+}
+
+/* .contenedor {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 90%;
+  margin: 10px auto;
+} */
 img {
   width: 250px;
   height: 250px;
@@ -297,10 +310,7 @@ img:hover {
 
 h3 {
   text-transform: uppercase;
-  font-size: 1.4em;
-}
-button {
-  color: white;
+  font-size: 1.9em;
 }
 
 input {
@@ -309,7 +319,7 @@ input {
   font-size: 1.5em;
 }
 
-.modal {
+/* .modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -319,17 +329,45 @@ input {
 }
 
 .modalbox {
-  background: #fefefe;
+  background: rgb(58, 54, 54);
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 40%;
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
   border-radius: 50px;
   border: solid 2px var(--black);
-  box-shadow: 0 0 1px var(--black);
+  box-shadow: 0px 0px 3px grey;
+  line-height: 1.5;
+  overflow-y: scroll;
+} */
+
+button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 450px;
+  height: 50px;
+  font-size: 1.5em;
+  padding: 0.4em;
+  box-shadow: 0 0 10px rgb(12, 12, 12);
+  margin: 10px;
+  font-family: "Ubuntu", sans-serif;
+  color: var(--white);
+  transition: background-color 0.3s;
+  background-color: var(--black);
+  border-radius: 100px;
+}
+
+button:hover {
+  background-color: var(--blue);
+  color: var(--black);
+}
+
+h1 {
+  color: var(--blue);
 }
 </style>

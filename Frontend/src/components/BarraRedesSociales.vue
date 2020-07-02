@@ -9,6 +9,7 @@
     <a title="Twitter" href="https://twitter.com/isa56k1">
       <img src="../assets/images/twitter.png" alt="Twitter" />
     </a>
+    <p>Isabel Sánchez Torrón 2020©</p>
 
     <a
       title="Linkedin"
@@ -38,9 +39,16 @@ export default {
   background-color: var(--black);
   box-shadow: 0 0 10px var(--black);
   padding: 1em;
-  border-radius: 100px;
+  border-radius: 8px;
+  width: 98.9%;
+  margin: 0 auto;
 }
 #contenedorredessociales img {
   width: 100px;
+}
+
+p {
+  font-size: 1.3em;
+  justify-self: center;
 }
 </style>

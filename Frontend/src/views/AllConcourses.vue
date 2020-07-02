@@ -8,12 +8,12 @@
       <!-- Vue headful para hacer visible el título en la pestaña del navegador -->
       <!--Llamada al spinner con condicional de que en cuanto nos dé el primer resultado, deje de cargar -->
       <!-- <spinner v-if="productos.length === 0"></spinner> -->
-      <vue-headful title="Todos los concursos" />
       <!--Indicamos la equivalencia de los arrays para concursos -->
       <div class="contenedorproductos">
         <listallconcourses :concursos="concursos"></listallconcourses>
       </div>
     </div>
+    <barraredessociales></barraredessociales>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ import vueHeadful from "vue-headful";
 // componentes internos:
 import listallconcourses from "@/components/ListAllConcourses.vue";
 import menucustom from "@/components/MenuCustom.vue";
-//import footercustom from "@/components/FooterCustom.vue";
+import barraredessociales from "@/components/BarraRedesSociales.vue";
 //import spinner from "@/components/Spinner.vue";
 
 
@@ -38,6 +38,7 @@ components:{
     vueHeadful,
     listallconcourses,
     menucustom,
+    barraredessociales
    
 },
 

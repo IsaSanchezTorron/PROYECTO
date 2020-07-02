@@ -1,0 +1,269 @@
+<template>
+  <div>
+    <!--Encabezado de página -->
+    <h1>CONCURSOS QUE YA HAN FINALIZADO</h1>
+
+    <!-- Forumulario de búsqueda -->
+    <div id="formulariobusqueda">
+      <label for="bySearch">Búsqueda</label>
+      <br />
+      <input
+        v-model="search"
+        id="search"
+        name="bySearch"
+        type="search"
+        placeholder="🔍 Nombre/Descripción, Modalidad, Genero..."
+      />
+    </div>
+
+    <div class="contenedor">
+      <br />
+      <!-- Contenedor para dar formato a la ficha de productos, lo cargamos con el array de productos filtrados -->
+      <div
+        class="concursoscontenedor"
+        v-for="finalizado in finalizadosFiltrados"
+        :key="finalizado.id"
+      >
+        <p>
+          📌
+          {{ finalizado.id_concurso }}
+        </p>
+        <h3>
+          <b>{{ finalizado.nombre }}</b>
+        </h3>
+        <p>
+          <img :src="finalizado.url_foto" />
+        </p>
+
+        <p>
+          <b>🏠 Modalidad:</b>
+          {{ finalizado.modalidad }}
+        </p>
+
+        <p>
+          <b>🎭 Genero:</b>
+          {{ finalizado.genero }}
+        </p>
+
+        <p v-if="finalizado.ciudad">
+          <b>🌆 Ciudad:</b>
+          {{ finalizado.ciudad }}
+        </p>
+        <p v-if="finalizado.fecha_asignacion_ganador">
+          <b>📅 Publicación de ganadores:</b>
+          {{ finalizado.fecha_asignacion_ganador | moment(" D-MM-YYYY") }}
+        </p>
+        <p v-if="finalizado.nombre_ganador">
+          <b>🥇 Ganador:</b>
+          {{finalizado.nombre_ganador}}
+        </p>
+        <p v-if="finalizado.valoracion">
+          <b>🌠 Valoración media:</b>
+          {{ finalizado.valoracion }}
+        </p>
+        <p>Publicado el: {{finalizado.fecha_publicacion | moment(" D-MM-YYYY") }}</p>
+        <p style="color:red">
+          <b>📆 Cierre de suscripción:</b>
+          {{ finalizado.fecha_final | moment(" D-MM-YYYY")}}
+        </p>
+        <!-- Un modal para consultar las bases del concurso -->
+      </div>
+    </div>
+
+    <barraredessociales></barraredessociales>
+  </div>
+</template>
+
+<script>
+// IMPORTAMOS PARA
+// formatear fechas
+import VueMoment from "vue-moment";
+// enviar mensajes custom
+import Swal from "sweetalert2";
+// manejo de rutas y endpoints
+import axios from "axios";
+// componentes internos
+import barraredessociales from "@/components/BarraRedesSociales.vue"
+
+export default {
+  name: "listfinished",
+  components:{barraredessociales},
+  props: {
+    // Le indicamos que está recibiendo un array.
+    finalizados: Array,
+    
+  },
+
+  data() {
+    return {
+      // Inicializamos un string vacío que contendrá la búsqueda.
+      search: "",
+      
+    };
+  },
+
+
+
+
+  computed: {
+    //FUNCIÓN PARA FILTRAR PRODUCTOS
+    finalizadosFiltrados() {
+      // Si en la búsqueda no hay nada nos devuelve todo.
+      if (!this.search) {
+        return this.finalizados;
+        console.log(this.finalizados);
+      }
+      return this.finalizados.filter(
+        (concurso) =>
+          finalizado.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
+          finalizado.descripcion
+            .toLowerCase()
+            .includes(this.search.toLowerCase()) ||
+          finalizado.modalidad
+            .toLowerCase()
+            .includes(this.search.toLowerCase()) ||
+          finalizado.genero.toLowerCase().includes(this.search.toLowerCase())
+        //Ojo aquí, pendiente que funcione la búsqueda por ciudad.
+        // concurso.ciudad.toLowerCase().includes(this.search.toLowerCase())
+      );
+    },
+/* 
+      checkDate(finalizado){
+        console.log("comprueba la fecha");
+        const today = new Date();
+        if (concurso.fecha_final < today){
+         
+          return true;
+        }else{
+          return false;concursos
+        }
+        
+      },
+ */
+
+
+  },
+
+
+  
+
+    
+  };
+
+
+</script>
+
+<style scoped>
+.green {
+  color: green;
+}
+
+.red {
+  color: red;
+}
+/* .concursoscontenedor {
+  box-shadow: 0 0 10px var(--black);
+  padding: 3em;
+  width: 300px;
+  margin: 50px auto;
+  flex-wrap: wrap;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.contenedor {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 90%;
+  margin: 10px auto;
+} */
+
+.concursoscontenedor {
+  box-shadow: 0 0 10px var(--black);
+  padding: 2em;
+  width: 300px;
+  margin: 40px auto;
+  border-radius: 20px;
+  width: 500px;
+  height: 900px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  line-height: 0.9;
+  background-color: var(--white);
+}
+
+.contenedor {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 90%;
+  margin: 10px auto;
+}
+
+p {
+  font-size: 1.3em;
+}
+
+img {
+  width: 250px;
+  height: 250px;
+  border-radius: 20px;
+  transition: transform 0.5s ease-in-out;
+}
+img:hover {
+  transform: scale(1.3);
+}
+
+#formulariobusqueda {
+  padding: 2em;
+}
+
+h3 {
+  text-transform: uppercase;
+  font-size: 1.4em;
+}
+
+h1 {
+  color: var(--blue);
+}
+
+button {
+  color: white;
+}
+
+input {
+  width: 500px;
+  height: 50px;
+  font-size: 1.5em;
+}
+
+/* .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 150px;
+  width: 100%;
+}
+
+.modalbox {
+  background: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 50px;
+  border: solid 2px var(--black);
+  box-shadow: 0 0 1px var(--black); 
+}*/
+</style>

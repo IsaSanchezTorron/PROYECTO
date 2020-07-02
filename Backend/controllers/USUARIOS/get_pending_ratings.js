@@ -18,7 +18,7 @@ async function getPendingRatings(req, res, next) {
              FROM USUARIOS 
              INNER JOIN INSCRIPCIONES ON USUARIOS.id_usuario = INSCRIPCIONES.USUARIOS_id_usuario 
              INNER JOIN CONCURSOS ON CONCURSOS.id_concurso = INSCRIPCIONES.CONCURSOS_id_concurso
-             WHERE USUARIOS.id_usuario = ? AND CONCURSOS.fecha_asignacion_ganador <= ? AND INSCRIPCIONES.valoracion IS NULL`,
+             WHERE USUARIOS.id_usuario = ? AND CONCURSOS.fecha_final <= ? AND INSCRIPCIONES.valoracion IS NULL`,
       [id, dateToday]
     );
     console.log(result);

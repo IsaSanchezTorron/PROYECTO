@@ -2,124 +2,143 @@
   <div>
     <!-- Título para la pestaña del navegador -->
     <vue-headful title="INTERTEXTUAL" description="Landing" />
-    <div id="linkregistrousuario">
-      <router-link :to="{ name: 'Register' }">
-        <a>💙 Registro de nuevo usuario</a>
-      </router-link>
-    </div>
+
     <menucustom></menucustom>
     <br />
 
-    <div id="principallanding">
-      <img id="fotoinformativa" src="../assets/images/intertextual5.png" alt="foto informativa" />
-      <div id="buscador">
-        <form>
-          <h2>🔎 PUEDES UTILIZAR NUESTRO BUSCADOR 👇</h2>
-          <p>
-            <b>ENCUENTRA CONCURSOS SEGÚN TUS PREFERENCIAS</b>
-          </p>
-          <p>
-            <b>Nombre 👉</b>
+    <div id="landing">
+      <div id="principallanding">
+        <img id="fotoinformativauno" src="../assets/images/intertextual.png" alt="foto informativa" />
+        <div id="buscador">
+          <form>
+            <h1>
+              <b>ENCUENTRA CONCURSOS SEGÚN TUS PREFERENCIAS</b>
+            </h1>
+            <br />
 
-            <input
-              v-model="nombre"
-              type="search"
-              name="nombre"
-              size="40"
-              placeholder="  No es necesario que busques el título completo"
-            />
-          </p>
-          <p>
-            <b>Entre esta fecha 👉</b>
-
-            <input v-model="fecha_publicacion" type="date" name="fecha_publicacion" min="2010" />
-          </p>
-          <p>
-            <b>y esta otra fecha 👉</b>
-            <input v-model="fecha_final" type="date" name="fecha_final" min="2010" />
-          </p>
-          <p>
-            <b>Modalidad 👉</b>
-            <input v-model="modalidad" type="radio" name="modalidad" value="online" /> Online
-            <input v-model="modalidad" type="radio" name="modalidad" value="presencial" /> Presencial
-          </p>
-          <p>
-            <b>Ciudad 👉</b>
-            <input v-model="ciudad" type="search" name="ciudad" size="40" />
-          </p>
-          <p>
-            <b>Género 👉</b>
-            <input v-model="genero" type="search" name="ciudad" size="40" />
-          </p>
-          <p>
-            <input type="reset" value="Borrar" />
-          </p>
-        </form>
-        <div id="botonformulario">
-          <button @click="searching()">¡QUIERO VER QUÉ CONCURSOS ME ESPERAN!</button>
-        </div>
-      </div>
-      <img id="fotoinformativa" src="../assets/images/intertextual.png" />
-    </div>
-
-    <div id="contenedorbusqueda">
-      <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
-      <ul v-for="(resultadobusqueda, index) in resultadobusquedas" :key="resultadobusqueda.id">
-        <div class="resultadosbusqueda">
-          <li>
-            <h3>{{ resultadobusqueda.nombre }}</h3>
-          </li>
-
-          <li>
-            <img :src="resultadobusqueda.url_foto" alt="Foto de concurso" />
-          </li>
-
-          <li>
-            <b>📆 Apertura:</b>
-            {{resultadobusqueda.fecha_publicacion | moment(" D-MM-YYYY") }}
-          </li>
-
-          <li>
-            <b>📆 Cierre:</b>
-            {{ resultadobusqueda.fecha_final | moment(" D-MM-YYYY") }}
-          </li>
-
-          <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
-          <div v-if="resultadobusqueda.valoracionmedia > 0">
-            <li>
-              La valoración media de este concurso es de:
-              {{ resultadobusqueda.valoracionmedia }} ⭐️
-            </li>
-          </div>
-
-          <div v-if="resultadobusqueda.nombre_ganador">
-            <li>
-              <b>Nombrada ganadora: {{resultadobusqueda.nombre_ganador}} {{resultadobusqueda.apellidos }} el {{resultadobusqueda.fecha_asignacion_ganador.slice(1,10) }}</b>
-            </li>
-          </div>
-
-          <li>
-            <button @click="openModal(index)">➕ Más información</button>
-          </li>
-
-          <div v-show="modal" class="modal">
-            <div class="modalbox">
-              <h1>Bases del concurso</h1>
-              <h3>Recuerda que debes tener una cuenta con nosotras para inscribirte</h3>
+            <div id="busqueda1">
+              <p>
+                <b>NOMBRE DEL CONCURSO</b>
+              </p>
+              <input
+                v-model="nombre"
+                type="search"
+                name="nombre"
+                size="40"
+                placeholder="  No es necesario que busques el título completo"
+              />
 
               <p>
-                <router-link :to="{ name: 'Register' }">🙋 Quiero registrarme en INTERTEXTUAL</router-link>
+                <b>ENTRE ESTA FECHA</b>
+
+                <input v-model="fecha_publicacion" type="date" name="fecha_publicacion" min="2010" />
               </p>
-              <p>{{concursobases.descripcion}}</p>
-              <button @click="closeModal()">Cerrar</button>
+              <p>
+                <b>Y ESTA FECHA</b>
+                <input id="fechas" v-model="fecha_final" type="date" name="fecha_final" min="2010" />
+              </p>
             </div>
+            <br />
+            <div id="busqueda2">
+              <p>
+                <b>MODALIDAD</b>
+              </p>
+              <input id="check" v-model="modalidad" type="radio" name="modalidad" value="online" />
+              <a>Online</a>
+              <input
+                id="check"
+                v-model="modalidad"
+                type="radio"
+                name="modalidad"
+                value="presencial"
+              />
+              <a>Presencial</a>
+
+              <p>
+                <b>CIUDAD</b>
+                <input v-model="ciudad" type="search" name="ciudad" size="40" />
+              </p>
+              <p>
+                <b>GÉNERO</b>
+                <input v-model="genero" type="search" name="ciudad" size="40" />
+              </p>
+              <p>
+                <input type="reset" value="Borrar" />
+              </p>
+            </div>
+          </form>
+          <br />
+          <br />
+          <br />
+          <div id="botonformulario">
+            <button @click="searching()">¡QUIERO VER QUÉ CONCURSOS ME ESPERAN!</button>
           </div>
         </div>
-      </ul>
-    </div>
+      </div>
 
-    <barradebienvenida></barradebienvenida>
-    <barraredessociales></barraredessociales>
+      <div id="contenedorbusqueda">
+        <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
+        <ul v-for="(resultadobusqueda, index) in resultadobusquedas" :key="resultadobusqueda.id">
+          <div class="resultadosbusqueda">
+            <li>
+              <h3>{{ resultadobusqueda.nombre }}</h3>
+            </li>
+
+            <li>
+              <img :src="resultadobusqueda.url_foto" alt="Foto de concurso" />
+            </li>
+
+            <li>
+              <b>📆 Apertura:</b>
+              {{resultadobusqueda.fecha_publicacion | moment(" D-MM-YYYY") }}
+            </li>
+
+            <li>
+              <b>📆 Cierre:</b>
+              {{ resultadobusqueda.fecha_final | moment(" D-MM-YYYY") }}
+            </li>
+
+            <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
+            <div v-if="resultadobusqueda.valoracionmedia > 0">
+              <li>
+                La valoración media de este concurso es de:
+                {{ resultadobusqueda.valoracionmedia }} ⭐️
+              </li>
+            </div>
+
+            <div v-if="resultadobusqueda.nombre_ganador">
+              <li>
+                <b>Nombrada ganadora: {{resultadobusqueda.nombre_ganador}} {{resultadobusqueda.apellidos }} el {{resultadobusqueda.fecha_asignacion_ganador.slice(1,10) }}</b>
+              </li>
+            </div>
+
+            <li>
+              <button @click="openModal(index)">➕ MÁS INFORMACIÓN</button>
+            </li>
+
+            <div v-show="modal" class="modal">
+              <div class="modalbox">
+                <h1>BASES DEL CONCURSO</h1>
+
+                <p>{{concursobases.descripcion}}</p>
+                <h3>Recuerda que debes tener una cuenta con nosotras para inscribirte</h3>
+
+                <router-link :to="{ name: 'Register' }">
+                  <p id="registro">Quiero registrarme en INTERTEXTUAL</p>
+                </router-link>
+
+                <button @click="closeModal()">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </ul>
+      </div>
+
+      <barradebienvenida></barradebienvenida>
+      <div id="footer">
+        <barraredessociales></barraredessociales>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -259,12 +278,17 @@ searching(){
 </script>
 
 <style scoped>
+#fotoinformativauno {
+  width: 500px;
+  height: 500px;
+  transition: transform 0.9s ease-in-out;
+}
 #fotoinformativa {
   width: 500px;
   height: 500px;
   transition: transform 0.9s ease-in-out;
-  border-radius: 30px;
 }
+
 img:hover {
   transform: scale(1.1);
 }
@@ -275,23 +299,26 @@ img:hover {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  box-shadow: 0 0 10px var(--black);
-  height: 500px;
+  box-shadow: 0 0 50px rgb(44, 41, 41);
+  height: 600px;
   width: 100%;
   padding: 0em;
   margin: 0 auto;
-  padding-top: 30px;
-  padding-bottom: 40px;
-  border-radius: 100px;
+  /* padding-top: 30px; */
+  /* padding-bottom: 40px; */
+  /* border-radius: 80px; */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 input {
-  height: 30px;
+  height: 35px;
   border-radius: 5px;
+  margin-left: 20px;
 }
 form p {
-  font-size: 1.1em;
-  color: var(--white);
+  font-size: 1.5em;
+  color: var(--yellow);
 }
 button {
   padding: 0.7em;
@@ -314,6 +341,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  background: var(--white);
 }
 
 #contenedorbusqueda {
@@ -323,7 +351,9 @@ button {
   justify-content: space-around;
   width: 90%;
   margin: 10px auto;
+  /*  padding: 1em; */
 }
+
 img {
   width: 200px;
   height: 200px;
@@ -331,7 +361,7 @@ img {
   transition: transform 0.5s ease-in-out;
 }
 img:hover {
-  transform: scale(1.1);
+  transform: scale(1.4);
 }
 
 ul li {
@@ -341,29 +371,54 @@ ul li {
 h3 {
   text-transform: uppercase;
   font-size: 1.4em;
+  color: var(--blue);
 }
 
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  border-radius: 150px;
-  width: 100%;
+button {
+  border-radius: 20px;
+  font-size: 1.3em;
+  font-weight: bold;
+  padding: 16px;
+  background-color: var(--black);
+  font-family: "Ubuntu", sans-serif;
+  color: var(--white);
+  box-shadow: 2px 2px 2px var(--blue);
 }
 
-.modalbox {
-  background: var(--white);
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 40%;
+button:hover {
+  color: var(--blue);
+}
+
+h1 {
+  color: var(--blue);
+  font-size: 2.3em;
+}
+
+#busqueda1 {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  border-radius: 50px;
-  border: solid 2px var(--black);
-  box-shadow: 0 0 1px var(--black);
+}
+
+#busqueda2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+form {
+  width: 1500px;
+}
+
+a {
+  color: var(--white);
+  font-size: 1.4em;
+}
+
+#registro {
+  color: var(--black);
+  font-size: 1.3em;
 }
 </style>
