@@ -2,7 +2,11 @@
   <div>
     <!--Encabezado de página -->
     <h1>CONCURSOS ACTIVOS ACTUALMENTE</h1>
-
+    <button id="volver">
+      <a>
+        <router-link :to="{ name: 'Profile' }">Volver a mi perfil</router-link>
+      </a>
+    </button>
     <!-- Forumulario de búsqueda -->
     <div id="formulariobusqueda">
       <label for="bySearch">Búsqueda</label>
@@ -362,6 +366,11 @@ button {
   border-radius: 100px;
 }
 
+#volver {
+  width: 250px;
+  margin-left: 55px;
+}
+
 button:hover {
   background-color: var(--blue);
   color: var(--black);
@@ -369,5 +378,10 @@ button:hover {
 
 h1 {
   color: var(--blue);
+}
+
+a {
+  text-decoration: none;
+  color: var(--white);
 }
 </style>

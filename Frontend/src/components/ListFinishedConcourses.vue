@@ -2,6 +2,11 @@
   <div>
     <!--Encabezado de página -->
     <h1>CONCURSOS QUE YA HAN FINALIZADO</h1>
+    <button id="volver">
+      <a>
+        <router-link :to="{ name: 'Profile' }">Volver a mi perfil</router-link>
+      </a>
+    </button>
 
     <!-- Forumulario de búsqueda -->
     <div id="formulariobusqueda">
@@ -55,7 +60,7 @@
         </p>
         <p v-if="finalizado.nombre_ganador">
           <b>🥇 Ganador:</b>
-          {{finalizado.nombre_ganador}}
+          {{finalizado.nombre_ganador}} {{finalizado.apellidos_ganador}}
         </p>
         <p v-if="finalizado.valoracion">
           <b>🌠 Valoración media:</b>
@@ -266,4 +271,32 @@ input {
   border: solid 2px var(--black);
   box-shadow: 0 0 1px var(--black); 
 }*/
+
+#volver {
+  width: 250px;
+  margin-left: 55px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 450px;
+  height: 50px;
+  font-size: 1.5em;
+  padding: 0.4em;
+  box-shadow: 0 0 10px rgb(12, 12, 12);
+  margin: 10px;
+  font-family: "Ubuntu", sans-serif;
+  color: var(--white);
+  transition: background-color 0.3s;
+  background-color: var(--black);
+  border-radius: 100px;
+}
+#volver:hover {
+  background-color: var(--blue);
+  color: var(--black);
+}
+
+a {
+  text-decoration: none;
+  color: var(--white);
+}
 </style>

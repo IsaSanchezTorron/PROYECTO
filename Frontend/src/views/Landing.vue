@@ -19,49 +19,76 @@
             <div id="busqueda1">
               <p>
                 <b>NOMBRE DEL CONCURSO</b>
+
+                <br />
+                <br />
+
+                <input
+                  v-model="nombre"
+                  type="search"
+                  name="nombre"
+                  size="40"
+                  placeholder="  No es necesario que busques el título completo"
+                />
               </p>
-              <input
-                v-model="nombre"
-                type="search"
-                name="nombre"
-                size="40"
-                placeholder="  No es necesario que busques el título completo"
-              />
 
               <p>
                 <b>ENTRE ESTA FECHA</b>
-
-                <input v-model="fecha_publicacion" type="date" name="fecha_publicacion" min="2010" />
+                <br />
+                <br />
+                <input
+                  v-model="fecha_publicacion"
+                  type="datetime-local"
+                  name="fecha_publicacion"
+                  min="2010"
+                />
               </p>
               <p>
                 <b>Y ESTA FECHA</b>
-                <input id="fechas" v-model="fecha_final" type="date" name="fecha_final" min="2010" />
+                <br />
+                <br />
+                <input
+                  id="fechas"
+                  v-model="fecha_final"
+                  type="datetime-local"
+                  name="fecha_final"
+                  min="2010"
+                />
               </p>
             </div>
-            <br />
-            <div id="busqueda2">
-              <p>
-                <b>MODALIDAD</b>
-              </p>
-              <input id="check" v-model="modalidad" type="radio" name="modalidad" value="online" />
-              <a>Online</a>
-              <input
-                id="check"
-                v-model="modalidad"
-                type="radio"
-                name="modalidad"
-                value="presencial"
-              />
-              <a>Presencial</a>
 
-              <p>
-                <b>CIUDAD</b>
+            <div id="busqueda2">
+              <div>
+                <p>
+                  <b>MODALIDAD</b>
+                </p>
+
+                <input id="check" v-model="modalidad" type="radio" name="modalidad" value="online" />
+                <a>Online</a>
+
+                <input
+                  id="check"
+                  v-model="modalidad"
+                  type="radio"
+                  name="modalidad"
+                  value="presencial"
+                />
+
+                <a>Presencial</a>
+              </div>
+
+              <div id="busquedamodalidad">
+                <p>
+                  <b>CIUDAD</b>
+                </p>
                 <input v-model="ciudad" type="search" name="ciudad" size="40" />
-              </p>
-              <p>
-                <b>GÉNERO</b>
+              </div>
+              <div id="busquedamodalidad">
+                <p>
+                  <b>GÉNERO</b>
+                </p>
                 <input v-model="genero" type="search" name="ciudad" size="40" />
-              </p>
+              </div>
               <p>
                 <input type="reset" value="Borrar" />
               </p>
@@ -279,8 +306,8 @@ searching(){
 
 <style scoped>
 #fotoinformativauno {
-  width: 500px;
-  height: 500px;
+  width: 600px;
+  height: 600px;
   transition: transform 0.9s ease-in-out;
 }
 #fotoinformativa {
@@ -294,31 +321,45 @@ img:hover {
 }
 
 #principallanding {
-  background-color: #171616;
+  background-color: var(--white);
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  box-shadow: 0 0 50px rgb(44, 41, 41);
+
+  /* box-shadow: 0 0 100px white; */
   height: 600px;
-  width: 100%;
-  padding: 0em;
-  margin: 0 auto;
+  width: 96%;
+  padding: 3em;
+  /*  margin: 0 auto; */
   /* padding-top: 30px; */
   /* padding-bottom: 40px; */
   /* border-radius: 80px; */
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  /* border-top-left-radius: 20px;
+  border-top-right-radius: 20px; */
+  /* border-radius: 20px; */
+  /* border-left-width: 2px;
+  border-left-style: ridge;
+  border-right-width: 2px;
+  border-right-style: ridge;
+ */
+  border-color: var(--black);
 }
 
 input {
   height: 35px;
   border-radius: 5px;
   margin-left: 20px;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  background-color: var(--white);
+  border-bottom: 2px solid var(--black);
 }
 form p {
-  font-size: 1.5em;
-  color: var(--yellow);
+  font-size: 1.7em;
+  color: var(--black);
+  /* -webkit-text-stroke: 1.9px var(--morado); */
 }
 button {
   padding: 0.7em;
@@ -379,18 +420,18 @@ button {
   font-size: 1.3em;
   font-weight: bold;
   padding: 16px;
-  background-color: var(--black);
+  background-color: var(--verdeclaro);
   font-family: "Ubuntu", sans-serif;
-  color: var(--white);
-  box-shadow: 2px 2px 2px var(--blue);
+  color: var(--black);
+  /* box-shadow: 2px 2px 2px var(--blue);*/
 }
 
 button:hover {
-  color: var(--blue);
+  color: var(--black);
+  background-color: var(--naranjaoscuro);
 }
 
 h1 {
-  color: var(--blue);
   font-size: 2.3em;
 }
 
@@ -399,6 +440,7 @@ h1 {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  margin: 10px;
 }
 
 #busqueda2 {
@@ -406,6 +448,7 @@ h1 {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  margin: 10px;
 }
 
 form {
@@ -413,12 +456,18 @@ form {
 }
 
 a {
-  color: var(--white);
+  color: var(--black);
   font-size: 1.4em;
 }
 
 #registro {
   color: var(--black);
   font-size: 1.3em;
+}
+
+h1 {
+  color: var(--black);
+  font-size: 2.63em;
+  -webkit-text-stroke: 1px var(--salmon);
 }
 </style>

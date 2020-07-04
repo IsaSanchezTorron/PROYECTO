@@ -14,7 +14,7 @@
     </div>
 
     <!-- Visualizar los concursos mejor valorados por el público -->
-    <div id="ranking">
+    <div class="ranking">
       <!--  <div id="contenedorranking"> -->
       <div id="fotoinformativa">
         <img
@@ -23,74 +23,81 @@
           alt="foto informativa"
         />
       </div>
-      <div class="concursos">
-        <ul v-for="top in tops" :key="top.id">
-          <li>
-            <h2 id="nombreconcurso">
-              <b>{{ top.nombre }}</b>
-            </h2>
-          </li>
-          <li>
-            <img id="fotoconcurso" :src="top.url_foto" alt="Foto de perfil de usuario" />
-          </li>
-          <li>
-            <b>Cerrado el :</b>
-            {{top.fecha_final | moment(" D MM YYYY") }}
-          </li>
-          <li>
-            <b>Nota media :</b>
-            {{ top.valoracion}}⭐️
-          </li>
-        </ul>
-      </div>
+
+      <ul id="concursosul" v-for="top in tops" :key="top.id">
+        <li>
+          <h2 id="nombreconcurso">
+            <b>👑 {{ top.nombre }}</b>
+          </h2>
+        </li>
+        <li>
+          <img id="fotoconcurso" :src="top.url_foto" alt="Foto de perfil de usuario" />
+        </li>
+        <li>
+          <b>Cerrado el :</b>
+          {{top.fecha_final | moment(" D MM YYYY") }}
+        </li>
+        <li>
+          <b>Nota media :</b>
+          {{ top.valoracion}}⭐️
+        </li>
+      </ul>
+
       <!-- </div> -->
     </div>
-
+    <hr />
     <div id="contenedortotalpendientes">
       <div id="menuizquierda">
-        <div id="button">
-          <p>
-            <!--   <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button> -->
-            <button @click="seePendingRatings()">🥇 Ver concursos pendientes de valoracion</button>
-          </p>
-        </div>
+        <!-- <div id="button">
+        <p>-->
+        <!--   <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button> -->
 
+        <button id="volver">
+          <a>
+            <router-link :to="{ name: 'Profile' }">Volver a mi perfil</router-link>
+          </a>
+        </button>
+        <!--  </p> -->
+      </div>
+
+      <div id="segundamitadvista">
         <div id="parrafovotaciones">
           <p
             id="explicacion"
-          >Intertextual está creciendo para ti, valorando los concursos en que has participado contribuyes a crear comunidad, estamos trabajando para conectar a los amantes de la literatura y pronto podrás interactuar con escritores como tú y compartir gustos afines</p>
+          >Intertextual está creciendo para ti, valorando los concursos en que has participado contribuyes a crear comunidad, estamos trabajando para conectar a los amantes de la literatura y pronto podrás interactuar con escritores como tú y compartir gustos afines.</p>
         </div>
-      </div>
 
-      <!-- Aquí muestro el historial de concursos pendientes de valoración y permito valorarlos mediante un modal -->
+        <!-- Aquí muestro el historial de concursos pendientes de valoración y permito valorarlos mediante un modal -->
 
-      <div class="historialpendientes">
-        <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito -->
-        <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
+        <div class="historialpendientes">
+          <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito -->
+          <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
 
-        <ul v-for="(pendiente, index) in pendientes" :key="pendiente.id">
-          <li>
-            <b>{{ pendiente.nombre_concurso }}</b>
-          </li>
-          <li>
-            <b>Bases:</b>
-            {{ pendiente.descripcion }}
-          </li>
-          <li>
-            <b>Apertura:</b>
-            {{ pendiente.fecha_publicacion | moment(" D MM YYYY") }}
-          </li>
-          <li>
-            <b>Cierre:</b>
-            {{ pendiente.fecha_final | moment(" D MM YYYY") }}
-          </li>
-          <!-- El botón de votar se muestra si no hay voto -->
-          <button
-            v-if="pendiente.valoracion !== 1 || pendiente.valoracion!==2 || pendiente.valoracion!==3 || pendiente.valoracion!==4 || pendiente.valoracion!==5"
-            @click="openModal(index)"
-          >VOTAR</button>
-        </ul>
+          <ul v-for="(pendiente, index) in pendientes" :key="pendiente.id">
+            <li style="color:var(--red);">
+              🔖
+              <b>CONCURSO PENDIENTE DE VALORACIÓN</b>
+            </li>
 
+            <li style="color:var(--blue);">
+              <h4>{{ pendiente.nombre_concurso }}</h4>
+            </li>
+            <li>
+              <b>Apertura:</b>
+              {{ pendiente.fecha_publicacion | moment(" D MM YYYY") }}
+            </li>
+            <li>
+              <b>Cierre:</b>
+              {{ pendiente.fecha_final | moment(" D MM YYYY") }}
+            </li>
+            <!-- El botón de votar se muestra si no hay voto -->
+            <button
+              id="votar"
+              v-if="pendiente.valoracion !== 1 || pendiente.valoracion!==2 || pendiente.valoracion!==3 || pendiente.valoracion!==4 || pendiente.valoracion!==5"
+              @click="openModal(index)"
+            >VOTAR</button>
+          </ul>
+        </div>
         <!--Este es el div de cierre de "probarfondo">-->
 
         <div v-show="modal" class="modal">
@@ -105,6 +112,7 @@
         </div>
       </div>
     </div>
+
     <!-- Hasta aquí la valoración -->
     ¡
     <!--Hasta aquí el top concursos -->
@@ -310,6 +318,7 @@ export default {
           console.log(response);
             self.tops = response.data.data.map((top) =>{
           top.url_foto = "http://localhost:3003/images/" + top.url_foto;
+          // HE INTENTADO AQUÍ HACER UN SLICE (0,3) Y NO ME DEVUELVE NADA
           return top;
         });
         })
@@ -369,6 +378,7 @@ seeLastWinners() {
 created(){
   this.getDataUser();
   this.seeRanking();
+  this.seePendingRatings();
 }
 
 
@@ -432,7 +442,7 @@ h3 {
 /* #menubotones {
 } */
 button {
-  width: 650px;
+  width: 300px;
   height: 60px;
   font-size: 1.5em;
 
@@ -509,6 +519,8 @@ li:last-child {
 }
 li {
   color: white;
+  font-size: 1.1em;
+  line-height: 3;
 }
 
 #fotoinformativa {
@@ -518,11 +530,11 @@ li {
   align-self: center;
 }
 
-#ranking {
+.ranking {
   margin-top: 20px;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
 
   padding: 1em;
 }
@@ -530,10 +542,11 @@ li {
 #explicacion {
   font-size: 1.5em;
   color: var(--white);
-  padding: 1rem;
-  margin: 5rem;
-  line-height: 1.2em;
+  line-height: 2em;
   font-weight: 400;
+
+  width: 80%;
+  margin: 0 auto;
 }
 
 #menuizquierda {
@@ -544,5 +557,37 @@ li {
   align-items: stretch;
   margin-left: 30px;
   margin-top: 30px;
+}
+
+#concursosul {
+  display: flex;
+  flex-direction: column;
+  margin: 40px;
+  justify-content: center;
+  line-height: 3;
+  display: flex;
+}
+
+#segundamitadvista {
+  display: flex;
+  flex-direction: row;
+  margin: 20px;
+  align-items: center;
+}
+
+.historialpendientes {
+  display: flex;
+  flex-direction: row;
+  width: 7000px;
+}
+
+#votar {
+  width: 100px;
+  font-size: 1.2em;
+  height: 30px;
+}
+
+h4 {
+  font-size: 1.1em;
 }
 </style>

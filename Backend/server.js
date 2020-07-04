@@ -48,7 +48,11 @@ const {
 } = require('./controllers/CONCURSOS/finished_concourses');
 const { setWinner } = require('./controllers/CONCURSOS/winner');
 const { seelastwinners } = require('./controllers/CONCURSOS/lastwinners');
+const {
+  searchingConcourses
+} = require('./controllers/CONCURSOS/search_concourses');
 
+const { stillNowConcourses } = require('./controllers/CONCURSOS/stillnow');
 //############# Funciones importadas relativas a INSCRIPCIONES ##############
 const {
   newInscription
@@ -65,10 +69,6 @@ const { newRating } = require('./controllers/VALORACIONES/new_rating');
 const { viewRating } = require('./controllers/VALORACIONES/view_rating');
 
 const { viewRanking } = require('./controllers/VALORACIONES/view_ranking');
-
-const {
-  searchingConcourses
-} = require('./controllers/CONCURSOS/search_concourses');
 
 // ################## RUTAS DE USUARIO ##############################
 
@@ -129,6 +129,8 @@ app.put(
   setWinner
 );
 app.get('/concursos/ultimosganadores', userIsAuthenticated, seelastwinners); //Ver los últimos ganadores nombrados.
+
+app.get('/concursos/todos', stillNowConcourses); //Ver los últimos ganadores nombrados.
 
 //################ RUTAS DE INSCRIPCIONES #############################
 

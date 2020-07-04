@@ -10,7 +10,7 @@
     <div id="concursoscontenedor">
       <br />
       <br />
-      <h1>TODOS LOS CONCURSOS HASTA LA FECHA</h1>
+      <h1>TODOS LOS CONCURSOS HASTA LA FECHA PENDIENTES DE ASIGNACIÓN DE GANADOR</h1>
 
       <!--Aquí un contenedor para centrar en la parte superior el botón y el buscador -->
       <div id="contenedorbuscadoryañadirconcurso">
@@ -30,7 +30,7 @@
 
       <!--Este es el modal donde el Admin va a añadir un nuevo concurso -->
       <div class="modal" v-show="modal">
-        <div class="modalBox">
+        <div class="modalbox">
           <h2>Introduce los datos del concurso</h2>
           <label for="nombre">Nombre:</label>
           <input type="text" name="nombre" id="nombre" v-model="nombre" />
@@ -62,7 +62,7 @@
           <br />
 
           <div id="selecciondefoto">
-            <label for="file">👤 Selecciona tu nueva foto 👉 📸 .</label>
+            <label for="file">👤 Selecciona una foto para el concurso 👉 📸 .</label>
             <input
               type="file"
               id="url_foto"
@@ -82,7 +82,7 @@
 
       <div class="contenedor">
         <br />
-        <!-- Contenedor para dar formato a la ficha de productos, lo cargamos con el array de productos filtrados -->
+
         <div
           class="concursoscontenedor"
           v-for="(concurso, index) in concursosFiltrados"
@@ -140,7 +140,7 @@
               <h2>Estas son las personas inscritas</h2>
               <ul
                 class="resultadosinscripciones"
-                v-for="inscripcion in inscripciones"
+                v-for="(inscripcion, index) in inscripciones"
                 :key="inscripcion.id"
               >
                 <li>👤 Id.: {{inscripcion.id_usuario}} - Nombre: {{inscripcion.nombre}} {{inscripcion.apellidos}}</li>
@@ -150,8 +150,15 @@
                 </li>
                 <hr />
               </ul>
+              <input
+                v-model="idganador"
+                id="idganadorid"
+                name="idganadorid"
+                type="text"
+                placeholder="🔍 INTRODUCE EL ID. DE LA PERSONA GANADORA."
+              />
 
-              <button @click="asignWinner()">💾 Guardar</button>
+              <button @click="setWinner()">💾 Asignar ganador</button>
               <button @click="closeModalInscripciones()">⬅️ Cerrar</button>
             </div>
           </div>
@@ -190,6 +197,7 @@ export default {
         verInscripciones: false,
         inscripciones: [],
         concursoinscripciones:{},
+        idganador:"",
         
         };
     },
@@ -223,6 +231,63 @@ computed: {
     methods: {
 
 
+
+setWinner(){
+
+      const self = this;
+     
+      const token = localStorage.getItem("token");
+      const id_concurso =self.concursoinscripciones.id_concurso;
+      
+
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      //Hago la petición a servidor
+
+      
+      console.log(self.idganador);
+      console.log(id_concurso);
+
+      axios
+        .put("http://localhost:3003/concursos/asignar_ganador",  {
+
+          id_usuario: self.idganador,
+          id_concurso: id_concurso,
+         
+        })
+        .then(function (response) {
+
+          Swal.fire({
+            icon: "success",
+            title: "Gracias por asignar ganador a este concurso. ",
+            timer: "5000"
+            
+          })
+          
+          .then(function(result){
+            if (result.value){
+              location.reload();
+            }
+          });
+       
+        })
+        .catch(function (error) {
+          console.error(error);
+          console.log(error.response.data.message);
+        });
+},
+    
+
+
+
+
+
+
+
+
+
+
+
+
     
 openModal() {
       this.modal = true;
@@ -248,7 +313,7 @@ closeModalInscripciones(){
 showAllConcourses(){
     let self= this;
     axios
-        .get("http://localhost:3003/concursos/listado")
+        .get("http://localhost:3003/concursos/todos")
         //SI SALE BIEN
         .then(function (response) {
           
@@ -396,6 +461,7 @@ showInscribed(){
 // LA LLAMADA A LA FUNCIÓN EN LA CARGA
 created() {
     this.showAllConcourses();
+
     
 },
     
@@ -406,7 +472,7 @@ created() {
 <style scoped>
 .concursoscontenedor {
   box-shadow: 0 0 10px var(--black);
-  padding: 2em;
+  padding: 1.5em;
   width: 300px;
   margin: 40px auto;
   border-radius: 20px;
@@ -473,7 +539,7 @@ button {
   align-self: center;
   width: 450px;
   height: 50px;
-  font-size: 1.5em;
+  font-size: 1em;
   padding: 0.4em;
   box-shadow: 0 0 10px rgb(12, 12, 12);
   margin: 10px;
@@ -488,7 +554,7 @@ h1 {
   color: var(--blue);
 }
 
-/* .modal {
+.modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -512,7 +578,7 @@ h1 {
   border: solid 1px rgba(22, 22, 22, 0.753);
   box-shadow: 0 0 5px rgba(39, 37, 37, 0.548);
   font-size: 1.3em;
-} */
+}
 
 hr {
   height: 10px;

@@ -11,7 +11,7 @@ async function viewRanking(req, res, next) {
     // const id_concurso = req.params.id;
 
     const [current] = await connection.query(
-      `SELECT INSCRIPCIONES.CONCURSOS_id_concurso,CONCURSOS.url_foto, CONCURSOS.id_concurso, CONCURSOS.nombre, CONCURSOS.fecha_final, AVG(INSCRIPCIONES.valoracion) as valoracion
+      `SELECT INSCRIPCIONES.CONCURSOS_id_concurso,CONCURSOS.url_foto, CONCURSOS.nombre, CONCURSOS.fecha_final, ROUND(AVG(INSCRIPCIONES.valoracion),1) as valoracion
 FROM INSCRIPCIONES
 INNER JOIN CONCURSOS ON INSCRIPCIONES.CONCURSOS_id_concurso = CONCURSOS.id_concurso
 WHERE valoracion IS NOT NULL

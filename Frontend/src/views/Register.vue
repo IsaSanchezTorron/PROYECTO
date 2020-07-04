@@ -33,6 +33,12 @@
       <p v-show="required">Rellena todos los datos, por favor</p>
       <br />
     </div>
+
+    <div>
+      <img id="fotoinformativauno" src="../assets/images/registro.png" alt="foto informativa" />
+    </div>
+
+    <barraredessociales></barraredessociales>
   </div>
 </template>
 
@@ -40,6 +46,7 @@
 //IMPORTACIONES PARA
 // componentes locales
 import menucustom from "@/components/MenuCustom.vue";
+import barraredessociales from "@/components/BarraRedesSociales"
 // Títulos de página visibles en navegador
 import vueHeadful from "vue-headful";
 // Mensajes custom
@@ -49,7 +56,7 @@ import axios from "axios";
 
 export default {
   name: "register",
-  components: { vueHeadful, menucustom },
+  components: { vueHeadful, menucustom,barraredessociales },
 
   data() {
     return {
@@ -146,12 +153,14 @@ export default {
 
 <style scoped>
 .contenedorregisto {
-  margin-top: 150px;
+  margin-top: 0;
 }
 input {
   width: 500px;
   height: 30px;
   font-size: 1.2em;
+  margin: 30px;
+  padding: 1.4;
 }
 button {
   width: 300px;
@@ -164,6 +173,10 @@ p {
 a {
   text-decoration: none;
   font-size: 1.1em;
+}
+
+h1 {
+  color: var(--blue);
 }
 
 button {

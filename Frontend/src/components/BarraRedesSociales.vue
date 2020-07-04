@@ -32,23 +32,27 @@ export default {
 
 <style scoped>
 #contenedorredessociales {
-  margin: 30px;
+  /*  margin: 30px; */
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  background-color: var(--black);
-  box-shadow: 0 0 10px var(--black);
+  background-color: var(--white);
+  /* box-shadow: 0 0 10px var(--black); */
   padding: 1em;
-  border-radius: 8px;
-  width: 98.9%;
-  margin: 0 auto;
+
+  width: 98.5%;
+  /*  margin: 0 auto; */
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
 }
-#contenedorredessociales img {
+
+img {
   width: 100px;
 }
 
 p {
   font-size: 1.3em;
   justify-self: center;
+  color: var(--blue);
 }
 </style>

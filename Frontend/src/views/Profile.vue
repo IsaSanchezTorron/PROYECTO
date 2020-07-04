@@ -23,16 +23,15 @@
         <!-- Este botón llama a la función de abrir modal que a su vez llama a la función para ver el historialver inscripciones y poder cancelarlas -->
         <button @click="openModalNext()">📖 Gestionar inscripciones activas</button>
 
-        <button>
-          <router-link style="color:#1CA0F2" :to="{ name: 'Ratings' }">Votaciones y ranking</router-link>
-        </button>
-
         <!-- Ver los concursos en que estás inscritos, ya finalizados, pendientes de valoración -->
         <!--  <button @click="seePendingRatings()">⭐️ Valorar mis concursos finalizados</button> -->
 
         <h3>NOVEDADES</h3>
         <!-- Botón que llama a la función para ver los concursos mejor valorados-->
-        <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button>
+        <!-- <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button>-->
+        <button id="votaciones">
+          <router-link style="color:var(--rosa)" :to="{ name: 'Ratings' }">💙 Votaciones y ranking</router-link>
+        </button>
 
         <!-- Botón que abre un modal para ver los últimos ganadores publicados -->
         <button @click="openModalWinners()">🏆 Últimas ganadoras nombradas</button>
@@ -41,17 +40,20 @@
         <!-- Este botón es un enlace a todos los concursos hasta la fecha -->
         <button>
           <router-link
-            style="color:#1CA0F2"
+            style="color:var(--rosa)"
             :to="{ name: 'Allconcourses' }"
           >📌 Concursos activos actualmente</router-link>
         </button>
 
         <button>
-          <router-link style="color:#1CA0F2" :to="{ name: 'Allfinished' }">📌 Concursos finalizados</router-link>
+          <router-link
+            style="color:var(--rosa)"
+            :to="{ name: 'Allfinished' }"
+          >📌 Concursos finalizados</router-link>
         </button>
         <h3>HERRAMIENTAS</h3>
         <!-- Botón para editar datos de usuario -->
-        <button @click="openEditModal()" style="color:#F35224">⚙️ Editar perfil</button>
+        <button @click="openEditModal()" style="color:var(--blue)">⚙️ Editar perfil</button>
 
         <!-- Botón para hacer LogOut -->
         <button @click="logoutUser()" style="color:#F35224">👋 Cerrar sesión</button>
@@ -98,6 +100,8 @@
               name="descripcion"
               v-model="nuevaDescripcion"
               placeholder="descripcion"
+              cols="50"
+              rows="20"
             />
             <div id="selecciondefoto">
               <label for="file">👤 Selecciona tu nueva foto 👉 📸 .</label>
@@ -111,10 +115,10 @@
             </div>
             <br />
 
-            <button id="botonesedicion" @click="editUser()">Guardar</button>
+            <button id="volver" @click="editUser()">Guardar</button>
 
             <div class="editarfotousuario">
-              <button id="botonesedicion" @click="vereditar=false">Volver</button>
+              <button id="volver" @click="vereditar=false">Volver</button>
               <hr />
             </div>
 
@@ -151,7 +155,7 @@
               </div>
               <hr />
             </ul>
-            <button @click="closeModalHistory()">⬅️ VOLVER</button>
+            <button id="volver" @click="closeModalHistory()">⬅️ VOLVER</button>
           </div>
         </div>
       </div>
@@ -159,12 +163,12 @@
       <!--Hasta aquí la sección del historial del concurso -->
 
       <!-- Aquí muestro el historial de concursos pendientes de valoración y permito valorarlos mediante un modal -->
-      <div class="modal" v-show="verproximos">
+      <!--  <div class="modal" v-show="verproximos">
         <div class="modalBox">
           <div class="historialpendientes">
-            <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito -->
-            <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
-
+      <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito-->
+      <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
+      <!-- 
             <ul v-for="(pendiente, index) in pendientes" :key="pendiente.id">
               <li>
                 <b>{{ pendiente.nombre_concurso }}</b>
@@ -172,21 +176,21 @@
               <li>
                 <b>Bases:</b>
                 {{ pendiente.descripcion }}
-              </li>
-              <!-- <li>
+      </li>-->
+      <!-- <li>
                 <b>Apertura:</b>
                 {{ pendiente.fecha_publicacion | moment(" D MM YYYY") }}
-              </li>-->
-              <!-- <li>
+      </li>-->
+      <!-- <li>
                 <b>Cierre:</b>
                 {{ pendiente.fecha_final | moment(" D MM YYYY") }}
-              </li>-->
-              <!-- El botón de votar se muestra si no hay voto -->
-              <!--   <button
+      </li>-->
+      <!-- El botón de votar se muestra si no hay voto -->
+      <!--   <button
                 v-if="pendiente.valoracion !== 1 || pendiente.valoracion!==2 || pendiente.valoracion!==3 || pendiente.valoracion!==4 || pendiente.valoracion!==5"
                 @click="openModal(index)"
-              >VOTAR</button>-->
-            </ul>
+      >VOTAR</button>-->
+      <!--   </ul>
 
             <div v-show="modal" class="modal">
               <div class="modalbox">
@@ -205,7 +209,7 @@
           </div>
           <button @click="closeModaNext()">⬅️ VOLVER</button>
         </div>
-      </div>
+      </div>-->
       <!-- Hasta aquí la valoración -->
       <hr />
 
@@ -214,16 +218,14 @@
       <div class="modal" v-show="verganadores">
         <div class="modalBox">
           <div v-if="ganadores">
-            <h1>NO HAY GANADORAS RECIENTES QUE MOSTRAR</h1>
+            <h1>GANADORAS NOMBRADAS RECIENTEMENTE</h1>
           </div>
-          <div v-if="!ganadores">
-            <h2>Estas son las últimas nombradas</h2>
-          </div>
+
           <ul class="resultadosganadores" v-for="ganador in ganadores" :key="ganador.id">
             <li>👤 {{ganador.nombreusuario}} {{ganador.apellidos}} ha ganado el {{ganador.nombreconcurso}} el {{ganador.fecha_asignacion_ganador | moment(" D-MM-YYYY")}}</li>
             <hr />
           </ul>
-          <button @click="closeModalWinners()">⬅️ VOLVER</button>
+          <button id="volver" @click="closeModalWinners()">⬅️ VOLVER</button>
         </div>
       </div>
 
@@ -252,7 +254,7 @@
               <button @click="cancelSuscription(proxconcurso)">Cancelar suscripción</button>
               <hr />
             </ul>
-            <button @click="closeModalNext()">⬅️ VOLVER</button>
+            <button id="volver" @click="closeModalNext()">⬅️ VOLVER</button>
 
             <hr />
           </div>
@@ -781,21 +783,20 @@ created(){
   bottom: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(113, 122, 129, 0.5);
+  background-color: #1049454d;
 }
 
 .modalBox {
-  background: #fefefe;
-  margin: 15% auto;
+  background: var(--white);
+  margin: 10% auto;
   padding: 90px;
-
-  width: 50%;
+  width: 40%;
   height: 50%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  border-radius: 20px;
+
   /* border: solid 1px var(--black); */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.432);
   overflow-y: auto;
@@ -812,7 +813,6 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: solid 1px var(--black);
 }
 
 .editar input {
@@ -820,6 +820,12 @@ h3 {
   height: 30px;
   border-radius: 5px;
   align-self: center;
+  margin-left: 20px;
+  /*  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  background-color: var(--white);
+  border-bottom: 2px solid var(--black); */
 }
 
 .editar textarea {
@@ -842,7 +848,6 @@ h3 {
 #selecciondefoto {
   margin: 0 auto;
   padding: 0.5em;
-  border: 1px solid var(--black);
 }
 
 #botonesedicion {
@@ -878,15 +883,15 @@ img {
   margin: 10px;
 
   font-family: "Ubuntu", sans-serif;
-  color: var(--white);
+  color: var(--rosa);
   transition: background-color 0.3s;
-  background-color: var(--black);
+  background-color: #3c313fa2;
   border-radius: 100px;
 }
 
 #menubotones button:hover {
-  background-color: var(--white);
-  color: var(--black);
+  background-color: var(--verde);
+  color: var(--rosa);
 }
 
 a {
@@ -902,15 +907,13 @@ a {
   justify-self: center;
   align-items: center;
   align-content: center;
-  margin: 20px;
+
   background-image: url(https://images.unsplash.com/photo-1522794338816-ee3a17a00ae8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80);
   background-repeat: no-repeat;
-
+  width: 95.9%;
   background-size: cover;
   padding: 3em;
   box-shadow: 0 0 10px var(--black);
-
-  border-radius: 50px;
 }
 
 #saludo {
@@ -953,5 +956,46 @@ button {
 button:hover {
   background-color: var(--white);
   color: var(--black);
+}
+
+a {
+  color: white;
+}
+
+.modal button {
+  width: 200px;
+  height: 50px;
+  font-size: 0.6em;
+}
+
+ul {
+  font-size: 1.5em;
+  line-height: 1.5;
+}
+
+#volver {
+  font-size: 1.3em;
+  margin-left: 50px;
+}
+
+#perfilusuario input {
+  width: 500px;
+  margin: 20px;
+  height: 40px;
+}
+#perfilusuario input {
+  width: 500px;
+  margin: 20px;
+  height: 40px;
+}
+
+label {
+  display: table-cell;
+
+  font-size: 1em;
+  font-weight: bold;
+  vertical-align: top;
+  text-align: right;
+  padding-right: 3px;
 }
 </style>

@@ -16,15 +16,45 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   /* color: #2c3e50; */
-  background-color: var(--black);
+  background-color: var(--white);
   padding-bottom: 0.5em;
 }
 
 html {
+  /* --black: #324442; */
+  /*  --black: #3c313f; */ /*Este es el negro para la combinación rosa-verde*/
+
+  /*  --rosa: #f2c0cb;  */ /*Este es el rosa para la combinación rosa-verde.*/
+  --rosa: #84a9ac;
+
+  --berenjena: #9d76a7;
+
+  /*  --verde: #104945; */ /*Este es el verde para la combinación rosa-verde*/
+  --verde: #3b6978;
+
+  --brown: #f9b9b7;
+
+  /* --yellow: #ff6361; */
+  /* --white: #eeeeee; */ /*Este es el blanco para la combinación rosa-verde */
+
+  /* --white2: #be608c;
+  --white3: #f3efea;
+  --red: #ff0000;
+  --verdetransparente: #84a9ac;
+  --verdeclaro: #a6b3b4; */
+
+  /* --black: #2a9d8f; */
+  /*  --morado: #654062;
+  --salmon: #f25f5c;
+  --amarillo: #ffe066;
+  --roto: #ffffff;
+  --salmon2: #fd6727; */
   --black: #171616;
-  --blue: #1ca0f2;
-  --yellow: #fedd09;
-  --white: #f6f4f1;
+  --white: #ffffff;
+  --verdeclaro: #cbf3f0;
+  --verdeoscuro: #2ec4b6;
+  --naranjaclaro: #ffbf69;
+  --naranjaoscuro: #ff9f1c;
 }
 
 #nav {
@@ -74,7 +104,6 @@ div #linkregistrousuario a {
 h1 {
   font-size: 2.5em;
   color: var(--black);
-  -webkit-text-stroke: 0.5px var(--blue);
   -webkit-box-reflect: below -30px -webkit-gradient(
       linear,
       left top,
@@ -85,12 +114,13 @@ h1 {
 }
 h2 {
   font-size: 1.6em;
-  color: var(--blue);
+  color: var(--black);
 }
 
 hr {
   height: 10px;
   border: 0;
+
   box-shadow: 0 10px 10px -10px var(--yellow) inset;
 }
 
@@ -138,7 +168,7 @@ ul li {
 
 .modalbox {
   background: #fefefe;
-  margin: 15% auto;
+  margin: 2% auto;
   padding: 90px;
 
   width: 50%;

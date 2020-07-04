@@ -18,7 +18,7 @@ async function listingConcourses(req, res, next) {
     LEFT JOIN USUARIOS ON USUARIOS.id_usuario = CONCURSOS.id_ganador
     WHERE CONCURSOS.fecha_final > ?
     GROUP BY CONCURSOS.id_concurso
-    ORDER BY CONCURSOS.fecha_final DESC`,
+    ORDER BY CONCURSOS.fecha_final ASC`,
       [dateToday]
     );
 

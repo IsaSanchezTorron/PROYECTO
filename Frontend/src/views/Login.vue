@@ -140,8 +140,8 @@ Toast.fire({
 </script>
 
 <style scoped>
-.contenedorlogin {
-  margin-top: 20px;
+#contenedorlogin {
+  margin-top: 50px;
 }
 input {
   width: 500px;

@@ -13,18 +13,20 @@
       </a>
 
       <a>
+        <router-link :to="{ name: 'Admin' }">⚙️ Administrador</router-link>
+      </a>
+
+      <router-link :to="{ name: 'Register' }">
+        <a>Registro de nuevo usuario</a>
+      </router-link>
+
+      <a>
         <router-link :to="{ name: 'Login' }">Iniciar sesión</router-link>
       </a>
 
       <a>
         <router-link :to="{ name: 'Profile' }">👤 Perfil</router-link>
       </a>
-      <a>
-        <router-link :to="{ name: 'Admin' }">⚙️ Administrador</router-link>
-      </a>
-      <router-link :to="{ name: 'Register' }">
-        <a>Registro de nuevo usuario</a>
-      </router-link>
     </div>
 
     <!--Botón que llama a la función de Logout -->
@@ -77,15 +79,17 @@ const role = localStorage.getItem("rol");
   flex-direction: row;
   justify-content: space-around;
   /*   margin: 0 auto; */
-  background-color: var(--black);
+  background-color: var(--white);
   font-size: 1em;
   padding: 3em;
-  border-radius: 30px;
-  box-shadow: 0 0 30px rgb(44, 41, 41);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  /*  box-shadow: var(--salmon) 0px 0px 6px 0px inset;
+} */
 }
 
 #contenedorMenu a {
-  color: var(--blue);
+  color: var(--black);
   font-size: 1.2em;
   text-decoration: none;
 }

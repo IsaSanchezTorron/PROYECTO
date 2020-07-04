@@ -49,12 +49,15 @@ async function setWinner(req, res, next) {
       `SELECT id_ganador FROM CONCURSOS WHERE id_concurso=?`,
       [id_concurso]
     );
-    if (existingWinner.length) {
+
+    /*  console.log(existingWinner.id_ganador !== null); */
+    console.log(typeof existingWinner[0].id_ganador);
+    if (typeof existingWinner[0].id_ganador === 'number') {
       throw generateError('Este concurso ya tiene un ganador asignado.', 401);
     }
 
     await connection.query(
-      `UPDATE CONCURSOS SET id_ganador=?. fecha_asignacion_ganador = NOW() WHERE id_concurso=?`,
+      `UPDATE CONCURSOS SET id_ganador=?, fecha_asignacion_ganador = NOW() WHERE id_concurso=?`,
       [id_usuario, id_concurso]
     );
 

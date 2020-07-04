@@ -19,21 +19,40 @@ export default {
 
 <style scoped>
 #contenedorparabienvenida {
-  /*  margin: 30px; */
+  /* margin: 30px; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   background-color: var(--white);
   box-shadow: 0 0 30px rgb(44, 41, 41);
-  padding: 2em;
   /*   border-radius: 100px; */
-  background: url("https://images.unsplash.com/photo-1578658544861-37dbf6d82ea3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
-  width: 97.7%;
+  background: url("https://images.unsplash.com/photo-1525358180237-7399f908a1d9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1357&q=80");
+  width: 97.3%;
   margin-top: -19.8px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 5px 5px 25px var(--black) inset;
+
+  padding: 2em;
+
+  /*  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px; */
 }
 
+/* #contenedorparabienvenida:before {
+  content: "";
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #2e0d36;
+}
+ */
 img {
+  width: 400px;
   border-radius: 400px;
 }
 </style>
