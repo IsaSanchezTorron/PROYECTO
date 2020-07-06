@@ -1,32 +1,30 @@
 <template>
   <div>
-    <!--El menú custom que estará en la parte de arriba de casi todas las vistas -->
+    <!--El mendivú custom que estará en la parte de arriba de casi todas las vistas -->
     <div id="contenedorMenu">
       <!-- Los enlaces se hacen de manera dinámica, puede cambiar la ruta pero se mantiene el componente
       al invocarlo por su nombre-->
-      <a>
-        <router-link :to="{ name: 'Landing' }">Home</router-link>
-      </a>
+      <div>
+        <a>
+          <router-link :to="{ name: 'Landing' }">Portada</router-link>
+        </a>
+      </div>
 
-      <a>
-        <router-link :to="{ name: 'About' }">Sobre mí - Contacto</router-link>
-      </a>
-
-      <a>
-        <router-link :to="{ name: 'Admin' }">⚙️ Administrador</router-link>
-      </a>
-
-      <router-link :to="{ name: 'Register' }">
-        <a>Registro de nuevo usuario</a>
-      </router-link>
-
-      <a>
-        <router-link :to="{ name: 'Login' }">Iniciar sesión</router-link>
-      </a>
-
-      <a>
-        <router-link :to="{ name: 'Profile' }">👤 Perfil</router-link>
-      </a>
+      <div v-show="!seeUserButton">
+        <router-link :to="{ name: 'Register' }">
+          <a>Registro de nuevo usuario</a>
+        </router-link>
+      </div>
+      <div v-show="!seeUserButton">
+        <a>
+          <router-link :to="{ name: 'Login' }">Iniciar sesión</router-link>
+        </a>
+      </div>
+      <div v-show="seeUserButtonProfile || seeAdmin">
+        <a>
+          <router-link :to="{ name: 'Profile' }">🤓 Perfil</router-link>
+        </a>
+      </div>
     </div>
 
     <!--Botón que llama a la función de Logout -->
@@ -34,41 +32,42 @@
 </template>
 
 <script>
-
+import {
+  isLoggedIn,
+  checkAdmin,
+  showUserButton,
+  showAdminButton
+} from "../api/utils.js";
 
 export default {
   name: "menucustom",
 
   return: {
-   
-    
+    seeUserButton: false,
+    seeUserButtonProfile: false,
+    seeAdmin: false
   },
 
   methods: {
+    showUserButtonIn() {
+      this.seeUserButton = isLoggedIn();
+    },
+    showAdminButtonInMenu() {
+      this.seeAdmin = showAdminButton();
+    },
+    showUserButtonProfile() {
+      this.seeUserButtonProfile = showUserButton();
+    },
 
-
-    //Función de LogOut
-  
-  
-
-/* showProfileButton(seeProfileButton) {
-const role = localStorage.getItem("rol");
-  if (role === "escritor") {
-    this.seeProfileButton = false;
-    return this.seeProfileButton;
+    created() {
+      this.showProfileButton();
+    }
+  },
+  created() {
+    this.showUserButtonIn();
+    this.showAdminButtonInMenu();
+    this.showUserButtonProfile();
   }
-
- this.seeProfileButton=false;
-  return this.seeProfileButton;
-},
-
-
-  created(){
-    this.showProfileButton();
-  }, */
-},
-
-
 };
 </script>
 
@@ -92,5 +91,10 @@ const role = localStorage.getItem("rol");
   color: var(--black);
   font-size: 1.2em;
   text-decoration: none;
+}
+
+a:hover {
+  background-color: var(--verdeclaro);
+  border-radius: 0px;
 }
 </style>

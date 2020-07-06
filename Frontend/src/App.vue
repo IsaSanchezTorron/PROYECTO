@@ -55,6 +55,7 @@ html {
   --verdeoscuro: #2ec4b6;
   --naranjaclaro: #ffbf69;
   --naranjaoscuro: #ff9f1c;
+  --naranjamasclaro: #2ec4b6;
 }
 
 #nav {
@@ -102,8 +103,9 @@ div #linkregistrousuario a {
 } */
 
 h1 {
-  font-size: 2.5em;
   color: var(--black);
+  font-size: 2.63em;
+
   -webkit-box-reflect: below -30px -webkit-gradient(
       linear,
       left top,
@@ -112,6 +114,7 @@ h1 {
       to(rgba(255, 255, 255, 0.26))
     );
 }
+
 h2 {
   font-size: 1.6em;
   color: var(--black);
@@ -128,7 +131,7 @@ ul li {
   list-style: none;
 }
 
-.modal {
+/* .modal {
   position: absolute;
   top: 0;
   left: 0;
@@ -156,26 +159,25 @@ ul li {
 /*   color: var(--white);
 }  */
 
-.modal {
+/* .modal {
   position: fixed;
-  /* top: -30px; */
+  top: -30px; 
   left: 0;
   bottom: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(113, 122, 129, 0.048);
-}
-
+}  */
 .modalbox {
   background: #fefefe;
-  margin: 2% auto;
+  margin: 15% auto;
   padding: 90px;
 
   width: 50%;
   height: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   border-radius: 20px;
   /* border: solid 1px var(--black); */

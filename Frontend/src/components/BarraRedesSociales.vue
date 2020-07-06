@@ -9,7 +9,14 @@
     <a title="Twitter" href="https://twitter.com/isa56k1">
       <img src="../assets/images/twitter.png" alt="Twitter" />
     </a>
-    <p>Isabel Sánchez Torrón 2020©</p>
+
+    <div>
+      <p>Isabel Sánchez Torrón 2020©</p>
+
+      <a>
+        <router-link :to="{ name: 'About' }">¿Quiénes somos?</router-link>
+      </a>
+    </div>
 
     <a
       title="Linkedin"
@@ -44,6 +51,8 @@ export default {
   /*  margin: 0 auto; */
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+
+  bottom: 0;
 }
 
 img {
@@ -54,5 +63,10 @@ p {
   font-size: 1.3em;
   justify-self: center;
   color: var(--blue);
+}
+
+a {
+  text-decoration: none;
+  color: var(--verdeoscuro);
 }
 </style>

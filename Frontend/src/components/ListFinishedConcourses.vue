@@ -2,11 +2,11 @@
   <div>
     <!--Encabezado de página -->
     <h1>CONCURSOS QUE YA HAN FINALIZADO</h1>
-    <button id="volver">
+    <!--  <button id="volver">
       <a>
         <router-link :to="{ name: 'Profile' }">Volver a mi perfil</router-link>
       </a>
-    </button>
+    </button>-->
 
     <!-- Forumulario de búsqueda -->
     <div id="formulariobusqueda">
@@ -55,11 +55,11 @@
           {{ finalizado.ciudad }}
         </p>
         <p v-if="finalizado.fecha_asignacion_ganador">
-          <b>📅 Publicación de ganadores:</b>
+          <b>📅 Publicación de ganadoras:</b>
           {{ finalizado.fecha_asignacion_ganador | moment(" D-MM-YYYY") }}
         </p>
         <p v-if="finalizado.nombre_ganador">
-          <b>🥇 Ganador:</b>
+          <b>🥇 Ganadora:</b>
           {{finalizado.nombre_ganador}} {{finalizado.apellidos_ganador}}
         </p>
         <p v-if="finalizado.valoracion">
@@ -88,27 +88,22 @@ import Swal from "sweetalert2";
 // manejo de rutas y endpoints
 import axios from "axios";
 // componentes internos
-import barraredessociales from "@/components/BarraRedesSociales.vue"
+import barraredessociales from "@/components/BarraRedesSociales.vue";
 
 export default {
   name: "listfinished",
-  components:{barraredessociales},
+  components: { barraredessociales },
   props: {
     // Le indicamos que está recibiendo un array.
-    finalizados: Array,
-    
+    finalizados: Array
   },
 
   data() {
     return {
       // Inicializamos un string vacío que contendrá la búsqueda.
-      search: "",
-      
+      search: ""
     };
   },
-
-
-
 
   computed: {
     //FUNCIÓN PARA FILTRAR PRODUCTOS
@@ -119,7 +114,7 @@ export default {
         console.log(this.finalizados);
       }
       return this.finalizados.filter(
-        (concurso) =>
+        concurso =>
           finalizado.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
           finalizado.descripcion
             .toLowerCase()
@@ -131,8 +126,8 @@ export default {
         //Ojo aquí, pendiente que funcione la búsqueda por ciudad.
         // concurso.ciudad.toLowerCase().includes(this.search.toLowerCase())
       );
-    },
-/* 
+    }
+    /* 
       checkDate(finalizado){
         console.log("comprueba la fecha");
         const today = new Date();
@@ -145,17 +140,8 @@ export default {
         
       },
  */
-
-
-  },
-
-
-  
-
-    
-  };
-
-
+  }
+};
 </script>
 
 <style scoped>
@@ -200,6 +186,7 @@ export default {
   justify-content: space-around;
   line-height: 0.9;
   background-color: var(--white);
+  background-color: var(--verdeclaro);
 }
 
 .contenedor {

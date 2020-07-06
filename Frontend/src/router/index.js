@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import { isLoggedIn } from "../api/utils";
 
 Vue.use(VueRouter);
 
@@ -9,11 +10,13 @@ const routes = [
     name: "Landing",
     component: () => import("../views/Landing.vue"),
   },
+
   {
     path: "/",
     name: "Register",
     component: () => import("../views/Register.vue"),
   },
+
   {
     path: "/about",
     name: "About",
@@ -23,18 +26,21 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/SobreNosotras.vue"),
   },
+
   {
     path: "/getall",
     name: "Allconcourses",
 
     component: () => import("../views/AllConcourses.vue"),
   },
+
   {
     path: "/finished",
     name: "Allfinished",
 
     component: () => import("../views/FinishedConcourses.vue"),
   },
+
   {
     path: "/login",
     name: "Login",
@@ -46,7 +52,26 @@ const routes = [
     path: "/profile",
     name: "Profile",
     component: () => import("../views/Profile.vue"),
+    meta: {
+      allowAnonymous: false,
+    },
+
+    beforeEnter: (to, from, next) => {
+      // Si la ruta es privada y la persona no tiene token
+      if (!to.meta.allowAnonymous && !isLoggedIn()) {
+        Swal.fire({
+          icon: "warning",
+          title: "Vaya...",
+          text: "Tienes que hacer login!",
+          confirmButtonColor: "#FE9F1D",
+          cancelButtonColor: "#2EC4B6",
+        });
+      } else {
+        next();
+      }
+    },
   },
+
   {
     path: "/admin",
     name: "Admin",
@@ -57,6 +82,12 @@ const routes = [
     path: "/ratings",
     name: "Ratings",
     component: () => import("../views/Valoraciones.vue"),
+  },
+
+  {
+    path: "*",
+    name: "Error",
+    component: () => import("../views/Error.vue"),
   },
 ];
 

@@ -24,30 +24,37 @@
           <h1>Isabel Sánchez Torrón</h1>
 
           <div id="todocolor">
-            <p>
-              Me encanta
-              <b>cocinar</b>, bañarme en el agua del
-              <b>mar</b> hasta el otoño, ver los streamings de la
-              <b>NASA</b>, los
-              <b>thriller</b>, cuidar de mis queridas
-              <b>plantas, internetear, pintar y mi familia, la grande y la pequeña.</b>
-              Siempre se me han ido los ojos a esas plantitas y flores que nacen en los sitios más insospechados, por eso mi instagram es @rebelionnatural.
-            </p>
-            <p>
-              Algunas de las películas que marcaron mi infancia son
-              <b>"Amarcord", los cortos de Buster Keaton o "Cuando el viento sopla".</b>
-            </p>
-            <p>Me adentré en el mundo de internet a finales de los 90, por aquel entonces estudiaba música, me conectaba con un módem de 56 k, chateaba en el iRC con un montón de personas reales que aún son mis amigos, tenía mi ordenador como servidor FTP, formaba parte de varias listas de correo, no existían ni Google ni Youtube, intercambiábamos tarrinas gigantes de CD's e iba a las partys informáticas en Coruña (Arroutada).</p>
-            <p>
-              Estudié guitarra y batería, le debo a mis padres y hermanos
-              <b>el amor por la música.</b>
-              Soy entusiasta, voluntariosa, cumplidora y creo que es el trato con las personas lo que da sentido a la vida
-            </p>
-            <p>
-              Soy
-              <b>amante de las tecnologías</b> y estoy en el firme camino de
-              <b>seguir aprendiendo y dedicarme a ello profesionalmente con todas las ganas del mundo.</b>
-            </p>
+            <div id="parrafouno">
+              <p>
+                Me encanta
+                <b>cocinar</b>, bañarme en el agua del
+                <b>mar</b> hasta el otoño, ver los streamings de la
+                <b>NASA</b>, los
+                <b>thriller</b>, cuidar de mis queridas
+                <b>plantas, internetear, pintar y mi familia, la grande y la pequeña.</b>
+                Siempre se me han ido los ojos a esas plantitas y flores que nacen en los sitios más insospechados, por eso mi instagram es @rebelionnatural.
+              </p>
+            </div>
+            <div id="parrafo2">
+              <p>
+                Algunas de las películas que marcaron mi infancia son
+                <b>"Amarcord", los cortos de Buster Keaton o "Cuando el viento sopla".</b>
+              </p>
+              <p>Me adentré en el mundo de internet a finales de los 90, por aquel entonces estudiaba música, me conectaba con un módem de 56 k, chateaba en el iRC con un montón de personas reales que aún son mis amigos, tenía mi ordenador como servidor FTP, formaba parte de varias listas de correo, no existían ni Google ni Youtube, intercambiábamos tarrinas gigantes de CD's e iba a las partys informáticas en Coruña (Arroutada).</p>
+            </div>
+            <div id="parrafo3">
+              <p>
+                Estudié guitarra y batería, le debo a mis padres y hermanos
+                <b>el amor por la música.</b>
+                Soy entusiasta, voluntariosa, cumplidora y creo que es el trato con las personas lo que da sentido a la vida
+              </p>
+
+              <p>
+                Soy
+                <b>amante de las tecnologías</b> y estoy en el firme camino de
+                <b>seguir aprendiendo y dedicarme a ello profesionalmente con todas las ganas del mundo.</b>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -103,9 +110,9 @@ import menucustom from "@/components/MenuCustom.vue";
 import vueHeadful from "vue-headful";
 
 export default {
-    name: "About",
-     components: {menucustom, barraredessociales}
-}
+  name: "About",
+  components: { menucustom, barraredessociales, vueHeadful }
+};
 </script>
 
 <style scoped>
@@ -117,7 +124,7 @@ p {
 img {
   width: 150px;
   border-radius: 150px;
-  box-shadow: 0 10px 30px var(--black);
+  box-shadow: 0 3px 10px var(--black);
   border: solid 1px var(--black);
   -webkit-box-reflect: below -120px -webkit-gradient(
       linear,
@@ -174,14 +181,14 @@ img:hover {
 #todo {
   /* box-shadow: 0 0 50px rgb(44, 41, 41); */
 
-  padding-bottom: 4em;
+  padding-bottom: 3.2em;
   height: 700px;
   margin-top: 500px;
-  background-image: url("https://images.unsplash.com/photo-1468779036391-52341f60b55d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60");
+  background-image: url("https://images.unsplash.com/photo-1530733895788-f39cc96b6ae8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
   margin-top: 0px;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: top;
   width: 99.5%;
 }
 
@@ -208,7 +215,7 @@ img:hover {
 }
 
 #compañeros {
-  color: var(--black);
+  color: var(--verdeoscuro);
 
   opacity: 0.9;
   border-radius: 100px;
@@ -221,22 +228,59 @@ h2 {
   line-height: 2;
 }
 #todocolor {
-  background-color: #ffbe6998;
-  border-radius: 30px;
+  display: flex;
+  flex-direction: row;
+
   padding: 1.3em;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
 }
+
+#parrafouno {
+  width: 40%;
+  margin-right: 80px;
+  background-color: #cbf3f096;
+  padding-left: 20px;
+
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+}
+
+#parrafo2 {
+  width: 60%;
+  margin-right: 80px;
+  background-color: #fea21748;
+  padding-right: 20px;
+  padding: 2em;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+}
+#parrafo3 {
+  width: 40%;
+  background-color: #cbf3f096;
+  padding: 2em;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+}
+
 #todocolor2 {
   background-color: #2ec4b585;
-  border-radius: 30px;
+
   padding: 1.3em;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
 }
 #todocolor3 {
-  background-color: #cbf3f096;
-  border-radius: 30px;
+  background-color: #2ec4b585;
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
   padding: 0.8em;
 }
 
 #compis {
   text-align: center;
+  color: var(--verdeoscuro);
+  font-size: 2em;
+  margin-left: -30px;
 }
 </style>

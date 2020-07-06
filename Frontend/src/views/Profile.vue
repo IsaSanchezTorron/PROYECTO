@@ -15,64 +15,78 @@
           <div class="informacionusuario"></div>
         </div>
 
-        <!-- Menú de botones -->
-        <h3>TUS INSCRIPCIONES</h3>
-        <!-- Este botón llama a la función de abrir modal que a su vez llama a la función para ver el historial -->
-        <button @click="openModalHistory()">📚 Mi historial completo</button>
+        <div id="menudebotones">
+          <!-- Menú de botones -->
+          <h3 v-show="!seeAdmin">▶️ TUS INSCRIPCIONES</h3>
 
-        <!-- Este botón llama a la función de abrir modal que a su vez llama a la función para ver el historialver inscripciones y poder cancelarlas -->
-        <button @click="openModalNext()">📖 Gestionar inscripciones activas</button>
+          <!-- Este botón llama a la función de abrir modal que a su vez llama a la función para ver el historial -->
+          <button v-show="!seeAdmin" @click="openModalHistory()">📚 Mi historial completo</button>
 
-        <!-- Ver los concursos en que estás inscritos, ya finalizados, pendientes de valoración -->
-        <!--  <button @click="seePendingRatings()">⭐️ Valorar mis concursos finalizados</button> -->
+          <!-- Este botón llama a la función de abrir modal que a su vez llama a la función para ver el historialver inscripciones y poder cancelarlas -->
+          <button v-show="!seeAdmin" @click="openModalNext()">📖 Gestionar inscripciones activas</button>
 
-        <h3>NOVEDADES</h3>
-        <!-- Botón que llama a la función para ver los concursos mejor valorados-->
-        <!-- <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button>-->
-        <button id="votaciones">
-          <router-link style="color:var(--rosa)" :to="{ name: 'Ratings' }">💙 Votaciones y ranking</router-link>
-        </button>
+          <!-- Ver los concursos en que estás inscritos, ya finalizados, pendientes de valoración -->
+          <!--  <button @click="seePendingRatings()">⭐️ Valorar mis concursos finalizados</button> -->
 
-        <!-- Botón que abre un modal para ver los últimos ganadores publicados -->
-        <button @click="openModalWinners()">🏆 Últimas ganadoras nombradas</button>
+          <h3 v-show="!seeAdmin">✔️ ENLACES RÁPIDOS A CONCURSOS</h3>
+          <!-- Este botón es un enlace a todos los concursos hasta la fecha -->
+          <button v-show="!seeAdmin">
+            <router-link style="color:var(--white);" :to="{ name: 'Allconcourses' }">
+              <p2>📌 Concursos activos actualmente</p2>
+            </router-link>
+          </button>
 
-        <h3>CATÁLOGO</h3>
-        <!-- Este botón es un enlace a todos los concursos hasta la fecha -->
-        <button>
-          <router-link
-            style="color:var(--rosa)"
-            :to="{ name: 'Allconcourses' }"
-          >📌 Concursos activos actualmente</router-link>
-        </button>
+          <button v-show="!seeAdmin">
+            <router-link style="color:var(--white)" :to="{ name: 'Allfinished' }">
+              <p2>📌 Concursos finalizados</p2>
+            </router-link>
+          </button>
 
-        <button>
-          <router-link
-            style="color:var(--rosa)"
-            :to="{ name: 'Allfinished' }"
-          >📌 Concursos finalizados</router-link>
-        </button>
-        <h3>HERRAMIENTAS</h3>
-        <!-- Botón para editar datos de usuario -->
-        <button @click="openEditModal()" style="color:var(--blue)">⚙️ Editar perfil</button>
+          <h3 v-show="!seeAdmin">▶️ NOVEDADES</h3>
+          <!-- Botón que llama a la función para ver los concursos mejor valorados-->
+          <!-- <button @click="seeRaking()">🥇 Ver concursos mejor valorados</button>-->
+          <button v-show="!seeAdmin" id="votaciones">
+            <router-link style="color:var(--white);" :to="{ name: 'Ratings' }">
+              <p2>💙 Valoraciones y ranking</p2>
+            </router-link>
+          </button>
 
-        <!-- Botón para hacer LogOut -->
-        <button @click="logoutUser()" style="color:#F35224">👋 Cerrar sesión</button>
+          <!-- Botón que abre un modal para ver los últimos ganadores publicados -->
+          <button v-show="!seeAdmin" @click="openModalWinners()">🏆 Últimas ganadoras nombradas</button>
+
+          <h3>▶️ HERRAMIENTAS</h3>
+
+          <button v-show="seeAdmin">
+            <a>
+              <router-link
+                style="color:var(--verdeoscuro)"
+                :to="{ name: 'Admin' }"
+              >⚙️ GESTIONAR CONCURSOS</router-link>
+            </a>
+          </button>
+
+          <!-- Botón para editar datos de usuario -->
+          <button @click="openEditModal()" style="color:var(--white);">
+            <p2>⚙️ Editar perfil</p2>
+          </button>
+
+          <!-- Botón para hacer LogOut -->
+          <button @click="logoutUser()" style="color:var(--white);">
+            <p2>👋 Cerrar sesión</p2>
+          </button>
+        </div>
       </div>
 
       <!--Sección de saludo y datos del usuario-->
-      <div id="saludo">
-        <h1>Hola {{ user.nombre }}</h1>
-        <!-- Imagen de perfil del usuario -->
-        <img :src="user.url_foto" alt="Foto de perfil de usuario" />
-        <p>Miembro desde {{ user.fecha_registro | moment(" D-MM-YYYY") }}</p>
-        <p>Categoría: {{ user.rol }}</p>
-        <div id="descripcion">{{user.descripcion}}</div>
-        <img
-          id="fotoayuda"
-          src="../assets/images/intertextualperfil.jpg"
-          alt="foto informativa"
-          title="intertextual@intertextual-concursos.com"
-        />
+      <div class="contenedorsaludo">
+        <div id="saludo">
+          <h1>Hola {{ user.nombre }}</h1>
+          <!-- Imagen de perfil del usuario -->
+          <img :src="user.url_foto" alt="Foto de perfil de usuario" />
+          <p>Miembro desde {{ user.fecha_registro | moment(" D-MM-YYYY") }}</p>
+          <p>Categoría: {{ user.rol }}</p>
+          <p id="descripcion">{{user.descripcion}}</p>
+        </div>
       </div>
 
       <!--Sección de datos personales editables -->
@@ -133,7 +147,12 @@
         <div class="modalBox">
           <div class="historialconcurso">
             <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
-            <h2>ESTOS SON TODOS LOS CONCURSOS EN QUE HAS PARTICIPADO</h2>
+
+            <!--  <h3 style="color:var(--verdeoscuro)">Todavía no estás inscrita a ningún concurso</h3> -->
+
+            <h2 style="color:var(--verdeoscuro)">ESTOS SON TODOS TUS CONCURSOS</h2>
+
+            <hr />
             <ul v-for="historia in historial" :key="historia.id">
               <li>
                 <b>{{ historia.nombre_concurso }}</b>
@@ -160,57 +179,6 @@
         </div>
       </div>
 
-      <!--Hasta aquí la sección del historial del concurso -->
-
-      <!-- Aquí muestro el historial de concursos pendientes de valoración y permito valorarlos mediante un modal -->
-      <!--  <div class="modal" v-show="verproximos">
-        <div class="modalBox">
-          <div class="historialpendientes">
-      <!-- Desde aquí el usuario puede votar los concursos ya finalizados en los que se ha inscrito-->
-      <!-- Recorremos el array dinámicamente y necesitamos el index para aplicar el voto -->
-      <!-- 
-            <ul v-for="(pendiente, index) in pendientes" :key="pendiente.id">
-              <li>
-                <b>{{ pendiente.nombre_concurso }}</b>
-              </li>
-              <li>
-                <b>Bases:</b>
-                {{ pendiente.descripcion }}
-      </li>-->
-      <!-- <li>
-                <b>Apertura:</b>
-                {{ pendiente.fecha_publicacion | moment(" D MM YYYY") }}
-      </li>-->
-      <!-- <li>
-                <b>Cierre:</b>
-                {{ pendiente.fecha_final | moment(" D MM YYYY") }}
-      </li>-->
-      <!-- El botón de votar se muestra si no hay voto -->
-      <!--   <button
-                v-if="pendiente.valoracion !== 1 || pendiente.valoracion!==2 || pendiente.valoracion!==3 || pendiente.valoracion!==4 || pendiente.valoracion!==5"
-                @click="openModal(index)"
-      >VOTAR</button>-->
-      <!--   </ul>
-
-            <div v-show="modal" class="modal">
-              <div class="modalbox">
-                <h3>¿Cómo valoras tu experiencia?</h3>
-
-                <star-rating
-                  @rating-selected="rating = $event"
-                  :rating="rating"
-                  v-bind:star-size="20"
-                ></star-rating>
-
-                <button @click="newRating(votedConcourse, rating)">Este es mi voto!</button>
-                <button @click="closeModal()">Cerrar</button>
-              </div>
-            </div>
-          </div>
-          <button @click="closeModaNext()">⬅️ VOLVER</button>
-        </div>
-      </div>-->
-      <!-- Hasta aquí la valoración -->
       <hr />
 
       <!-- Aquí mostramos con un modal los últimos ganadores nombrados -->
@@ -218,15 +186,25 @@
       <div class="modal" v-show="verganadores">
         <div class="modalBox">
           <div v-if="ganadores">
-            <h1>GANADORAS NOMBRADAS RECIENTEMENTE</h1>
+            <h1 style="color:var(--verdeoscuro)">GANADORAS NOMBRADAS RECIENTEMENTE</h1>
           </div>
 
           <ul class="resultadosganadores" v-for="ganador in ganadores" :key="ganador.id">
             <li>👤 {{ganador.nombreusuario}} {{ganador.apellidos}} ha ganado el {{ganador.nombreconcurso}} el {{ganador.fecha_asignacion_ganador | moment(" D-MM-YYYY")}}</li>
-            <hr />
           </ul>
           <button id="volver" @click="closeModalWinners()">⬅️ VOLVER</button>
         </div>
+      </div>
+
+      <div v-show="!seeAdmin" id="globos">
+        <img id="fotoayuda2" src="../assets/images/fotoperfil2.png" alt="foto informativa" />
+        <img id="fotoayuda" src="../assets/images/intertextualperfil.png" alt="foto informativa" />
+
+        <img id="fotoayuda3" src="../assets/images/fotoperfil3.png" alt="foto informativa" />
+
+        <h1 style="color:var(--black)">Información 👆</h1>
+        <p2>Puede ser de ayuda para la navegación por la web</p2>
+        <p2>pasa el ratón por encima para verla mejor.</p2>
       </div>
 
       <!-- Visualizar Próximos concursos en los que el usuario está inscrito, puede deshacer su suscripción --->
@@ -236,7 +214,7 @@
           <div class="proximosconcursos">
             <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
             <ul v-for="proxconcurso in proxconcursos" :key="proxconcurso.id">
-              <li>
+              <li style="color:var(--verdeoscuro)">
                 <b>{{ proxconcurso.nombre }}</b>
               </li>
               <!-- <li>
@@ -251,7 +229,7 @@
                 <b>Cierre:</b>
                 {{ proxconcurso.fecha_final | moment(" D-MM-YYYY") }}
               </li>
-              <button @click="cancelSuscription(proxconcurso)">Cancelar suscripción</button>
+              <button id="modalbutton" @click="cancelSuscription(proxconcurso)">Cancelar suscripción</button>
               <hr />
             </ul>
             <button id="volver" @click="closeModalNext()">⬅️ VOLVER</button>
@@ -281,13 +259,14 @@
       </div>
       <!--Hasta aquí el top concursos -->
     </div>
+
     <barraredessociales></barraredessociales>
   </div>
 </template>
 
 <script>
 // EXPORTAMOS PARA
-import VModal from 'vue-js-modal'
+import VModal from "vue-js-modal";
 // Gestión de fechas
 import VueMoment from "vue-moment";
 // Función para el Log Out, eliminar los datos del LOCALSTORAGE.
@@ -302,25 +281,37 @@ import vueHeadful from "vue-headful";
 import axios from "axios";
 // Componentes internos
 import menucustom from "@/components/MenuCustom.vue";
-import barraredessociales from "@/components/BarraRedesSociales.vue"
-
+import barraredessociales from "@/components/BarraRedesSociales.vue";
+// FUNCIONES DEL ARCHIVO AUXULIAR.
+import {
+  isLoggedIn,
+  checkAdmin,
+  showUserButton,
+  showAdminButton
+} from "../api/utils.js";
 
 export default {
   name: "Profile",
   // Componentes de la vista
-  components: { menucustom, vueHeadful, StarRating,barraredessociales },
+  components: {
+    menucustom,
+    vueHeadful,
+    StarRating,
+    barraredessociales,
+    vueHeadful
+  },
   data() {
     return {
       // Declaración de variables que voy a utilizar para recoger la información
       id: null,
       user: {},
-      userData:{},
+      userData: {},
       nuevoNombre: "",
       nuevoApellido: "",
       nuevaDescripcion: "",
       // Booleano para controlar el v-show que contiene el formulario de edición.
       showEdit: false,
-      showHistorial:false,
+      showHistorial: false,
       seeEditable: false,
       url_foto: "",
       historial: [],
@@ -330,40 +321,46 @@ export default {
       votedConcourse: {},
       seeIsVoted: false,
       mostrarvotables: false,
-      
+
       pendientes: [],
       proxconcursos: [],
       tops: [],
-      ganadores:[],
-      verganadores : false,
+      ganadores: [],
+      verganadores: false,
       verproximos: false,
       verhistorial: false,
       vereditar: false,
+      seeUserButton: false,
 
+      seeAdmin: false
     };
   },
 
   methods: {
-
+    showUserButtonIn() {
+      this.seeUserButton = isLoggedIn();
+    },
+    showAdminButtonInMenu() {
+      this.seeAdmin = showAdminButton();
+    },
 
     logoutUser() {
       //Nos lleva al login
       this.$router.push("/");
       // No deja datos en el logueo, vacío
       return clearLogin();
-    
     },
 
-    handleFileUpload(){
-    this.url_foto = this.$refs.url_foto.files[0];
-  },
-    
+    handleFileUpload() {
+      this.url_foto = this.$refs.url_foto.files[0];
+    },
+
     openModal(index) {
       this.modal = true;
       this.votedConcourse = this.pendientes[index];
     },
 
-   /*  openModalTwo(){
+    /*  openModalTwo(){
       this.modal=true;
     }, */
 
@@ -371,42 +368,37 @@ export default {
       this.modal = false;
     },
 
-
-    openModalWinners(){
+    openModalWinners() {
       this.verganadores = true;
       this.seeLastWinners();
     },
 
-    closeModalWinners(){
-      this.verganadores=false;
+    closeModalWinners() {
+      this.verganadores = false;
     },
 
-    openModalNext(){
-      this.verproximos= true;
+    openModalNext() {
+      this.verproximos = true;
       this.seeNextConcourses();
     },
 
-    closeModalNext(){
+    closeModalNext() {
       this.verproximos = false;
     },
 
-    openModalHistory(){
-      this.verhistorial=true;
+    openModalHistory() {
+      this.verhistorial = true;
       this.seeHistory();
     },
 
-    closeModalHistory(){
+    closeModalHistory() {
       this.verhistorial = false;
     },
 
-    openEditModal(){
-      this.vereditar =true;
+    openEditModal() {
+      this.vereditar = true;
       this.showEditProfile();
-
     },
-
-
-
 
     // FUNCIÓN PARA HACER LA PETICIÓN AL SERVIDOR.
 
@@ -421,18 +413,18 @@ export default {
       axios
         .get("http://localhost:3003/usuarios/perfil/" + data)
 
-        .then(function (response) {
+        .then(function(response) {
           console.log(response);
 
           // En user tengo ahora el acceso directo a este usuario concreto.
           self.user = response.data.data;
           // Monto la ruta para poder visualizar la imagen que está en la BBDD con un nombre de archivo.
-            
+
           self.user.url_foto =
             "http://localhost:3003/images/" + self.user.url_foto;
         })
 
-        .catch(function (error) {
+        .catch(function(error) {
           alert("Socorri");
           console.log(error.response.data.message);
         });
@@ -444,25 +436,23 @@ export default {
       //Tengo la autenticación...
       const data = localStorage.getItem("id");
       const token = localStorage.getItem("token");
-      
 
-     let formData = new FormData();
+      let formData = new FormData();
       formData.append("url_foto", self.url_foto);
       formData.append("descripcion", self.nuevaDescripcion);
       formData.append("nombre", self.nuevoNombre);
       formData.append("apellidos", self.nuevoApellido);
 
-
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       //Hago la petición a servidor
 
       axios
         .put("http://localhost:3003/usuarios/editar/" + data, formData, {
-          headers:{
-             "Content-Type": "multipart/form-data",
-          },
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
         })
-        .then(function (response) {
+        .then(function(response) {
           self.showEdit = true;
 
           Swal.fire({
@@ -470,21 +460,19 @@ export default {
             title: "Has editado tus datos correctamente.",
             timer: "5000"
           });
-        location.reload();
+          location.reload();
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.error(error);
           console.log(error.response.data.message);
         });
     },
 
     showEditProfile() {
-     
       this.nuevoNombre = this.userData.nombre;
       this.nuevoApellido = this.userData.apellidos;
       this.nuevaDescripcion = this.userData.descripcion;
       this.showEdit = true;
-     
     },
 
     seeHistory() {
@@ -501,25 +489,26 @@ export default {
       axios
         .get("http://localhost:3003/usuarios/historial/" + data)
 
-        .then(function (response) {
-        /*   console.log(response); */
+        .then(function(response) {
+          /*   console.log(response); */
 
           // En user tengo ahora el acceso directo a este usuario concreto.
           self.historial = response.data.data;
-          
         })
 
-        .catch(function (error) {
+        .catch(function(error) {
           Swal.fire({
             title: "✅",
-            text: error.response.data.message,
+            text:
+              "Comienza a explorar los concursos para inscribirte, todavía no tienes historial de inscripciones.",
             confirmButtonText: "O.K",
-          }).then((result) => {
+            confirmButtonColor: "#FE9F1D"
+          }).then(result => {
             if (result.value) {
               self.getDataUser();
             }
           });
-          
+
           console.log(error.response.data.message);
         });
     },
@@ -542,19 +531,20 @@ export default {
             data
         )
 
-        .then(function (response) {
+        .then(function(response) {
           console.log(response);
 
           // En user tengo ahora el acceso directo a este usuario concreto.
           self.pendientes = response.data.data;
         })
 
-        .catch(function (error) {
+        .catch(function(error) {
           Swal.fire({
             title: "⁉️",
             text: error.response.data.message,
             confirmButtonText: "O.K",
-          }).then((result) => {
+            confirmButtonColor: "#FE9F1D"
+          }).then(result => {
             if (result.value) {
               self.getDataUser();
             }
@@ -569,7 +559,7 @@ export default {
       console.log(pendiente);
       const self = this;
       const id_concurso = pendiente.CONCURSOS_id_concurso;
-       /* console.log(id_concurso); */
+      /* console.log(id_concurso); */
 
       //Cojo token e id
       const token = localStorage.getItem("token");
@@ -577,10 +567,10 @@ export default {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       axios
         .post("http://localhost:3003/valoraciones/" + id_concurso, {
-          valoracion: rating,
+          valoracion: rating
         })
 
-        .then(function (response) {
+        .then(function(response) {
           location.reload();
           // Enviamos mensaje de valoración
           console.log(response);
@@ -589,24 +579,21 @@ export default {
             title: "✅",
             text: "Gracias por valorar este concurso",
             confirmButtonText: "O.K",
-          })
-          
-          
-          })
-          .catch(function (error) {
-            /*  console.log(error.response.data); */
-            Swal.fire({
-              title: "⚠️",
-              text:
-                "Ya has valorado este concurso",
-              confirmButtonText: "O.K",
-            });
+            confirmButtonColor: "#FE9F1D"
           });
-        },
-    
+        })
+        .catch(function(error) {
+          /*  console.log(error.response.data); */
+          Swal.fire({
+            title: "⚠️",
+            text: "Ya has valorado este concurso",
+            confirmButtonText: "O.K",
+            confirmButtonColor: "#FE9F1D"
+          });
+        });
+    },
 
-
-  seeNextConcourses() {
+    seeNextConcourses() {
       const self = this;
       // Cojo token e id.
       const token = localStorage.getItem("token");
@@ -620,19 +607,20 @@ export default {
       axios
         .get("http://localhost:3003/concursos/proximamente/" + data)
 
-        .then(function (response) {
+        .then(function(response) {
           console.log(response);
 
           // En user tengo ahora el acceso directo a este usuario concreto.
           self.proxconcursos = response.data.data;
         })
 
-        .catch(function (error) {
+        .catch(function(error) {
           Swal.fire({
             title: "✅",
             text: error.response.data.message,
             confirmButtonText: "O.K",
-          }).then((result) => {
+            confirmButtonColor: "#FE9F1D"
+          }).then(result => {
             if (result.value) {
               self.getDataUser();
             }
@@ -641,33 +629,30 @@ export default {
         });
     },
 
-  cancelSuscription(proxconcurso) {
-      
+    cancelSuscription(proxconcurso) {
       const self = this;
       const id_concurso = proxconcurso.id_concurso;
-     ;
       //Cojo token e id
       const token = localStorage.getItem("token");
-      const data = localStorage.getItem("id")
+      const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      
 
-Swal.fire({
-        title:"🤓",
+      Swal.fire({
+        title: "🤓",
         text: "Vas a cancelar tu suscripción a este concurso ¿Estás segura?",
         showCancelButton: true,
-        confirmButtonColor: "#1CA1F2",
-        cancelButtonColor: "#EB5784",
+        confirmButtonColor: "#FE9F1D",
+        cancelButtonColor: "#2EC4B6",
         confirmButtonText: "Quiero cancelar esta suscripción",
-        cancelButtonText: "Mantengo mi suscripción",
-        
-      }).then((result) => {
+        cancelButtonText: "Mantengo mi suscripción"
+      }).then(result => {
         if (result.value) {
           axios
-            .delete( "http://localhost:3003/concursos/inscripciones/borrar/" + id_concurso)
-            .then(function(response) {
-              
-            })
+            .delete(
+              "http://localhost:3003/concursos/inscripciones/borrar/" +
+                id_concurso
+            )
+            .then(function(response) {})
             .catch(function(error) {
               console.error(error.response.data.message);
             });
@@ -675,44 +660,41 @@ Swal.fire({
             title: "✅",
             text: "Se ha cancelado tu suscripción",
             confirmButtonText: "O.K",
-            timer: 4000
-          })
+            confirmButtonColor: "#FE9F1D",
 
+            timer: 4000
+          });
 
           location.reload();
         }
       });
     },
 
-     
-
-     seeRaking() {
+    seeRaking() {
       const self = this;
-      
+
       // Cojo token e id.
       const token = localStorage.getItem("token");
       const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       axios
-        .get(
-          "http://localhost:3003/valoraciones/ranking/"
-
-        )
-      // Petición get a mi ruta del Back para consultar inscripciones finalizadas, concatenamos el id.
-        .then(function (response) {
+        .get("http://localhost:3003/valoraciones/ranking/")
+        // Petición get a mi ruta del Back para consultar inscripciones finalizadas, concatenamos el id.
+        .then(function(response) {
           console.log(response);
 
           // En user tengo ahora el acceso directo a este usuario concreto.
           self.tops = response.data.data;
         })
 
-        .catch(function (error) {
+        .catch(function(error) {
           Swal.fire({
             title: "✅",
             text: error.response.data.message,
             confirmButtonText: "O.K",
-          }).then((result) => {
+            confirmButtonColor: "#FE9F1D"
+          }).then(result => {
             if (result.value) {
               self.getDataUser();
             }
@@ -721,84 +703,81 @@ Swal.fire({
         });
     },
 
-
-
-
-seeLastWinners() {
+    seeLastWinners() {
       const self = this;
-      
+
       // Cojo token e id.
       const token = localStorage.getItem("token");
       const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       axios
-        .get(
-          "http://localhost:3003/concursos/ultimosganadores/"
-        )
-      // Petición get a mi ruta del Back para consultar inscripciones finalizadas, concatenamos el id.
-        .then(function (response) {
+        .get("http://localhost:3003/concursos/ultimosganadores/")
+        // Petición get a mi ruta del Back para consultar inscripciones finalizadas, concatenamos el id.
+        .then(function(response) {
           console.log(response);
 
           // En user tengo ahora el acceso directo a este usuario concreto.
           self.ganadores = response.data.data;
         })
 
-        .catch(function (error) {
+        .catch(function(error) {
           Swal.fire({
             title: "✅",
             text: error.response.data.message,
             confirmButtonText: "O.K",
-          }).then((result) => {
+            confirmButtonColor: "#FE9F1D"
+          }).then(result => {
             if (result.value) {
               self.getDataUser();
             }
           });
           console.log(error.response.data.message);
         });
-    },
-
-
-
-
-
-
-
-
+    }
   },
 
-created(){
-  this.getDataUser();
-}
-
-
+  created() {
+    this.getDataUser();
+    this.showUserButtonIn();
+    this.showAdminButtonInMenu();
+    this.showUserButtonProfile();
+  }
 };
 </script>
 
+
 <style scoped>
+hr {
+  color: var(--verdeoscuro);
+}
 .modal {
   position: fixed;
-  top: -30px;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #1049454d;
+  align-content: center;
+  justify-self: center;
+  align-self: center;
+  justify-self: center;
+  margin: 0 auto;
+  background-color: rgba(85, 175, 168, 0.603);
 }
 
 .modalBox {
-  background: var(--white);
-  margin: 10% auto;
+  background-color: var(--naranjaclaro);
   padding: 90px;
-  width: 40%;
+  width: 60%;
   height: 50%;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
+  justify-self: center;
+  justify-items: center;
+  align-self: center;
+  align-content: center;
   align-items: center;
-
+  border-radius: 40px;
   /* border: solid 1px var(--black); */
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.432);
+  box-shadow: 0 0 20px rgba(183, 236, 232, 0.432);
   overflow-y: auto;
   overflow-x: auto;
 }
@@ -806,6 +785,8 @@ created(){
 h3 {
   text-transform: uppercase;
   font-size: 1.4em;
+  color: var(--naranjaoscuro);
+  text-decoration: underline;
 }
 
 .editar {
@@ -813,6 +794,7 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 3em;
 }
 
 .editar input {
@@ -826,6 +808,9 @@ h3 {
   border-left: 0;
   background-color: var(--white);
   border-bottom: 2px solid var(--black); */
+}
+form {
+  padding-left: 20px;
 }
 
 .editar textarea {
@@ -855,10 +840,10 @@ h3 {
 }
 
 img {
-  border-radius: 150px;
+  border-radius: 25px;
   width: 250px;
   height: 250px;
-  margin: 40px;
+
   box-shadow: 0 0 50px rgba(19, 19, 19, 0.623);
   -webkit-box-reflect: below -30px -webkit-gradient(
       linear,
@@ -883,57 +868,99 @@ img {
   margin: 10px;
 
   font-family: "Ubuntu", sans-serif;
-  color: var(--rosa);
+  color: var(--white);
   transition: background-color 0.3s;
-  background-color: #3c313fa2;
-  border-radius: 100px;
+  background-color: rgba(22, 14, 14, 0.514);
 }
 
 #menubotones button:hover {
-  background-color: var(--verde);
-  color: var(--rosa);
+  background-color: var(--verdeclaro);
+  color: var(--black);
 }
 
 a {
-  color: var(--black);
+  color: var(--white);
   text-decoration: none;
 }
 
 #contenedorperfil {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-self: flex-start;
+  justify-content: center;
+
   justify-self: center;
   align-items: center;
   align-content: center;
 
-  background-image: url(https://images.unsplash.com/photo-1522794338816-ee3a17a00ae8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80);
+  background-color: var(--white);
   background-repeat: no-repeat;
   width: 95.9%;
-  background-size: cover;
+
   padding: 3em;
-  box-shadow: 0 0 10px var(--black);
 }
 
-#saludo {
-  padding-bottom: 30rem;
-
-  padding-left: 701px;
-}
+/* #saludo {
+  
+} */
 
 p {
-  font-size: 1.2em;
-  font-weight: bold;
+  font-size: 1.4em;
+
+  color: var(--white);
 }
 
 #fotoayuda {
-  position: fixed;
-  margin-top: -10px;
-  margin-left: 900px;
-  width: 600px;
-  height: 600px;
+  /* margin-top: -600px;
+  margin-left: -400px; */
+  width: 225px;
+  height: 225px;
   border-radius: 300px;
+  transition: transform 0.5s ease-in-out;
+  margin-bottom: 60px;
+}
+
+#fotoayuda2 {
+  /* margin-top: -300px;
+  margin-left: -100px; */
+  width: 150px;
+  height: 150px;
+  border-radius: 300px;
+  margin-bottom: 70px;
+  transition: transform 0.5s ease-in-out;
+}
+
+#fotoayuda3 {
+  /*  margin-top: -500px;
+  margin-left: 300px; */
+
+  width: 300px;
+  height: 300px;
+  border-radius: 300px;
+  transition: transform 0.5s ease-in-out;
+}
+
+img #fotoayuda4 {
+  padding: 1rem;
+}
+
+#globos {
+  height: 1000px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  margin-left: 40px;
+}
+
+#fotoayuda:hover {
+  transform: scale(2);
+}
+#fotoayuda3:hover {
+  transform: scale(2);
+}
+#fotoayuda2:hover {
+  transform: scale(2);
 }
 
 button {
@@ -950,7 +977,7 @@ button {
   color: var(--white);
   transition: background-color 0.3s;
   background-color: var(--black);
-  border-radius: 100px;
+  border-radius: 20px;
 }
 
 button:hover {
@@ -959,13 +986,24 @@ button:hover {
 }
 
 a {
-  color: white;
+  color: black;
 }
 
 .modal button {
   width: 200px;
   height: 50px;
   font-size: 0.6em;
+}
+
+#modalbutton {
+  font-size: 0.8em;
+  width: 300px;
+  background-color: var(--verdeoscuro);
+  color: var(--black);
+}
+
+#modalbutton:hover {
+  background-color: var(--verdeclaro);
 }
 
 ul {
@@ -997,5 +1035,52 @@ label {
   vertical-align: top;
   text-align: right;
   padding-right: 3px;
+}
+
+#menudebotones {
+  padding: 3em;
+  /*  background-image: url("https://images.unsplash.com/photo-1417721955552-a49ac2d334e8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"); */
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 35px;
+}
+
+#saludo {
+  margin-left: 300px;
+  width: 50%;
+
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  align-self: center;
+  margin: 0 auto;
+  margin-left: 40px;
+  margin-right: 40px;
+  color: var(--white);
+  padding-bottom: 10rem;
+  padding-top: 10rem;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.562);
+}
+
+.contenedorsaludo {
+  background-image: url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  border-top-left-radius: 200px;
+  border-top-right-radius: 50px;
+}
+
+h1 {
+  color: var(--white);
+}
+
+p2:hover {
+  color: var(--black);
 }
 </style>

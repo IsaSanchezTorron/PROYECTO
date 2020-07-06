@@ -20,7 +20,7 @@ GROUP BY CONCURSOS_id_concurso ORDER BY AVG(valoracion) DESC;
     );
     if (!current.length) {
       throw generateError(
-        'No existen votaciones disponibles para hacer un ranking',
+        'No existen valoraciones disponibles para hacer un ranking',
         404
       );
     }

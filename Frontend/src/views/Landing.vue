@@ -36,24 +36,13 @@
                 <b>ENTRE ESTA FECHA</b>
                 <br />
                 <br />
-                <input
-                  v-model="fecha_publicacion"
-                  type="datetime-local"
-                  name="fecha_publicacion"
-                  min="2010"
-                />
+                <input v-model="fecha_publicacion" type="date" name="fecha_publicacion" min="2010" />
               </p>
               <p>
                 <b>Y ESTA FECHA</b>
                 <br />
                 <br />
-                <input
-                  id="fechas"
-                  v-model="fecha_final"
-                  type="datetime-local"
-                  name="fecha_final"
-                  min="2010"
-                />
+                <input id="fechas" v-model="fecha_final" type="date" name="fecha_final" min="2010" />
               </p>
             </div>
 
@@ -98,7 +87,7 @@
           <br />
           <br />
           <div id="botonformulario">
-            <button @click="searching()">¡QUIERO VER QUÉ CONCURSOS ME ESPERAN!</button>
+            <button @click="searching()">BUSCAR</button>
           </div>
         </div>
       </div>
@@ -128,7 +117,7 @@
             <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
             <div v-if="resultadobusqueda.valoracionmedia > 0">
               <li>
-                La valoración media de este concurso es de:
+                Valoración:
                 {{ resultadobusqueda.valoracionmedia }} ⭐️
               </li>
             </div>
@@ -140,21 +129,26 @@
             </div>
 
             <li>
-              <button @click="openModal(index)">➕ MÁS INFORMACIÓN</button>
+              <button id="botonresultados" @click="openModal(index)">➕ MÁS INFORMACIÓN</button>
             </li>
 
             <div v-show="modal" class="modal">
               <div class="modalbox">
-                <h1>BASES DEL CONCURSO</h1>
+                <h1 style="color:var(--verdeoscuro);">BASES DEL CONCURSO</h1>
 
                 <p>{{concursobases.descripcion}}</p>
-                <h3>Recuerda que debes tener una cuenta con nosotras para inscribirte</h3>
+                <h3
+                  style="color:var(--naranjaclaro"
+                >Recuerda que debes tener una cuenta con nosotras para inscribirte</h3>
 
                 <router-link :to="{ name: 'Register' }">
-                  <p id="registro">Quiero registrarme en INTERTEXTUAL</p>
+                  <p
+                    style="color:var(--naranjaoscuro)"
+                    id="registro"
+                  >👉 Quiero registrarme en INTERTEXTUAL</p>
                 </router-link>
 
-                <button @click="closeModal()">Cerrar</button>
+                <button id="modalbutton" @click="closeModal()">Cerrar</button>
               </div>
             </div>
           </div>
@@ -188,123 +182,122 @@ export default {
     menucustom,
     barraredessociales,
     barradebienvenida,
+    vueHeadful
   },
 
-  data(){
-    return{
+  data() {
+    return {
       resultadobusquedas: [],
-      search:{},
-      nombre:"",
+      search: {},
+      nombre: "",
       fecha_publicacion: "",
-      fecha_final: "",  
+      fecha_final: "",
       genero: "",
-      modalidad:"",
+      modalidad: "",
       ciudad: "",
-      url_foto:"",
-      modal : false,
-      descripcion:"",
-      concursobases:{},
-      
-
-    }
+      url_foto: "",
+      modal: false,
+      descripcion: "",
+      concursobases: {}
+    };
   },
 
-
-methods: {
-   openModal(index) {
+  methods: {
+    openModal(index) {
       this.modal = true;
-      this.concursobases=this.resultadobusquedas[index];
+      this.concursobases = this.resultadobusquedas[index];
+    },
+    closeModal() {
+      this.modal = false;
+    },
 
-     
-      
+    makingSearchURL() {
+      const params = new URLSearchParams();
 
-   },
-   closeModal(){
-     this.modal = false;
-   },
+      if (!!this.nombre) {
+        params.append("nombre", this.nombre);
+      }
+      if (!!this.fecha_publicacion) {
+        params.append("fecha_publicacion", this.fecha_publicacion);
+      }
 
+      if (!!this.fecha_final) {
+        params.append("fecha_final", this.fecha_final);
+      }
+      if (!!this.genero) {
+        params.append("genero", this.genero);
+      }
+      if (!!this.modalidad) {
+        params.append("modalidad", this.modalidad);
+      }
+      if (!!this.ciudad) {
+        params.append("ciudad", this.ciudad);
+      }
+      return params;
+    },
 
-
-makingSearchURL(){
-const params = new URLSearchParams();
-
-if(!!this.nombre){
-  params.append("nombre", this.nombre);
-
-}
-if(!!this.fecha_publicacion){
-  params.append("fecha_publicacion", this.fecha_publicacion);
- 
-}
-
-if(!!this.fecha_final){
-  params.append("fecha_final", this.fecha_final);
-
-}
-if(!!this.genero){
-  params.append("genero", this.genero);
-
-}
-if(!!this.modalidad){
-  params.append("modalidad", this.modalidad);
-
-}
-if(!!this.ciudad){
-  params.append("ciudad", this.ciudad);
-
-}
-return params;
-
-
-
-
-},
-
-
-searching(){
-
+    searching() {
       const self = this;
       // Cojo token e id.
       const token = localStorage.getItem("token");
       const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const searchingParams= self.makingSearchURL();
+      const searchingParams = self.makingSearchURL();
 
       // Petición get a mi ruta del Back para consultar los resultados de la búsqueda
       axios
         .get(`http://localhost:3003/busqueda?${searchingParams}`)
 
-        .then(function (response) {
+        .then(function(response) {
           console.log(response);
-          self.resultadobusquedas = response.data.data.map((resultadobusqueda) =>{
-            resultadobusqueda.url_foto = "http://localhost:3003/images/" + resultadobusqueda.url_foto;
+          self.resultadobusquedas = response.data.data.map(
+            resultadobusqueda => {
+              resultadobusqueda.url_foto =
+                "http://localhost:3003/images/" + resultadobusqueda.url_foto;
 
-          return resultadobusqueda;
-          });
-        
+              return resultadobusqueda;
+            }
+          );
         })
 
-        .catch(function (error) {
-          
+        .catch(function(error) {
           console.log(error.response.data.message);
           console.log("aqui");
         });
-
+    }
   }
-
-},
-
-
-
 };
-
-
-
-
-
 </script>
 
 <style scoped>
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 30px;
+  width: 100%;
+}
+
+.modalbox {
+  background: var(--verdeclaro);
+  margin: 15% auto;
+  padding: 50px;
+
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  align-items: center;
+  border-radius: 50px;
+
+  box-shadow: 5px 10px 20px rgba(5, 133, 126, 0.507);
+  line-height: 1.5;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
 #fotoinformativauno {
   width: 600px;
   height: 600px;
@@ -326,35 +319,22 @@ img:hover {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-
-  /* box-shadow: 0 0 100px white; */
   height: 600px;
   width: 96%;
   padding: 3em;
-  /*  margin: 0 auto; */
-  /* padding-top: 30px; */
-  /* padding-bottom: 40px; */
-  /* border-radius: 80px; */
-  /* border-top-left-radius: 20px;
-  border-top-right-radius: 20px; */
-  /* border-radius: 20px; */
-  /* border-left-width: 2px;
-  border-left-style: ridge;
-  border-right-width: 2px;
-  border-right-style: ridge;
- */
+
   border-color: var(--black);
 }
 
 input {
   height: 35px;
-  border-radius: 5px;
   margin-left: 20px;
   border-top: 0;
   border-right: 0;
   border-left: 0;
   background-color: var(--white);
   border-bottom: 2px solid var(--black);
+  font-size: 0.7em;
 }
 form p {
   font-size: 1.7em;
@@ -377,12 +357,12 @@ button {
   width: 300px;
   margin: 10px auto;
   border-radius: 20px;
-  width: 400px;
-  height: 600px;
+  width: 470px;
+  height: 630px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  background: var(--white);
+  background-color: var(--naranjamasclaro);
 }
 
 #contenedorbusqueda {
@@ -392,7 +372,8 @@ button {
   justify-content: space-around;
   width: 90%;
   margin: 10px auto;
-  /*  padding: 1em; */
+  background-color: var(--white);
+  margin-bottom: 2em;
 }
 
 img {
@@ -407,7 +388,7 @@ img:hover {
 
 ul li {
   list-style: none;
-  font-size: 1.2em;
+  font-size: 1.4em;
 }
 h3 {
   text-transform: uppercase;
@@ -423,16 +404,18 @@ button {
   background-color: var(--verdeclaro);
   font-family: "Ubuntu", sans-serif;
   color: var(--black);
+  box-shadow: 0 0 5px var(--black);
+
   /* box-shadow: 2px 2px 2px var(--blue);*/
 }
 
 button:hover {
   color: var(--black);
-  background-color: var(--naranjaoscuro);
+  background-color: var(--verdeoscuro);
 }
 
-h1 {
-  font-size: 2.3em;
+#modalbutton {
+  background-color: var(--naranjaoscuro);
 }
 
 #busqueda1 {
@@ -468,6 +451,13 @@ a {
 h1 {
   color: var(--black);
   font-size: 2.63em;
-  -webkit-text-stroke: 1px var(--salmon);
+}
+
+#botonresultados {
+  background-color: var(--white);
+  box-shadow: 0 0 5px var(--black);
+}
+#botonresultados:hover {
+  background-color: var(--naranjaclaro);
 }
 </style>

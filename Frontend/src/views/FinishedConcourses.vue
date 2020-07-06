@@ -17,7 +17,7 @@
 </template>
 
 <script>
-// Importaciones para 
+// Importaciones para
 
 // manejar rutas, endpoints...
 import axios from "axios";
@@ -29,56 +29,52 @@ import menucustom from "@/components/MenuCustom.vue";
 //import footercustom from "@/components/FooterCustom.vue";
 //import spinner from "@/components/Spinner.vue";
 
-
 export default {
-name: "finalizados",
-//Componentes en esta vista:
-components:{
+  name: "finalizados",
+  //Componentes en esta vista:
+  components: {
     vueHeadful,
     listfinished,
     menucustom,
-   
-},
+    vueHeadful
+  },
 
-// El array que manejamos con los concursos
-data(){
+  // El array que manejamos con los concursos
+  data() {
     return {
-        finalizados: [],
+      finalizados: []
     };
-},
+  },
 
-methods :{
+  methods: {
     //FUNCIÓN PARA MOSTRAR TODOS LOS CONCURSOS
 
-showAllFinishedConcourses (){
-    let self= this;
-    axios
+    showAllFinishedConcourses() {
+      let self = this;
+      axios
         .get("http://localhost:3003/concursos/finalizados")
         //SI SALE BIEN
-        .then(function (response) {
-          
+        .then(function(response) {
+          self.finalizados = response.data.data.map(finalizado => {
+            finalizado.url_foto =
+              "http://localhost:3003/images/" + finalizado.url_foto;
 
-           self.finalizados = response.data.data.map((finalizado) =>{
-          finalizado.url_foto = "http://localhost:3003/images/" + finalizado.url_foto;
-
-          return finalizado;
-          console.log(response);
-           });
+            return finalizado;
+            console.log(response);
+          });
         })
 
         //SI SALE MAL
-        .catch(function (error) {
+        .catch(function(error) {
           console.error(error);
         });
     }
-},
+  },
   // LA LLAMADA A LA FUNCIÓN EN LA CARGA
-created() {
+  created() {
     this.showAllFinishedConcourses();
-}
+  }
 };
-
-
 </script>
 
 <style>

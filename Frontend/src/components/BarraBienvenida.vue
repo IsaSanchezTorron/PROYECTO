@@ -28,6 +28,7 @@ export default {
   box-shadow: 0 0 30px rgb(44, 41, 41);
   /*   border-radius: 100px; */
   background: url("https://images.unsplash.com/photo-1525358180237-7399f908a1d9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1357&q=80");
+
   width: 97.3%;
   margin-top: -19.8px;
   background-repeat: no-repeat;

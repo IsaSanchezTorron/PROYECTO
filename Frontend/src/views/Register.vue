@@ -6,36 +6,45 @@
     <menucustom></menucustom>
 
     <div class="contenedoregisto">
-      <!-- Uso del vue headful para nombrar los títulos de pag. visibles en navegador -->
-      <vue-headful title="Registro" description="Registro de nuevo usuario" />
-      <h1>Completa todos los campos para registrarte 👇</h1>
-      <br />
-      <!-- Input para campo nombre -->
-      <input type="text" placeholder="Tu nombre" v-model="nombre" />
-      <br />
-      <br />
-      <!-- Input para campo apellidos -->
-      <input type="text" placeholder="Tus apellidos" v-model="apellidos" />
-      <br />
-      <br />
-      <!-- Input para campo apellidos -->
-      <input type="email" placeholder="Tu correo electrónico" v-model="mail" />
-      <br />
-      <br />
+      <div id="fotos">
+        <img src="../assets/images/14.png" alt="Rellena el formulario" />
+      </div>
 
-      <!--Input para campo password -->
-      <input type="password" placeholder="Tu contraseña" v-model="contrasenha" />
-      <br />
-      <br />
-      <!-- Botón con llamada a la función Login -->
-      <button @click="registerUser()">REGISTRO</button>
-      <br />
-      <p v-show="required">Rellena todos los datos, por favor</p>
-      <br />
+      <div id="formulario">
+        <h2>Completa todos los campos para registrarte 👇</h2>
+        <br />
+        <!-- Input para campo nombre -->
+        <input type="text" placeholder="Tu nombre" v-model="nombre" />
+        <br />
+        <br />
+        <!-- Input para campo apellidos -->
+        <input type="text" placeholder="Tus apellidos" v-model="apellidos" />
+        <br />
+        <br />
+        <!-- Input para campo apellidos -->
+        <input type="email" placeholder="Tu correo electrónico" v-model="mail" />
+        <br />
+        <br />
+
+        <!--Input para campo password -->
+        <input type="password" placeholder="Tu contraseña" v-model="contrasenha" />
+        <br />
+        <br />
+        <!-- Botón con llamada a la función Login -->
+        <button @click="registerUser()">REGISTRO</button>
+        <br />
+        <p v-show="required">Rellena todos los datos, por favor</p>
+        <br />
+      </div>
+      <div id="fotos">
+        <img src="../assets/images/11.png" alt="Valida tu cuenta" />
+        <img src="../assets/images/12.png" alt="Comienza a navegar" />
+      </div>
     </div>
-
-    <div>
-      <img id="fotoinformativauno" src="../assets/images/registro.png" alt="foto informativa" />
+    <div id="fotosbienvenida">
+      <img src="../assets/images/palabra1.png" alt="Valida tu cuenta" />
+      <img src="../assets/images/palabra2.png" alt="Comienza a navegar" />
+      <img src="../assets/images/palabra3.png" alt="Comienza a navegar" />
     </div>
 
     <barraredessociales></barraredessociales>
@@ -46,7 +55,7 @@
 //IMPORTACIONES PARA
 // componentes locales
 import menucustom from "@/components/MenuCustom.vue";
-import barraredessociales from "@/components/BarraRedesSociales"
+import barraredessociales from "@/components/BarraRedesSociales";
 // Títulos de página visibles en navegador
 import vueHeadful from "vue-headful";
 // Mensajes custom
@@ -56,7 +65,7 @@ import axios from "axios";
 
 export default {
   name: "register",
-  components: { vueHeadful, menucustom,barraredessociales },
+  components: { vueHeadful, menucustom, barraredessociales, vueHeadful },
 
   data() {
     return {
@@ -68,7 +77,7 @@ export default {
       // Con el uso de este booleano hacemos la verificación de si hay campos vacíos
       correctData: false,
       // Con el uso de este booleano podemos manejar el v-show que hace visible un mensaje de alerta en el HTML
-      required: false,
+      required: false
     };
   },
 
@@ -102,24 +111,26 @@ export default {
             nombre: self.nombre,
             apellidos: self.apellidos,
             mail: self.mail,
-            contrasenha: self.contrasenha,
+            contrasenha: self.contrasenha
           })
 
-          .then(function (response) {
+          .then(function(response) {
             // Enviamos mensaje de confirmación de registro
             Swal.fire({
               title: "✔️",
-              text: "Te has registrado con éxito, debes abrir tu correo electrónico y validar tu cuenta pinchando en el enlace que te enviamos. Una vez que esté activada puedes loguearte con tus datos.",
+              text:
+                "Te has registrado con éxito, debes abrir tu correo electrónico y validar tu cuenta pinchando en el enlace que te enviamos. Una vez que esté activada puedes loguearte con tus datos.",
               confirmButtonText: "O.K",
-              confirmButtonColor: "#1CA1F2",
-             
+              confirmButtonColor: "#FE9F1D"
             });
+            self.$router.push("/profile");
             //Limpiamos los campos
             self.emptyFields();
+
             console.log(response);
           })
           //Recogemos posibles errores
-          .catch(function (error) {
+          .catch(function(error) {
             console.log(error);
 
             Swal.fire({
@@ -127,7 +138,9 @@ export default {
               text:
                 "Ha habido un error, es posible que este usuario ya esté registrado",
               confirmButtonText: "O.K",
-              timer: 3000,
+              confirmButtonColor: "#FE9F1D",
+
+              timer: 3000
             });
           });
 
@@ -137,6 +150,7 @@ export default {
           title: "⚠️",
           text: "Debes rellenar todos los campos",
           timer: 3000,
+          confirmButtonColor: "#FE9F1D"
         });
       }
     },
@@ -146,24 +160,35 @@ export default {
         (this.apellidos = ""),
         (this.mail = ""),
         (this.contrasenha = "");
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
-.contenedorregisto {
-  margin-top: 0;
+.contenedoregisto {
+  display: flex;
+  flex-direction: row;
+
+  align-items: left;
+  justify-content: space-between;
+  padding: 3em;
 }
 input {
   width: 500px;
-  height: 30px;
-  font-size: 1.2em;
-  margin: 30px;
-  padding: 1.4;
-}
-button {
-  width: 300px;
+  height: 55px;
+  margin-left: 20px;
+  margin-top: 6px;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  background-color: var(--white);
+  border-bottom: 2px solid var(--black);
+  font-size: 1.5em;
+  align-self: left;
+  justify-content: left;
+  justify-self: left;
+  justify-items: left;
 }
 
 p {
@@ -175,18 +200,67 @@ a {
   font-size: 1.1em;
 }
 
-h1 {
-  color: var(--blue);
+h2 {
+  color: var(--black);
+  text-align: left;
+  margin: 10px;
 }
 
 button {
-  border-radius: 5px;
-  font-size: 1em;
-  font-weight: bold;
-  padding: 10px;
-  background-color: rgb(32, 33, 34);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: left;
+  align-items: center;
+  justify-self: center;
+  margin: 15px;
+
+  width: 450px;
+  height: 50px;
+  font-size: 1.8em;
+  padding: 0.4em;
+  box-shadow: 0 0 10px rgb(12, 12, 12);
+  /* margin: 10px; */
   font-family: "Ubuntu", sans-serif;
-  color: #1a99e7;
-  box-shadow: 0 0 2px rgb(12, 12, 12);
+  color: var(--black);
+  transition: background-color 0.3s;
+  background-color: var(--naranjaclaro);
+
+  border-top-right-radius: 100px;
+  border-bottom-right-radius: 100px;
+}
+
+button:hover {
+  background-color: var(--verdeoscuro);
+  color: var(--white);
+}
+
+#formulario {
+  justify-items: left;
+  align-items: left;
+  justify-content: left;
+  justify-self: left;
+  align-self: left;
+  text-align: left;
+  margin-left: 30px;
+}
+
+#fotos {
+  display: flex;
+  flex-direction: row;
+
+  align-self: right;
+  justify-self: right;
+  align-items: center;
+
+  margin: 0 auto;
+  margin-right: 200px;
+}
+
+img {
+  width: 400px;
+  height: 400px;
+  border-radius: 1000px;
+  margin-left: 60px;
 }
 </style>

@@ -10,7 +10,8 @@
     <div id="concursoscontenedor">
       <br />
       <br />
-      <h1>TODOS LOS CONCURSOS HASTA LA FECHA PENDIENTES DE ASIGNACIÓN DE GANADOR</h1>
+      <h1>TODOS LOS CONCURSOS</h1>
+      <h2>en curso o pendientes de nombramiento</h2>
 
       <!--Aquí un contenedor para centrar en la parte superior el botón y el buscador -->
       <div id="contenedorbuscadoryañadirconcurso">
@@ -36,12 +37,19 @@
           <input type="text" name="nombre" id="nombre" v-model="nombre" />
 
           <br />
-          <label for="fecha_final">Fecha de cierre en formato "YYYY-MM-MM":</label>
+          <label for="fecha_final">Fecha de cierre:</label>
           <input type="date" name="fecha_final" id="fecha_final" v-model="fecha_final" />
 
           <br />
-          <label for="descripcion" size="500">Información y Bases:</label>
-          <input type="text" name="descripcion" id="descripcion" v-model="descripcion" />
+          <label for="descripcion">Información y Bases:</label>
+          <textarea
+            type="text"
+            cols="65"
+            rows="20"
+            name="descripcion"
+            id="descripcion"
+            v-model="descripcion"
+          />
 
           <br />
 
@@ -155,7 +163,7 @@
                 id="idganadorid"
                 name="idganadorid"
                 type="text"
-                placeholder="🔍 INTRODUCE EL ID. DE LA PERSONA GANADORA."
+                placeholder="🔍 Introduce el id. de la persona ganadora."
               />
 
               <button @click="setWinner()">💾 Asignar ganador</button>
@@ -165,6 +173,7 @@
         </div>
       </div>
     </div>
+    <barraredessociales></barraredessociales>
   </div>
 </template>
 
@@ -177,42 +186,40 @@ import Swal from "sweetalert2";
 // Titular las pestañas visibles en el navegador
 import vueHeadful from "vue-headful";
 // componentes internos
-import menucustom from "@/components/MenuCustom.vue"
+import menucustom from "@/components/MenuCustom.vue";
+import barraredessociales from "@/components/BarraRedesSociales.vue";
 export default {
-    name: "Admin",
-    components: {menucustom},
+  name: "Admin",
+  components: { menucustom, barraredessociales, vueHeadful },
 
-    data(){
-        return{
-        concursos :[],
-        search:"",
-        nombre: "",
-        fecha_final: "",
-        descripcion: "",
-        modalidad:"",
-        genero:"",
-        ciudad:"",
-        fecha_publicacion:"",
-        modal: false,
-        verInscripciones: false,
-        inscripciones: [],
-        concursoinscripciones:{},
-        idganador:"",
-        
-        };
-    },
+  data() {
+    return {
+      concursos: [],
+      search: "",
+      nombre: "",
+      fecha_final: "",
+      descripcion: "",
+      modalidad: "",
+      genero: "",
+      ciudad: "",
+      fecha_publicacion: "",
+      modal: false,
+      verInscripciones: false,
+      inscripciones: [],
+      concursoinscripciones: {},
+      idganador: ""
+    };
+  },
 
-
-computed: {
+  computed: {
     //FUNCIÓN PARA FILTRAR PRODUCTOS
     concursosFiltrados() {
       // Si en la búsqueda no hay nada nos devuelve todo.
       if (!this.search) {
         return this.concursos;
-        
       }
       return this.concursos.filter(
-        (concurso) =>
+        concurso =>
           concurso.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
           concurso.descripcion
             .toLowerCase()
@@ -224,142 +231,104 @@ computed: {
         //Ojo aquí, pendiente que funcione la búsqueda por ciudad.
         // concurso.ciudad.toLowerCase().includes(this.search.toLowerCase())
       );
-    },
+    }
   },
 
-
-    methods: {
-
-
-
-setWinner(){
-
+  methods: {
+    setWinner() {
       const self = this;
-     
+
       const token = localStorage.getItem("token");
-      const id_concurso =self.concursoinscripciones.id_concurso;
-      
+      const id_concurso = self.concursoinscripciones.id_concurso;
 
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       //Hago la petición a servidor
 
-      
       console.log(self.idganador);
       console.log(id_concurso);
 
       axios
-        .put("http://localhost:3003/concursos/asignar_ganador",  {
-
+        .put("http://localhost:3003/concursos/asignar_ganador", {
           id_usuario: self.idganador,
-          id_concurso: id_concurso,
-         
+          id_concurso: id_concurso
         })
-        .then(function (response) {
-
+        .then(function(response) {
           Swal.fire({
             icon: "success",
             title: "Gracias por asignar ganador a este concurso. ",
             timer: "5000"
-            
-          })
-          
-          .then(function(result){
-            if (result.value){
+          }).then(function(result) {
+            if (result.value) {
               location.reload();
             }
           });
-       
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.error(error);
           console.log(error.response.data.message);
         });
-},
-    
+    },
 
-
-
-
-
-
-
-
-
-
-
-
-    
-openModal() {
+    openModal() {
       this.modal = true;
-   },
+    },
 
-closeModal(){
-     this.modal = false;
-   },
+    closeModal() {
+      this.modal = false;
+    },
 
-openModalInscripciones(index){
-    
-    this.verInscripciones = true;
-    this.concursoinscripciones=this.concursos[index];
-    console.log(this.concursoinscripciones);
-    this.showInscribed();
-   },
+    openModalInscripciones(index) {
+      this.verInscripciones = true;
+      this.concursoinscripciones = this.concursos[index];
+      console.log(this.concursoinscripciones);
+      this.showInscribed();
+    },
 
-closeModalInscripciones(){
-     this.verInscripciones = false;
-   },
+    closeModalInscripciones() {
+      this.verInscripciones = false;
+    },
 
-
-showAllConcourses(){
-    let self= this;
-    axios
+    showAllConcourses() {
+      let self = this;
+      axios
         .get("http://localhost:3003/concursos/todos")
         //SI SALE BIEN
-        .then(function (response) {
-          
-            self.concursos = response.data.data.map((concurso) =>{
-            concurso.url_foto = "http://localhost:3003/images/" + concurso.url_foto;
+        .then(function(response) {
+          self.concursos = response.data.data.map(concurso => {
+            concurso.url_foto =
+              "http://localhost:3003/images/" + concurso.url_foto;
 
-          return concurso;
-          console.log(response);
-        });
+            return concurso;
+            console.log(response);
+          });
         })
         //SI SALE MAL
-        .catch(function (error) {
+        .catch(function(error) {
           console.error(error);
         });
+    },
 
-
-        },
-
-  
-deleteConcourse(index){
- 
+    deleteConcourse(index) {
       const self = this;
       const id_concurso = self.concursos[index].id_concurso;
-     ;
       //Cojo token e id
       const token = localStorage.getItem("token");
-      const data = localStorage.getItem("id")
+      const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      
 
-Swal.fire({
-        title:"🤓",
+      Swal.fire({
+        title: "🤓",
         text: "Vas a eliminar definitivamente este concurso ¿Estás segura?",
         showCancelButton: true,
-        confirmButtonColor: "#1CA1F2",
-        cancelButtonColor: "#EB5784",
+        confirmButtonColor: "#FE9F1D",
+        cancelButtonColor: "#2EC4B6",
         confirmButtonText: "Quiero eliminar este concurso",
-        cancelButtonText: "Quiero mantenerlo en la BBDD",
-        
-      }).then((result) => {
+        cancelButtonText: "Quiero mantenerlo en la BBDD"
+      }).then(result => {
         if (result.value) {
           axios
-            .delete( "http://localhost:3003/concursos/delete/" + id_concurso)
-            .then(function(response) {
-              
-            })
+            .delete("http://localhost:3003/concursos/delete/" + id_concurso)
+            .then(function(response) {})
             .catch(function(error) {
               console.error(error.response.data.message);
             });
@@ -367,105 +336,88 @@ Swal.fire({
             title: "✅",
             text: "Se ha eliminado correctamente",
             confirmButtonText: "O.K",
-            timer: 4000
-          })
+            confirmButtonColor: "#FE9F1D",
 
+            timer: 4000
+          });
 
           location.reload();
         }
       });
     },
 
+    handleFileUpload() {
+      this.url_foto = this.$refs.url_foto.files[0];
+    },
 
-handleFileUpload(){
-    this.url_foto = this.$refs.url_foto.files[0];
-  },
-
-
-showInscribed(){
+    showInscribed() {
       const self = this;
       // Cojo token e id de concurso.
       const token = localStorage.getItem("token");
-     
+
       const data = self.concursoinscripciones.id_concurso;
-      
+
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    
-    axios
-        .get("http://localhost:3003/concursos/inscripciones/" + data) 
+
+      axios
+        .get("http://localhost:3003/concursos/inscripciones/" + data)
         //SI SALE BIEN
-        .then(function (response) {
-          
+        .then(function(response) {
           self.inscripciones = response.data.data;
           console.log(response.data.data);
-         
-          
+
           console.log(response);
         })
-      
+
         //SI SALE MAL
-        .catch(function (error) {
+        .catch(function(error) {
           console.error(error.response.data.message);
         });
-        },
+    },
 
+    /* setWinner(index){
 
- /* setWinner(index){
+ }  ,    */
 
- }  ,    */  
- 
-
-
-
- createNewConcourse() {
-      
+    createNewConcourse() {
       var self = this;
       const token = localStorage.getItem("token");
-       const data = localStorage.getItem("id");
+      const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       let formData = new FormData();
       formData.append("url_foto", self.url_foto);
       formData.append("nombre", self.nombre);
-      formData.append("fecha_final", self.fecha_final)
+      formData.append("fecha_final", self.fecha_final);
       formData.append("descripcion", self.descripcion);
       formData.append("modalidad", self.modalidad);
       formData.append("genero", self.genero);
       formData.append("ciudad", self.ciudad);
-      
 
       axios
-        .post("http://localhost:3003/concursos/nuevo_concurso", formData,{
-        
-        headers:{
-             "Content-Type": "multipart/form-data",
-          },  
-      
-        } )
+        .post("http://localhost:3003/concursos/nuevo_concurso", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
         .then(function(response) {
           self.closeModal();
           Swal.fire({
-            title: "El concurso ha sido agregado correctamente",
+            title: "El concurso ha sido agregado correctamente"
           });
-        setTimeout(function(){
-          location.reload();
-        },2000)
-          
+          setTimeout(function() {
+            location.reload();
+          }, 2000);
         })
         .catch(function(error) {
           console.error(error.response.data.message);
         });
-    },   
-
-    },
-// LA LLAMADA A LA FUNCIÓN EN LA CARGA
-created() {
+    }
+  },
+  // LA LLAMADA A LA FUNCIÓN EN LA CARGA
+  created() {
     this.showAllConcourses();
-
-    
-},
-    
-
+  }
 };
 </script>
 
@@ -482,7 +434,7 @@ created() {
   flex-direction: column;
   justify-content: space-around;
   line-height: 0.9;
-  background-color: var(--white);
+  background-color: var(--verdeclaro);
 }
 
 .contenedor {
@@ -539,15 +491,19 @@ button {
   align-self: center;
   width: 450px;
   height: 50px;
-  font-size: 1em;
+  font-size: 1.3em;
   padding: 0.4em;
   box-shadow: 0 0 10px rgb(12, 12, 12);
   margin: 10px;
   font-family: "Ubuntu", sans-serif;
-  color: var(--white);
+  color: var(--black);
   transition: background-color 0.3s;
-  background-color: var(--black);
+  background-color: var(--naranjaclaro);
   border-radius: 100px;
+}
+
+button:hover {
+  background-color: var(--verdeoscuro);
 }
 
 h1 {
@@ -576,7 +532,7 @@ h1 {
   align-items: center;
   border-radius: 50px;
   border: solid 1px rgba(22, 22, 22, 0.753);
-  box-shadow: 0 0 5px rgba(39, 37, 37, 0.548);
+  box-shadow: 0 0 5px rgba(247, 183, 87, 0.548);
   font-size: 1.3em;
 }
 
@@ -587,14 +543,30 @@ hr {
 }
 
 input {
-  height: 50px;
   width: 500px;
+  height: 55px;
+  margin-left: 20px;
+  margin-top: 6px;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  background-color: var(--white);
+  border-bottom: 2px solid var(--black);
+  font-size: 1.2em;
+}
+
+input[type="radio"] {
+  border: 10px;
+  width: 100%;
+  height: 20px;
+  width: 30px;
 }
 
 #checks {
   display: flex;
-  flex-direction: column;
-  margin: 13 auto;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
 }
 
 img {

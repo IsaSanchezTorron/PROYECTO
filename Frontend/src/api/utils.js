@@ -3,8 +3,8 @@ import jwt from "jwt-decode";
 
 const ENDPOINT = "http://localhost:3003";
 const AUTH_TOKEN_KEY = "authToken";
-const ROLE = "role";
-const USER = "user";
+const ROLE = "rol";
+const USER = "mail";
 
 export function singInUser(mail, contrasenha) {
   return new Promise(async (resolve, reject) => {
@@ -79,8 +79,14 @@ export function isTokenExpired(token) {
 //COMPROBAR SI EL USER ESTÁ LOGEADO O NO
 
 export function isLoggedIn() {
-  let authToken = getAuthToken();
-  return !!authToken && !isTokenExpired(authToken);
+  /* let authToken = getAuthToken();
+  return !!authToken && !isTokenExpired(authToken); */
+
+  const token = localStorage.getItem("token");
+  if (token) {
+    return true;
+  }
+  return false;
 }
 
 //FUNCIONES PARA COMPROBAR EL ROL DEL USER ===========
@@ -119,4 +125,20 @@ export function checkAdmin() {
 // de sacar el nombre del usuario activo en el menú de navegación.
 export function getUserActive() {
   return localStorage.getItem(USER);
+}
+
+export function showAdminButton() {
+  const role = localStorage.getItem("rol");
+  if (role === "admin") {
+    return true;
+  }
+  return false;
+}
+
+export function showUserButton() {
+  const role = localStorage.getItem("rol");
+  if (role === "escritor") {
+    return true;
+  }
+  return false;
 }

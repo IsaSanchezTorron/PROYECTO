@@ -78,7 +78,7 @@ app.get('/usuarios/validar', validateUser); // Validar cuenta
 app.put('/usuarios/editar/:id', userIsAuthenticated, editUser); //Editar usuario
 app.get('/usuarios/perfil/:id', userIsAuthenticated, getUser); //Obtener datos de un usuario
 app.put('/usuarios/password/:id', userIsAuthenticated, updatePassword); //Cambiar contraseña de usuario
-app.put('/usuarios/disable/:id', userIsAuthenticated, disableUser); // Deshabilitar usuario
+app.put('/usuarios/disable/:id', userIsAuthenticated, disableUser); // Deshabilitar usuario.
 app.delete(
   '/usuarios/delete/:id',
   userIsAuthenticated,

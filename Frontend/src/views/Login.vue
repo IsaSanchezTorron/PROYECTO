@@ -11,7 +11,7 @@
     <div class="todo">
       <div class="contenedorlogin">
         <div id="formulario">
-          <h1>Haz login 👇</h1>
+          <h1>INICIA SESIÓN 👇</h1>
           <br />
           <br />
           <!-- Input para campo email -->
@@ -25,27 +25,24 @@
           <br />
           <br />
           <!-- Botón con llamada a la función Login -->
-          <button @click="login(mail, contrasenha)">LOGIN</button>
+          <button @click="login(mail, contrasenha)">INICIO DE SESIÓN</button>
           <br />
           <br />
           <br />
-        </div>
-        <div>
-          <img
-            id="fotoinformativauno"
-            src="../assets/images/intertextual5.png"
-            alt="foto informativa"
-          />
+          <div id="nav">
+            <!-- Enlace a la vista de Registro desde el Login -->
+            <p>Si no tienes cuenta, regístrate aquí</p>
+            <!-- Todavía no existe ruta -->
+            <a>
+              <router-link :to="{ name: 'Register' }">👉 Registro</router-link>
+            </a>
+          </div>
         </div>
       </div>
-
-      <div id="nav">
-        <!-- Enlace a la vista de Registro desde el Login -->
-        <p>Si no tienes cuenta, regístrate aquí</p>
-        <!-- Todavía no existe ruta -->
-        <a>
-          <router-link :to="{ name: 'Register' }">👉 Registro</router-link>
-        </a>
+      <div id="fotosbienvenida">
+        <img src="../assets/images/login1.png" alt="Instrucciones para el login 1" />
+        <img src="../assets/images/login2.png" alt="Instrucciones para el login 2" />
+        <img src="../assets/images/ligin3.png" alt="Instrucciones para el login 3" />
       </div>
     </div>
     <br />
@@ -61,100 +58,113 @@
 <script>
 // IMPORTAMOS PARA
 // componentes internos
-import menucustom from "@/components/MenuCustom.vue"
-import barraredesociales from "@/components/BarraRedesSociales.vue"
+import menucustom from "@/components/MenuCustom.vue";
+import barraredesociales from "@/components/BarraRedesSociales.vue";
 // titulos de página visibles en pestaña del navegador
 import vueHeadful from "vue-headful";
 // mensajes custom para el usuario
 import Swal from "sweetalert2";
 // Manejo de rutas y end-points.
-import axios from 'axios';
-
+import axios from "axios";
 
 export default {
-    name: "Login",
-    
-    components: {vueHeadful, menucustom, barraredesociales},
+  name: "Login",
 
-    data(){
-        return {
-            mail: "",
-            contrasenha: "",
-    
+  components: { vueHeadful, menucustom, barraredesociales, vueHeadful },
 
-        }
-    },
+  data() {
+    return {
+      mail: "",
+      contrasenha: ""
+    };
+  },
 
-    methods: {
-
-      login( mail, contrasenha){
-        let self = this;
-        axios .post("http://localhost:3003/usuarios/login", {
+  methods: {
+    login(mail, contrasenha) {
+      let self = this;
+      axios
+        .post("http://localhost:3003/usuarios/login", {
           mail: self.mail,
-          contrasenha: self.contrasenha,
+          contrasenha: self.contrasenha
         })
-        .then(function(response){
+        .then(function(response) {
           localStorage.setItem("token", response.data.data.token);
           localStorage.setItem("mail", response.data.mail);
           localStorage.setItem("id", response.data.id);
           localStorage.setItem("name", response.data.name);
           localStorage.setItem("rol", response.data.rol);
-          
-           const Toast = Swal.mixin({
-  toast: true,
-  position: 'top-right',
-  showConfirmButton: false,
-  timer: 2000,
-  timerProgressBar: true,
-  onOpen: (toast) => {
-    toast.addEventListener('mouseenter', Swal.stopTimer)
-    toast.addEventListener('mouseleave', Swal.resumeTimer)
-  }
-})
 
-Toast.fire({
-  icon: 'success',
-  title: 'Te has logueado correctamente'
-})
- self.$router.push("/profile");
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-right",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            onOpen: toast => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            }
+          });
+
+          Toast.fire({
+            icon: "success",
+            title: "Te has logueado correctamente"
+          });
+          self.$router.push("/profile");
         })
-        .catch(function(error){
-
-           Swal.fire({
+        .catch(function(error) {
+          Swal.fire({
             title: "⚠️",
-            text: error.response.data.message,
+            text: "Debes introducir los datos para tu inicio de sesión.",
             confirmButtonText: "O.K",
+            confirmButtonColor: "#FE9F1D",
 
-          })
+            width: "800px",
+            customClass: "swal-wide"
+          });
 
-
-
-          console.log("ha habido un error")
+          console.log("ha habido un error");
         });
-
-      },
-      
-    },
+    }
+  }
 };
-
 </script>
 
 <style scoped>
-#contenedorlogin {
-  margin-top: 50px;
+.contenedorlogin {
+  margin-top: 0px;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
 }
 input {
   width: 500px;
   height: 30px;
   font-size: 1.2em;
+  width: 500px;
+  height: 55px;
+  margin-left: 20px;
+  margin-top: 6px;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+  background-color: var(--white);
+  border-bottom: 2px solid var(--black);
+  font-size: 1.5em;
+  align-self: left;
+  justify-content: left;
+  justify-self: left;
+  justify-items: left;
 }
+
 button {
   width: 300px;
 }
 
 p {
-  font-size: 1.3em;
-  color: var(--white);
+  font-size: 1.4em;
+  color: var(--black);
 }
 
 a {
@@ -164,27 +174,50 @@ a {
 }
 
 .todo {
-  background-color: var(--black);
+  background-color: var(--white);
   align-self: center;
   padding: 3.5em;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  box-shadow: 0 0 50px rgb(44, 41, 41);
-  margin-top: -40px;
+  justify-content: center;
+  justify-self: center;
+  align-items: center;
+  justify-items: center;
+  margin-top: -120px;
+  align-content: center;
 }
 
 h1 {
-  color: var(--blue);
+  color: var(--verdeoscuro);
+}
+
+.swal-wide {
+  font-size: 1.5em;
 }
 
 button {
-  border-radius: 5px;
-  font-size: 1em;
-  font-weight: bold;
-  padding: 10px;
-  background-color: rgb(32, 33, 34);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+  justify-self: center;
+  margin: 15px;
+
+  width: 450px;
+  height: 50px;
+  font-size: 1.8em;
+  padding: 0.4em;
+  box-shadow: 0 0 10px rgb(12, 12, 12);
+  /* margin: 10px; */
   font-family: "Ubuntu", sans-serif;
-  color: #1a99e7;
-  box-shadow: 0 0 2px rgb(12, 12, 12);
+  color: var(--black);
+  transition: background-color 0.3s;
+  background-color: var(--naranjaclaro);
+  border-radius: 100px;
+}
+
+button:hover {
+  background-color: var(--verdeoscuro);
 }
 </style>

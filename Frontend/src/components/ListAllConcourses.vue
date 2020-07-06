@@ -2,11 +2,11 @@
   <div>
     <!--Encabezado de página -->
     <h1>CONCURSOS ACTIVOS ACTUALMENTE</h1>
-    <button id="volver">
+    <!--  <button id="volver">
       <a>
         <router-link :to="{ name: 'Profile' }">Volver a mi perfil</router-link>
       </a>
-    </button>
+    </button>-->
     <!-- Forumulario de búsqueda -->
     <div id="formulariobusqueda">
       <label for="bySearch">Búsqueda</label>
@@ -79,19 +79,19 @@
           {{ concurso.fecha_final | moment(" D-MM-YYYY")}}
         </p>
         <!-- Un modal para consultar las bases del concurso -->
-        <button @click="openModal(index)">ℹ️ VER BASES</button>
+        <button id="baseseinscripciones" @click="openModal(index)">ℹ️ VER BASES</button>
 
         <div v-show="modal" class="modal">
           <div class="modalbox">
             <h1>Bases del concurso</h1>
             <p>{{concursobases.descripcion}}</p>
-            <button @click="closeModal()">Cerrar</button>
+            <button id="modalbutton" @click="closeModal()">Cerrar</button>
           </div>
         </div>
 
         <br />
         <br />
-        <button @click="confirmInscription(concurso)">✅ QUIERO INSCRIBIRME</button>
+        <button id="baseseinscripciones" @click="confirmInscription(concurso)">✅ QUIERO INSCRIBIRME</button>
       </div>
     </div>
   </div>
@@ -188,8 +188,8 @@ confirmInscription(concurso) {
         title: "🤓",
         text: "¿Quieres suscribirte a este concurso?",
         showCancelButton: true,
-        confirmButtonColor: "#1CA1F2",
-        cancelButtonColor: "#EB5784",
+        confirmButtonColor: "#FE9F1D",
+        cancelButtonColor: "#2EC4B6",
         confirmButtonText: "Sí, quiero suscribirme.",
         cancelButtonText: "Volver",
       })
@@ -213,6 +213,8 @@ confirmInscription(concurso) {
             title: "✔️",
             text: "Te has inscrito en el concurso con éxito",
             confirmButtonText: "O.K",
+            confirmButtonColor: "#FE9F1D",
+            
             timer: 3000,
           });
         })
@@ -227,6 +229,8 @@ confirmInscription(concurso) {
             title: "⚠️",
             text: "Ya estás inscrita en este concurso.",
             confirmButtonText: "O.K",
+            confirmButtonColor: "#FE9F1D",
+        
             timer: 3000,
 
           })
@@ -250,31 +254,24 @@ confirmInscription(concurso) {
 .red {
   color: red;
 }
-/* .concursoscontenedor {
-  box-shadow: 0 0 10px var(--black);
-  padding: 3em;
-  width: 300px;
-  margin: 50px auto;
-  flex-wrap: wrap;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
- */
+
 .concursoscontenedor {
   box-shadow: 0 0 10px var(--black);
   padding: 2em;
-  width: 300px;
+
   margin: 40px auto;
   border-radius: 20px;
   width: 500px;
   height: 900px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
+  align-items: center;
+  justify-self: center;
+  justify-content: center;
+
   line-height: 0.9;
-  background-color: var(--white);
+  background-color: var(--naranjaclaro);
 }
 
 .contenedor {
@@ -290,14 +287,6 @@ p {
   font-size: 1.3em;
 }
 
-/* .contenedor {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  width: 90%;
-  margin: 10px auto;
-} */
 img {
   width: 250px;
   height: 250px;
@@ -323,46 +312,50 @@ input {
   font-size: 1.5em;
 }
 
-/* .modal {
+.modal {
   position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
-  border-radius: 150px;
+  border-radius: 30px;
   width: 100%;
 }
 
 .modalbox {
-  background: rgb(58, 54, 54);
+  background: var(--verdeclaro);
   margin: 15% auto;
-  padding: 20px;
+  padding: 50px;
   border: 1px solid #888;
   width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+
   align-items: center;
   border-radius: 50px;
-  border: solid 2px var(--black);
+
   box-shadow: 0px 0px 3px grey;
   line-height: 1.5;
   overflow-y: scroll;
-} */
+  scrollbar-track-color: var(--verdeoscuro);
+  box-shadow: 5px 10px 20px rgba(5, 133, 126, 0.507);
+}
 
 button {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
-  width: 450px;
-  height: 50px;
-  font-size: 1.5em;
-  padding: 0.4em;
-  box-shadow: 0 0 10px rgb(12, 12, 12);
+  justify-content: center;
+  width: 300px;
+  height: 30px;
+  font-size: 1.3em;
+
+  /*  box-shadow: 0 0 10px rgb(12, 12, 12); */
   margin: 10px;
+
   font-family: "Ubuntu", sans-serif;
-  color: var(--white);
+  color: var(--black);
   transition: background-color 0.3s;
-  background-color: var(--black);
+  background-color: var(--verdeoscuro);
   border-radius: 100px;
 }
 
@@ -377,11 +370,16 @@ button:hover {
 }
 
 h1 {
-  color: var(--blue);
+  color: var(--verdeoscuro);
 }
 
 a {
   text-decoration: none;
   color: var(--white);
+}
+
+#modalbutton {
+  width: 200px;
+  height: 50px;
 }
 </style>
