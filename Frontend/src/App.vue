@@ -104,7 +104,7 @@ div #linkregistrousuario a {
 
 h1 {
   color: var(--black);
-  font-size: 2.63em;
+  font-size: 1.8em;
 
   -webkit-box-reflect: below -30px -webkit-gradient(
       linear,
@@ -115,16 +115,16 @@ h1 {
     );
 }
 
-h2 {
+/* h2 {
   font-size: 1.6em;
   color: var(--black);
-}
+} */
 
 hr {
   height: 10px;
   border: 0;
 
-  box-shadow: 0 10px 10px -10px var(--yellow) inset;
+  box-shadow: 0 10px 5px -10px var(--black) inset;
 }
 
 ul li {

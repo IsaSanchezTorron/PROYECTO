@@ -73,14 +73,15 @@ export default {
 
 <style scoped>
 #contenedorMenu {
-  width: 96%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   /*   margin: 0 auto; */
   background-color: var(--white);
-  font-size: 1em;
-  padding: 3em;
+  font-size: 0.9em;
+  margin-bottom: 20px;
+  padding: 1em;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   /*  box-shadow: var(--salmon) 0px 0px 6px 0px inset;

@@ -19,7 +19,7 @@ LEFT JOIN INSCRIPCIONES ON CONCURSOS.id_concurso = INSCRIPCIONES.CONCURSOS_id_co
 LEFT JOIN USUARIOS ON USUARIOS.id_usuario = CONCURSOS.id_ganador
 WHERE CONCURSOS.fecha_final <= ?
 GROUP BY CONCURSOS.id_concurso
-ORDER BY CONCURSOS.fecha_publicacion`,
+ORDER BY CONCURSOS.fecha_final`,
 
       [dateToday]
     );

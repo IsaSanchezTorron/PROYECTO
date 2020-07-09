@@ -6,35 +6,37 @@
     <menucustom></menucustom>
 
     <div class="contenedoregisto">
-      <div id="fotos">
-        <img src="../assets/images/14.png" alt="Rellena el formulario" />
-      </div>
+      <div id="formularioyglobo">
+        <div id="fotos">
+          <img id="primerafoto" src="../assets/images/14.png" alt="Rellena el formulario" />
+        </div>
 
-      <div id="formulario">
-        <h2>Completa todos los campos para registrarte 👇</h2>
-        <br />
-        <!-- Input para campo nombre -->
-        <input type="text" placeholder="Tu nombre" v-model="nombre" />
-        <br />
-        <br />
-        <!-- Input para campo apellidos -->
-        <input type="text" placeholder="Tus apellidos" v-model="apellidos" />
-        <br />
-        <br />
-        <!-- Input para campo apellidos -->
-        <input type="email" placeholder="Tu correo electrónico" v-model="mail" />
-        <br />
-        <br />
+        <div id="formulario">
+          <h2>Completa todos los campos para registrarte 👇</h2>
+          <br />
+          <!-- Input para campo nombre -->
+          <input type="text" placeholder="Tu nombre" v-model="nombre" />
+          <br />
+          <br />
+          <!-- Input para campo apellidos -->
+          <input type="text" placeholder="Tus apellidos" v-model="apellidos" />
+          <br />
+          <br />
+          <!-- Input para campo apellidos -->
+          <input type="email" placeholder="Tu correo electrónico" v-model="mail" />
+          <br />
+          <br />
 
-        <!--Input para campo password -->
-        <input type="password" placeholder="Tu contraseña" v-model="contrasenha" />
-        <br />
-        <br />
-        <!-- Botón con llamada a la función Login -->
-        <button @click="registerUser()">REGISTRO</button>
-        <br />
-        <p v-show="required">Rellena todos los datos, por favor</p>
-        <br />
+          <!--Input para campo password -->
+          <input type="password" placeholder="Tu contraseña" v-model="contrasenha" />
+          <br />
+          <br />
+          <!-- Botón con llamada a la función Login -->
+          <button @click="registerUser()">REGISTRO</button>
+          <br />
+          <p v-show="required">Rellena todos los datos, por favor</p>
+          <br />
+        </div>
       </div>
       <div id="fotos">
         <img src="../assets/images/11.png" alt="Valida tu cuenta" />
@@ -169,13 +171,13 @@ export default {
 .contenedoregisto {
   display: flex;
   flex-direction: row;
-
+  margin-top: 50px;
   align-items: left;
   justify-content: space-between;
-  padding: 3em;
+  padding: 1em;
 }
 input {
-  width: 500px;
+  width: 400px;
   height: 55px;
   margin-left: 20px;
   margin-top: 6px;
@@ -184,7 +186,7 @@ input {
   border-left: 0;
   background-color: var(--white);
   border-bottom: 2px solid var(--black);
-  font-size: 1.5em;
+  font-size: 1em;
   align-self: left;
   justify-content: left;
   justify-self: left;
@@ -204,6 +206,7 @@ h2 {
   color: var(--black);
   text-align: left;
   margin: 10px;
+  font-size: 1em;
 }
 
 button {
@@ -215,9 +218,9 @@ button {
   justify-self: center;
   margin: 15px;
 
-  width: 450px;
-  height: 50px;
-  font-size: 1.8em;
+  width: 420px;
+  height: 40px;
+  font-size: 1em;
   padding: 0.4em;
   box-shadow: 0 0 10px rgb(12, 12, 12);
   /* margin: 10px; */
@@ -242,7 +245,6 @@ button:hover {
   justify-self: left;
   align-self: left;
   text-align: left;
-  margin-left: 30px;
 }
 
 #fotos {
@@ -258,9 +260,28 @@ button:hover {
 }
 
 img {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   border-radius: 1000px;
   margin-left: 60px;
+}
+
+#primerafoto {
+  border-radius: 0px;
+  margin: 0;
+  margin-right: -180px;
+}
+
+#formularioyglobo {
+  display: flex;
+  flex-direction: row;
+}
+
+#fotosbienvenida img {
+  width: 300px;
+}
+
+#fotosbienvenida {
+  margin-top: -40px;
 }
 </style>

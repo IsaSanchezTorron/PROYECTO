@@ -22,7 +22,6 @@
     </div>
 
     <div class="contenedor">
-      <br />
       <!-- Contenedor para dar formato a la ficha de productos, lo cargamos con el array de productos filtrados -->
       <div
         class="concursoscontenedor"
@@ -54,11 +53,18 @@
           <b>🌆 Ciudad:</b>
           {{ finalizado.ciudad }}
         </p>
+
+        <p style="color:grey">Publicado el: {{finalizado.fecha_publicacion | moment(" D-MM-YYYY") }}</p>
+        <p style="color:grey">
+          <b>📆 Cierre de suscripción:</b>
+          {{ finalizado.fecha_final | moment(" D-MM-YYYY")}}
+        </p>
+
         <p v-if="finalizado.fecha_asignacion_ganador">
           <b>📅 Publicación de ganadoras:</b>
           {{ finalizado.fecha_asignacion_ganador | moment(" D-MM-YYYY") }}
         </p>
-        <p v-if="finalizado.nombre_ganador">
+        <p v-if="finalizado.nombre_ganador" style="color:red">
           <b>🥇 Ganadora:</b>
           {{finalizado.nombre_ganador}} {{finalizado.apellidos_ganador}}
         </p>
@@ -66,11 +72,7 @@
           <b>🌠 Valoración media:</b>
           {{ finalizado.valoracion }}
         </p>
-        <p>Publicado el: {{finalizado.fecha_publicacion | moment(" D-MM-YYYY") }}</p>
-        <p style="color:red">
-          <b>📆 Cierre de suscripción:</b>
-          {{ finalizado.fecha_final | moment(" D-MM-YYYY")}}
-        </p>
+
         <!-- Un modal para consultar las bases del concurso -->
       </div>
     </div>
@@ -175,16 +177,15 @@ export default {
 
 .concursoscontenedor {
   box-shadow: 0 0 10px var(--black);
-  padding: 2em;
+  padding: 1em;
   width: 300px;
   margin: 40px auto;
   border-radius: 20px;
-  width: 500px;
-  height: 900px;
+
+  height: 800px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  line-height: 0.9;
+  /* s */
   background-color: var(--white);
   background-color: var(--verdeclaro);
 }
@@ -199,12 +200,12 @@ export default {
 }
 
 p {
-  font-size: 1.3em;
+  font-size: 1em;
 }
 
 img {
-  width: 250px;
-  height: 250px;
+  width: 180px;
+  height: 180px;
   border-radius: 20px;
   transition: transform 0.5s ease-in-out;
 }
@@ -218,7 +219,8 @@ img:hover {
 
 h3 {
   text-transform: uppercase;
-  font-size: 1.4em;
+  font-size: 1.1em;
+  line-height: 2;
 }
 
 h1 {
@@ -231,8 +233,8 @@ button {
 
 input {
   width: 500px;
-  height: 50px;
-  font-size: 1.5em;
+  height: 40px;
+  font-size: 1.1em;
 }
 
 /* .modal {

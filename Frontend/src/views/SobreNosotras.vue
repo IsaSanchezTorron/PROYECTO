@@ -11,11 +11,16 @@
 
           <div id="todocolor2">
             <div id="habilidades">
+              <br />
               <h2>Cualidades:</h2>
               <p>🗣 Buena comunicación.</p>
+              <br />
               <p>💪 Compromiso, dedicación y esfuerzo</p>
+              <br />
               <p>💙 Inteligencia emocional</p>
+              <br />
               <p>🤓 Actitud positiva, motivación y entusiasmo.</p>
+              <br />
             </div>
           </div>
         </div>
@@ -117,16 +122,16 @@ export default {
 
 <style scoped>
 p {
-  font-size: 1.3em;
+  font-size: 0.7em;
   color: var(--black);
   text-align: left;
 }
 img {
-  width: 150px;
+  width: 100px;
   border-radius: 150px;
   box-shadow: 0 3px 10px var(--black);
   border: solid 1px var(--black);
-  -webkit-box-reflect: below -120px -webkit-gradient(
+  -webkit-box-reflect: below -50px -webkit-gradient(
       linear,
       left top,
       left bottom,
@@ -134,7 +139,7 @@ img {
       to(rgba(255, 255, 255, 0.26))
     );
   transition: transform 0.5s ease-in-out;
-  margin: 30px;
+  margin: 10px;
 }
 
 img:hover {
@@ -160,7 +165,7 @@ img:hover {
 }
 
 #fotoisa {
-  width: 300px;
+  width: 150px;
   border-radius: 150px;
 }
 
@@ -168,21 +173,26 @@ img:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-right: 1em;
+  padding-left: 1em;
+  padding-top: 1em;
+
+  padding-bottom: 1.6em;
 
   /*  justify-content: space-evenly; */
 }
 
 #fotolenguaje {
-  width: 100px;
-  padding: 0.5em;
-  margin-bottom: 0.4em;
+  width: 50px;
+
+  margin-bottom: 1.5em;
 }
 
 #todo {
   /* box-shadow: 0 0 50px rgb(44, 41, 41); */
 
-  padding-bottom: 3.2em;
-  height: 700px;
+  /*   padding-bottom: 3.2em; */
+  height: 500px;
   margin-top: 500px;
   background-image: url("https://images.unsplash.com/photo-1530733895788-f39cc96b6ae8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80");
   margin-top: 0px;
@@ -204,7 +214,7 @@ img:hover {
 }
 
 #agradecimientos p {
-  font-size: 1.3em;
+  font-size: 0.8em;
   color: var(--black);
   display: flex;
   flex-direction: column;
@@ -225,29 +235,33 @@ h1 {
   text-align: left;
 }
 h2 {
+  font-size: 0.9em;
   line-height: 2;
 }
 #todocolor {
   display: flex;
   flex-direction: row;
 
-  padding: 1.3em;
+  padding: 1.4em;
   border-top-right-radius: 30px;
   border-top-left-radius: 30px;
 }
 
 #parrafouno {
-  width: 40%;
+  width: 400px;
+  height: 300px;
   margin-right: 80px;
   background-color: #cbf3f096;
-  padding-left: 20px;
-
+  padding-left: 30px;
+  padding: 2em;
   border-top-right-radius: 30px;
   border-top-left-radius: 30px;
 }
 
 #parrafo2 {
-  width: 60%;
+  width: 600px;
+  height: 300px;
+
   margin-right: 80px;
   background-color: #fea21748;
   padding-right: 20px;
@@ -256,7 +270,8 @@ h2 {
   border-top-left-radius: 30px;
 }
 #parrafo3 {
-  width: 40%;
+  width: 400px;
+  height: 300px;
   background-color: #cbf3f096;
   padding: 2em;
   border-top-right-radius: 30px;
@@ -265,8 +280,10 @@ h2 {
 
 #todocolor2 {
   background-color: #2ec4b585;
+  padding-bottom: 1.4em;
+  padding-left: 1.3em;
+  padding-right: 1.3em;
 
-  padding: 1.3em;
   border-top-right-radius: 30px;
   border-top-left-radius: 30px;
 }
@@ -279,8 +296,8 @@ h2 {
 
 #compis {
   text-align: center;
-  color: var(--verdeoscuro);
-  font-size: 2em;
+  color: var(--black);
+  font-size: 1.5em;
   margin-left: -30px;
 }
 </style>

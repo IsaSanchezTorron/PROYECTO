@@ -13,7 +13,7 @@
         <div id="formulario">
           <h1>INICIA SESIÓN 👇</h1>
           <br />
-          <br />
+
           <!-- Input para campo email -->
           <input type="text" placeholder="Tu correo electrónico" v-model="mail" />
           <br />
@@ -26,9 +26,7 @@
           <br />
           <!-- Botón con llamada a la función Login -->
           <button @click="login(mail, contrasenha)">INICIO DE SESIÓN</button>
-          <br />
-          <br />
-          <br />
+
           <div id="nav">
             <!-- Enlace a la vista de Registro desde el Login -->
             <p>Si no tienes cuenta, regístrate aquí</p>
@@ -132,18 +130,17 @@ export default {
 
 <style scoped>
 .contenedorlogin {
-  margin-top: 0px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
 
   align-items: center;
 }
 input {
-  width: 500px;
-  height: 30px;
-  font-size: 1.2em;
-  width: 500px;
-  height: 55px;
+  width: 400px;
+  height: 25px;
+  font-size: em;
+
   margin-left: 20px;
   margin-top: 6px;
   border-top: 0;
@@ -151,7 +148,7 @@ input {
   border-left: 0;
   background-color: var(--white);
   border-bottom: 2px solid var(--black);
-  font-size: 1.5em;
+  font-size: 1em;
   align-self: left;
   justify-content: left;
   justify-self: left;
@@ -159,17 +156,17 @@ input {
 }
 
 button {
-  width: 300px;
+  width: 200px;
 }
 
 p {
-  font-size: 1.4em;
+  font-size: 1em;
   color: var(--black);
 }
 
 a {
   text-decoration: none;
-  font-size: 1.1em;
+  font-size: 1em;
   color: var(--blue);
 }
 
@@ -191,10 +188,6 @@ h1 {
   color: var(--verdeoscuro);
 }
 
-.swal-wide {
-  font-size: 1.5em;
-}
-
 button {
   display: flex;
   flex-direction: column;
@@ -204,9 +197,9 @@ button {
   justify-self: center;
   margin: 15px;
 
-  width: 450px;
-  height: 50px;
-  font-size: 1.8em;
+  width: 350px;
+  height: 30px;
+  font-size: 1em;
   padding: 0.4em;
   box-shadow: 0 0 10px rgb(12, 12, 12);
   /* margin: 10px; */
@@ -219,5 +212,8 @@ button {
 
 button:hover {
   background-color: var(--verdeoscuro);
+}
+img {
+  width: 280px;
 }
 </style>

@@ -32,7 +32,7 @@
           <!-- Este botón es un enlace a todos los concursos hasta la fecha -->
           <button v-show="!seeAdmin">
             <router-link style="color:var(--white);" :to="{ name: 'Allconcourses' }">
-              <p2>📌 Concursos activos actualmente</p2>
+              <p2 style="color:var(--black)">📌 CONCURSOS ACTIVOS</p2>
             </router-link>
           </button>
 
@@ -80,7 +80,7 @@
       <!--Sección de saludo y datos del usuario-->
       <div class="contenedorsaludo">
         <div id="saludo">
-          <h1>Hola {{ user.nombre }}</h1>
+          <h1 style="color:var(--naranjaoscuro)">Hola {{ user.nombre }}</h1>
           <!-- Imagen de perfil del usuario -->
           <img :src="user.url_foto" alt="Foto de perfil de usuario" />
           <p>Miembro desde {{ user.fecha_registro | moment(" D-MM-YYYY") }}</p>
@@ -108,14 +108,15 @@
             <br />
 
             <label for="descripcion">Sobre ti:</label>
+            <br />
             <textarea
               type="textarea"
               id="descripcion"
               name="descripcion"
               v-model="nuevaDescripcion"
               placeholder="descripcion"
-              cols="50"
-              rows="20"
+              cols="45"
+              rows="15"
             />
             <div id="selecciondefoto">
               <label for="file">👤 Selecciona tu nueva foto 👉 📸 .</label>
@@ -129,14 +130,11 @@
             </div>
             <br />
 
-            <button id="volver" @click="editUser()">Guardar</button>
-
-            <div class="editarfotousuario">
-              <button id="volver" @click="vereditar=false">Volver</button>
-              <hr />
-            </div>
-
+            <button id="volver" @click="editUser()">GUARDAR</button>
             <hr />
+            <div class="editarfotousuario">
+              <button id="volver" @click="vereditar=false">VOLVER</button>
+            </div>
           </div>
         </div>
       </div>
@@ -150,12 +148,12 @@
 
             <!--  <h3 style="color:var(--verdeoscuro)">Todavía no estás inscrita a ningún concurso</h3> -->
 
-            <h2 style="color:var(--verdeoscuro)">ESTOS SON TODOS TUS CONCURSOS</h2>
+            <h2 style="color:var(--black)">ESTOS SON TODOS TUS CONCURSOS</h2>
 
             <hr />
             <ul v-for="historia in historial" :key="historia.id">
-              <li>
-                <b>{{ historia.nombre_concurso }}</b>
+              <li style="color:var(--naranjaoscuro)">
+                <b>📚 {{ historia.nombre_concurso }}</b>
               </li>
               <li>
                 <b>Apertura:</b>
@@ -167,14 +165,14 @@
               </li>
               <!-- Sólo si el concurso ha sido valorado se muestra su valoración -->
               <div v-if="historia.valoracion > 0">
-                <li>
+                <li style="color:var(--verdeoscuro)">
                   Has valorado este concurso con
                   {{ historia.valoracion }} ⭐️
                 </li>
               </div>
               <hr />
             </ul>
-            <button id="volver" @click="closeModalHistory()">⬅️ VOLVER</button>
+            <button id="volver" @click="closeModalHistory()">VOLVER</button>
           </div>
         </div>
       </div>
@@ -186,13 +184,24 @@
       <div class="modal" v-show="verganadores">
         <div class="modalBox">
           <div v-if="ganadores">
-            <h1 style="color:var(--verdeoscuro)">GANADORAS NOMBRADAS RECIENTEMENTE</h1>
+            <h1 style="color:var(--naranjaoscuro
+            )">GANADORAS NOMBRADAS RECIENTEMENTE</h1>
           </div>
 
           <ul class="resultadosganadores" v-for="ganador in ganadores" :key="ganador.id">
-            <li>👤 {{ganador.nombreusuario}} {{ganador.apellidos}} ha ganado el {{ganador.nombreconcurso}} el {{ganador.fecha_asignacion_ganador | moment(" D-MM-YYYY")}}</li>
+            <li>
+              🤓
+              <b>
+                <a style="color:red">{{ganador.nombreusuario}} {{ganador.apellidos}}</a>
+              </b>
+              ha ganado el
+              <b>
+                <a style="color:var(--verdeoscuro)">{{ganador.nombreconcurso}}</a>
+              </b>
+              el {{ganador.fecha_asignacion_ganador | moment(" D-MM-YYYY")}}
+            </li>
           </ul>
-          <button id="volver" @click="closeModalWinners()">⬅️ VOLVER</button>
+          <button id="volver" @click="closeModalWinners()">VOLVER</button>
         </div>
       </div>
 
@@ -214,7 +223,7 @@
           <div class="proximosconcursos">
             <!-- Recorremos el array dinámicamente, contiene la información del get de la función en methods -->
             <ul v-for="proxconcurso in proxconcursos" :key="proxconcurso.id">
-              <li style="color:var(--verdeoscuro)">
+              <li style="color:var(--naranjaoscuro)">
                 <b>{{ proxconcurso.nombre }}</b>
               </li>
               <!-- <li>
@@ -232,9 +241,7 @@
               <button id="modalbutton" @click="cancelSuscription(proxconcurso)">Cancelar suscripción</button>
               <hr />
             </ul>
-            <button id="volver" @click="closeModalNext()">⬅️ VOLVER</button>
-
-            <hr />
+            <button id="volver" @click="closeModalNext()">VOLVER</button>
           </div>
         </div>
       </div>
@@ -491,7 +498,6 @@ export default {
 
         .then(function(response) {
           /*   console.log(response); */
-
           // En user tengo ahora el acceso directo a este usuario concreto.
           self.historial = response.data.data;
         })
@@ -638,12 +644,13 @@ export default {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       Swal.fire({
-        title: "🤓",
-        text: "Vas a cancelar tu suscripción a este concurso ¿Estás segura?",
+        title: "Vas a cancelar tu suscripción a este concurso ¿Estás segura?",
         showCancelButton: true,
+        width: 1000,
         confirmButtonColor: "#FE9F1D",
         cancelButtonColor: "#2EC4B6",
         confirmButtonText: "Quiero cancelar esta suscripción",
+
         cancelButtonText: "Mantengo mi suscripción"
       }).then(result => {
         if (result.value) {
@@ -657,8 +664,7 @@ export default {
               console.error(error.response.data.message);
             });
           Swal.fire({
-            title: "✅",
-            text: "Se ha cancelado tu suscripción",
+            title: "Se ha cancelado tu suscripción",
             confirmButtonText: "O.K",
             confirmButtonColor: "#FE9F1D",
 
@@ -757,16 +763,18 @@ hr {
   justify-self: center;
   align-self: center;
   justify-self: center;
-  margin: 0 auto;
+  margin: 30px auto;
   background-color: rgba(85, 175, 168, 0.603);
+  overflow-y: auto;
+  padding: 1.5em;
 }
 
 .modalBox {
-  background-color: var(--naranjaclaro);
+  background-color: var(--white);
   padding: 90px;
-  width: 60%;
-  height: 50%;
-  margin-top: 30px;
+  width: 50%;
+  height: 60%;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -779,14 +787,17 @@ hr {
   /* border: solid 1px var(--black); */
   box-shadow: 0 0 20px rgba(183, 236, 232, 0.432);
   overflow-y: auto;
-  overflow-x: auto;
 }
 
 h3 {
   text-transform: uppercase;
-  font-size: 1.4em;
+  font-size: 1em;
   color: var(--naranjaoscuro);
   text-decoration: underline;
+}
+
+h1 {
+  font-size: 1em;
 }
 
 .editar {
@@ -797,27 +808,8 @@ h3 {
   padding: 3em;
 }
 
-.editar input {
-  width: 500px;
-  height: 30px;
-  border-radius: 5px;
-  align-self: center;
-  margin-left: 20px;
-  /*  border-top: 0;
-  border-right: 0;
-  border-left: 0;
-  background-color: var(--white);
-  border-bottom: 2px solid var(--black); */
-}
 form {
   padding-left: 20px;
-}
-
-.editar textarea {
-  width: 500px;
-  height: 100px;
-  border-radius: 5px;
-  align-self: center;
 }
 
 .editar button {
@@ -860,9 +852,9 @@ img {
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  width: 450px;
-  height: 60px;
-  font-size: 1.5em;
+  width: 300px;
+  height: 40px;
+  font-size: 1em;
 
   /*  box-shadow: 0 0 10px rgb(12, 12, 12); */
   margin: 10px;
@@ -880,6 +872,7 @@ img {
 
 a {
   color: var(--white);
+  font-size: 1em;
   text-decoration: none;
 }
 
@@ -896,7 +889,7 @@ a {
   background-repeat: no-repeat;
   width: 95.9%;
 
-  padding: 3em;
+  padding: 1em;
 }
 
 /* #saludo {
@@ -904,7 +897,7 @@ a {
 } */
 
 p {
-  font-size: 1.4em;
+  font-size: 1em;
 
   color: var(--white);
 }
@@ -912,8 +905,8 @@ p {
 #fotoayuda {
   /* margin-top: -600px;
   margin-left: -400px; */
-  width: 225px;
-  height: 225px;
+  width: 150px;
+  height: 150px;
   border-radius: 300px;
   transition: transform 0.5s ease-in-out;
   margin-bottom: 60px;
@@ -922,8 +915,8 @@ p {
 #fotoayuda2 {
   /* margin-top: -300px;
   margin-left: -100px; */
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   border-radius: 300px;
   margin-bottom: 70px;
   transition: transform 0.5s ease-in-out;
@@ -933,9 +926,9 @@ p {
   /*  margin-top: -500px;
   margin-left: 300px; */
 
-  width: 300px;
-  height: 300px;
-  border-radius: 300px;
+  width: 200px;
+  height: 200px;
+  border-radius: 150px;
   transition: transform 0.5s ease-in-out;
 }
 
@@ -944,12 +937,9 @@ img #fotoayuda4 {
 }
 
 #globos {
-  height: 1000px;
   display: flex;
   flex-direction: column;
-  margin-top: 50px;
-  padding-top: 1em;
-  padding-bottom: 1em;
+
   margin-left: 40px;
 }
 
@@ -966,8 +956,8 @@ img #fotoayuda4 {
 button {
   justify-content: center;
   margin: 0 auto;
-  width: 450px;
-  height: 60px;
+  width: 300px;
+  height: 40px;
   font-size: 1.2em;
 
   /*  box-shadow: 0 0 10px rgb(12, 12, 12); */
@@ -981,7 +971,7 @@ button {
 }
 
 button:hover {
-  background-color: var(--white);
+  background-color: var(--naranjaoscuro);
   color: var(--black);
 }
 
@@ -992,12 +982,13 @@ a {
 .modal button {
   width: 200px;
   height: 50px;
-  font-size: 0.6em;
+  font-size: 0.8em;
 }
 
 #modalbutton {
-  font-size: 0.8em;
-  width: 300px;
+  font-size: 0.9em;
+  width: 150px;
+  height: 25px;
   background-color: var(--verdeoscuro);
   color: var(--black);
 }
@@ -1007,25 +998,29 @@ a {
 }
 
 ul {
-  font-size: 1.5em;
+  font-size: 0.8em;
   line-height: 1.5;
 }
 
 #volver {
-  font-size: 1.3em;
-  margin-left: 50px;
+  font-size: 1em;
+  /*  margin-left: 50px; */
+  width: 200px;
+  height: 25px;
 }
 
 #perfilusuario input {
+  width: 400px;
+  margin: 15px;
+  height: 20px;
+  font-size: 1em;
+}
+/* #perfilusuario input {
   width: 500px;
   margin: 20px;
   height: 40px;
-}
-#perfilusuario input {
-  width: 500px;
-  margin: 20px;
-  height: 40px;
-}
+  font-size: 1.2em;
+} */
 
 label {
   display: table-cell;
@@ -1038,7 +1033,7 @@ label {
 }
 
 #menudebotones {
-  padding: 3em;
+  padding: 2em;
   /*  background-image: url("https://images.unsplash.com/photo-1417721955552-a49ac2d334e8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"); */
   background-repeat: no-repeat;
   background-size: cover;
@@ -1047,8 +1042,8 @@ label {
 
 #saludo {
   margin-left: 300px;
-  width: 50%;
-
+  width: 750px;
+  height: 650px;
   display: flex;
   flex-direction: column;
   justify-self: center;
@@ -1057,11 +1052,11 @@ label {
   margin-left: 40px;
   margin-right: 40px;
   color: var(--white);
-  padding-bottom: 10rem;
-  padding-top: 10rem;
+  /* padding-bottom: 2rem; */
+  /*  padding-top: 2rem; */
   display: flex;
   flex-direction: column;
-
+  justify-content: center;
   align-items: center;
   margin: 0 auto;
   background-color: rgba(0, 0, 0, 0.562);
@@ -1071,7 +1066,8 @@ label {
   background-image: url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60");
   background-repeat: no-repeat;
   background-size: cover;
-  width: 100%;
+  width: 1500px;
+  height: 650px;
   border-top-left-radius: 200px;
   border-top-right-radius: 50px;
 }

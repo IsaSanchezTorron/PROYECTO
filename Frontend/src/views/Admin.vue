@@ -44,8 +44,8 @@
           <label for="descripcion">Información y Bases:</label>
           <textarea
             type="text"
-            cols="65"
-            rows="20"
+            cols="15"
+            rows="10"
             name="descripcion"
             id="descripcion"
             v-model="descripcion"
@@ -166,8 +166,8 @@
                 placeholder="🔍 Introduce el id. de la persona ganadora."
               />
 
-              <button @click="setWinner()">💾 Asignar ganador</button>
-              <button @click="closeModalInscripciones()">⬅️ Cerrar</button>
+              <button id="modalbutton" @click="setWinner()">Asignar ganador</button>
+              <button id="modalbutton" @click="closeModalInscripciones()">Cerrar</button>
             </div>
           </div>
         </div>
@@ -424,16 +424,16 @@ export default {
 <style scoped>
 .concursoscontenedor {
   box-shadow: 0 0 10px var(--black);
-  padding: 1.5em;
-  width: 300px;
+  padding: 2em;
+
   margin: 40px auto;
   border-radius: 20px;
-  width: 500px;
-  height: 900px;
+  width: 300px;
+  height: 600px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  line-height: 0.9;
+  line-height: 0.6;
   background-color: var(--verdeclaro);
 }
 
@@ -443,12 +443,12 @@ export default {
   flex-wrap: wrap;
   justify-content: space-around;
   width: 90%;
-  margin: 10px auto;
+  margin: 45px auto;
 }
 
 img {
-  width: 100px;
-  height: 100px;
+  width: 75px;
+  height: 75px;
   border-radius: 20px;
   transition: transform 0.5s ease-in-out;
 }
@@ -457,7 +457,7 @@ img:hover {
 }
 
 #formulariobusqueda {
-  padding: 2em;
+  padding: 1em;
 }
 
 #formulariobusqueda input {
@@ -467,11 +467,12 @@ img:hover {
 
 h3 {
   text-transform: uppercase;
-  font-size: 1.9em;
+  font-size: 1.2em;
+  line-height: 1;
 }
 
 p {
-  font-size: 1.3em;
+  font-size: 1em;
 }
 
 ul {
@@ -489,10 +490,10 @@ button {
   flex-direction: row;
   justify-content: space-evenly;
   align-self: center;
-  width: 450px;
-  height: 50px;
-  font-size: 1.3em;
-  padding: 0.4em;
+  width: 250px;
+  height: 30px;
+  font-size: 0.9em;
+  padding: 0.2em;
   box-shadow: 0 0 10px rgb(12, 12, 12);
   margin: 10px;
   font-family: "Ubuntu", sans-serif;
@@ -510,6 +511,30 @@ h1 {
   color: var(--blue);
 }
 
+/* .modal {
+  position: fixed;
+
+  border-radius: 150px;
+  width: 1200px;
+  height: 1000px;
+  margin-bottom: 1000px;
+  margin: 0 auto;
+}
+
+.modalbox {
+  background: var(--white);
+  margin-top: -600px;
+  padding: 10px;
+  border: 1px solid #888;
+
+  border-radius: 50px;
+  border: solid 1px rgba(22, 22, 22, 0.753);
+  box-shadow: 0 0 5px rgba(247, 183, 87, 0.548);
+  font-size: 1em;
+
+  margin: 0 auto;
+} */
+
 .modal {
   position: fixed;
   top: 0;
@@ -518,7 +543,6 @@ h1 {
   border-radius: 150px;
   width: 100%;
 }
-
 .modalBox {
   background: var(--white);
   margin: 10% auto;
@@ -544,7 +568,7 @@ hr {
 
 input {
   width: 500px;
-  height: 55px;
+  height: 35px;
   margin-left: 20px;
   margin-top: 6px;
   border-top: 0;
@@ -552,7 +576,7 @@ input {
   border-left: 0;
   background-color: var(--white);
   border-bottom: 2px solid var(--black);
-  font-size: 1.2em;
+  font-size: 1em;
 }
 
 input[type="radio"] {
@@ -570,8 +594,8 @@ input[type="radio"] {
 }
 
 img {
-  width: 250px;
-  height: 250px;
+  width: 150px;
+  height: 150px;
   border-radius: 20px;
   transition: transform 0.5s ease-in-out;
 }
@@ -583,5 +607,13 @@ img:hover {
   display: flex;
   flex-direction: column;
   justify-self: center;
+}
+
+#modalbutton {
+  font-size: 0.8em;
+}
+h2 {
+  font-size: 1em;
+  color: var(--verdeoscuro);
 }
 </style>

@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  name: "barraredessociales",
+  name: "barraredessociales"
 };
 </script>
 
@@ -45,22 +45,22 @@ export default {
   justify-content: space-evenly;
   background-color: var(--white);
   /* box-shadow: 0 0 10px var(--black); */
-  padding: 1em;
-
-  width: 98.5%;
+  padding-top: 1.5em;
+  width: 100%;
   /*  margin: 0 auto; */
-  border-bottom-left-radius: 20px;
+  /*  border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-
+ */
   bottom: 0;
 }
 
 img {
-  width: 100px;
+  width: 50px;
+  height: 50px;
 }
 
 p {
-  font-size: 1.3em;
+  font-size: 1.1em;
   justify-self: center;
   color: var(--blue);
 }

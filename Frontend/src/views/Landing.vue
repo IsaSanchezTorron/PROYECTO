@@ -83,11 +83,9 @@
               </p>
             </div>
           </form>
-          <br />
-          <br />
-          <br />
+
           <div id="botonformulario">
-            <button @click="searching()">BUSCAR</button>
+            <button id="botonbuscar" @click="searching()">BUSCAR</button>
           </div>
         </div>
       </div>
@@ -138,12 +136,12 @@
 
                 <p>{{concursobases.descripcion}}</p>
                 <h3
-                  style="color:var(--naranjaclaro"
+                  style="color:var(--black)"
                 >Recuerda que debes tener una cuenta con nosotras para inscribirte</h3>
 
                 <router-link :to="{ name: 'Register' }">
                   <p
-                    style="color:var(--naranjaoscuro)"
+                    style="color:var(--verdeoscuro)"
                     id="registro"
                   >👉 Quiero registrarme en INTERTEXTUAL</p>
                 </router-link>
@@ -299,13 +297,13 @@ export default {
 }
 
 #fotoinformativauno {
-  width: 600px;
-  height: 600px;
+  width: 400px;
+  height: 400px;
   transition: transform 0.9s ease-in-out;
 }
 #fotoinformativa {
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
   transition: transform 0.9s ease-in-out;
 }
 
@@ -319,10 +317,10 @@ img:hover {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  height: 600px;
+  height: 350px;
   width: 96%;
-  padding: 3em;
-
+  padding-top: 1.1em;
+  margin-bottom: 56px;
   border-color: var(--black);
 }
 
@@ -337,13 +335,13 @@ input {
   font-size: 0.7em;
 }
 form p {
-  font-size: 1.7em;
+  font-size: 1.2em;
   color: var(--black);
   /* -webkit-text-stroke: 1.9px var(--morado); */
 }
-button {
+/* button {
   padding: 0.7em;
-}
+} */
 
 #contenedoramarillo {
   background-color: var(--black);
@@ -354,15 +352,16 @@ button {
 .resultadosbusqueda {
   box-shadow: 0 0 10px var(--black);
   padding: 2em;
-  width: 300px;
+
   margin: 10px auto;
   border-radius: 20px;
-  width: 470px;
-  height: 630px;
+  width: 300px;
+  height: 430px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   background-color: var(--naranjamasclaro);
+  color: rgb(20, 93, 177);
 }
 
 #contenedorbusqueda {
@@ -388,24 +387,24 @@ img:hover {
 
 ul li {
   list-style: none;
-  font-size: 1.4em;
+  font-size: 1em;
 }
 h3 {
   text-transform: uppercase;
-  font-size: 1.4em;
+  font-size: 1em;
   color: var(--blue);
 }
 
 button {
   border-radius: 20px;
-  font-size: 1.3em;
+  font-size: 0.8em;
   font-weight: bold;
-  padding: 16px;
+  padding: 8px;
   background-color: var(--verdeclaro);
   font-family: "Ubuntu", sans-serif;
   color: var(--black);
   box-shadow: 0 0 5px var(--black);
-
+  margin-top: 40px;
   /* box-shadow: 2px 2px 2px var(--blue);*/
 }
 
@@ -435,12 +434,14 @@ button:hover {
 }
 
 form {
-  width: 1500px;
+  width: 1000px;
+  padding-top: 1em;
+  font-size: 1em;
 }
 
 a {
   color: var(--black);
-  font-size: 1.4em;
+  font-size: 1.2em;
 }
 
 #registro {
@@ -450,12 +451,14 @@ a {
 
 h1 {
   color: var(--black);
-  font-size: 2.63em;
+  font-size: 1.5em;
+  padding-top: 0.3em;
 }
 
 #botonresultados {
   background-color: var(--white);
   box-shadow: 0 0 5px var(--black);
+  font-size: 0.8em;
 }
 #botonresultados:hover {
   background-color: var(--naranjaclaro);

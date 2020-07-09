@@ -373,8 +373,8 @@ export default {
   align-content: center;
   justify-self: center;
 
-  width: 500px;
-  height: 500px;
+  width: 450px;
+  height: 450px;
   /* margin-top: 600px;
   margin-left: 1180px; */
 
@@ -433,7 +433,7 @@ h3 {
 button {
   width: 200px;
   height: 50px;
-  font-size: 1.3em;
+  font-size: 1em;
   margin-top: 20px;
 
   /*  box-shadow: 0 0 10px rgb(12, 12, 12); */
@@ -456,7 +456,7 @@ a {
 }
 
 p {
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: bold;
 }
 
@@ -472,8 +472,8 @@ h1 {
   flex-direction: column;
 
   border-radius: 20px;
-  width: 400px;
-  height: 400px;
+  width: 250px;
+  height: 250px;
 
   line-height: 2.4;
   background-color: var(--black);
@@ -490,7 +490,7 @@ h1 {
 
 #nombreconcurso {
   color: var(--blue);
-  font-size: 1.3em;
+  font-size: 1.2em;
 }
 
 #fotoconcurso {
@@ -510,8 +510,8 @@ h1 {
 
 li {
   color: var(--black);
-  font-size: 1.1em;
-  line-height: 3;
+  font-size: 1em;
+  line-height: 2;
   margin-right: 20px;
   background-color: var(--white);
   /*  border-top-left-radius: 30px; */
@@ -532,8 +532,8 @@ li:first-child {
   background-color: var(--verdeclaro);
 }
 #fotoinformativa {
-  width: 400px;
-  border-radius: 200px;
+  width: 300px;
+  border-radius: 15px;
 
   align-self: center;
 }
@@ -548,7 +548,7 @@ li:first-child {
 }
 
 #explicacion {
-  font-size: 1.5em;
+  font-size: 1em;
   color: var(--white);
   line-height: 2em;
   font-weight: 400;
@@ -558,7 +558,7 @@ li:first-child {
 }
 
 #menuizquierda {
-  width: 600px;
+  width: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -570,12 +570,13 @@ li:first-child {
 #concursosul {
   display: flex;
   flex-direction: column;
-  width: 500px;
-  height: 550px;
-  margin: 40px;
+  width: 350px;
+  height: 350px;
+  margin: 20px;
   justify-content: center;
   line-height: 3;
   display: flex;
+  padding: 20px;
 
   border: solid 3px var(--verdeoscuro);
   border-top-left-radius: 70px;
@@ -605,7 +606,7 @@ li:first-child {
 
 #votar {
   width: 150px;
-  font-size: 1.2em;
+  font-size: 1em;
   height: 40px;
   background-color: var(--verdeoscuro);
 }

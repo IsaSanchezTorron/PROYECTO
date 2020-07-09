@@ -11,9 +11,9 @@ export default {
   name: "barradebienvenida",
   data() {
     return {
-      data: [],
+      data: []
     };
-  },
+  }
 };
 </script>
 
@@ -29,14 +29,15 @@ export default {
   /*   border-radius: 100px; */
   background: url("https://images.unsplash.com/photo-1525358180237-7399f908a1d9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1357&q=80");
 
-  width: 97.3%;
-  margin-top: -19.8px;
+  width: 100%;
+  /*   margin-top: 30px; */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   box-shadow: 5px 5px 25px var(--black) inset;
 
-  padding: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
 
   /*  border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px; */
@@ -53,7 +54,7 @@ export default {
 }
  */
 img {
-  width: 400px;
-  border-radius: 400px;
+  width: 280px;
+  border-radius: 300px;
 }
 </style>

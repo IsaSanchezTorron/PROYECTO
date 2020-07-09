@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--Encabezado de página -->
-    <h1>CONCURSOS ACTIVOS ACTUALMENTE</h1>
+    <h1>CONCURSOS ACTIVOS</h1>
     <!--  <button id="volver">
       <a>
         <router-link :to="{ name: 'Profile' }">Volver a mi perfil</router-link>
@@ -89,8 +89,6 @@
           </div>
         </div>
 
-        <br />
-        <br />
         <button id="baseseinscripciones" @click="confirmInscription(concurso)">✅ QUIERO INSCRIBIRME</button>
       </div>
     </div>
@@ -111,8 +109,7 @@ export default {
   name: "listallconcourses",
   props: {
     // Le indicamos que está recibiendo un array.
-    concursos: Array,
-    
+    concursos: Array
   },
 
   data() {
@@ -120,10 +117,10 @@ export default {
       // Inicializamos un string vacío que contendrá la búsqueda.
       search: "",
       id: null,
-      
+
       concursobases: {},
       modal: false,
-      descripcion:"",
+      descripcion: ""
     };
   },
 
@@ -136,7 +133,7 @@ export default {
         console.log(this.concursos);
       }
       return this.concursos.filter(
-        (concurso) =>
+        concurso =>
           concurso.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
           concurso.descripcion
             .toLowerCase()
@@ -148,102 +145,74 @@ export default {
         //Ojo aquí, pendiente que funcione la búsqueda por ciudad.
         // concurso.ciudad.toLowerCase().includes(this.search.toLowerCase())
       );
-    },
-
+    }
   },
 
-
-
   methods: {
-openModal(index) {
+    openModal(index) {
       this.modal = true;
-      this.concursobases=this.concursos[index];
+      this.concursobases = this.concursos[index];
+    },
+    closeModal() {
+      this.modal = false;
+    },
 
-     
-      
+    // MÉTODO PARA EL BOTÓN DE INSCRIPCIÓN EN CONCURSO.
 
-   },
-   closeModal(){
-     this.modal = false;
-   },
-
-
-
-
-
-// MÉTODO PARA EL BOTÓN DE INSCRIPCIÓN EN CONCURSO.
-
-confirmInscription(concurso) {
-  console.log(concurso.id_concurso);
- const self = this; 
- 
+    confirmInscription(concurso) {
+      console.log(concurso.id_concurso);
+      const self = this;
 
       // Cojo token e id.
       const token = localStorage.getItem("token");
       const data = localStorage.getItem("id");
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-     
 
-     Swal.fire({
+      Swal.fire({
         title: "🤓",
         text: "¿Quieres suscribirte a este concurso?",
         showCancelButton: true,
         confirmButtonColor: "#FE9F1D",
         cancelButtonColor: "#2EC4B6",
         confirmButtonText: "Sí, quiero suscribirme.",
-        cancelButtonText: "Volver",
-      })
-      
-      
-      .then(result => {
+        cancelButtonText: "Volver"
+      }).then(result => {
         if (result.value) {
- 
-      axios
-        .post(
-          "http://localhost:3003/concursos/inscripciones/inscribirme/" +
-            concurso.id_concurso,
-           
-          
-        )
-        .then(function (response) {
-        
-          
-          // Enviamos mensaje de confirmación de inscripción
-          Swal.fire({
-            title: "✔️",
-            text: "Te has inscrito en el concurso con éxito",
-            confirmButtonText: "O.K",
-            confirmButtonColor: "#FE9F1D",
-            
-            timer: 3000,
-          });
-        })
-        
-        //Recogemos posibles errores
-        .catch(function (error) {
-          console.log(error.response.data.message); 
-        
-        
- 
-          Swal.fire({
-            title: "⚠️",
-            text: "Ya estás inscrita en este concurso.",
-            confirmButtonText: "O.K",
-            confirmButtonColor: "#FE9F1D",
-        
-            timer: 3000,
+          axios
+            .post(
+              "http://localhost:3003/concursos/inscripciones/inscribirme/" +
+                concurso.id_concurso
+            )
+            .then(function(response) {
+              // Enviamos mensaje de confirmación de inscripción
+              Swal.fire({
+                title: "✔️",
+                text: "Te has inscrito en el concurso con éxito",
+                confirmButtonText: "O.K",
+                confirmButtonColor: "#FE9F1D",
 
-          })
-        })
-        }},
-      )}
-  },
-  
+                timer: 3000
+              });
+            })
 
-    
-  };
+            //Recogemos posibles errores
+            .catch(function(error) {
+              console.log(error.response.data.message);
 
+              Swal.fire({
+                title: "⚠️",
+                text: "Ya estás inscrita en este concurso.",
+                confirmButtonText: "O.K",
+                confirmButtonColor: "#FE9F1D",
 
+                timer: 3000
+              });
+            });
+        }
+      });
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -257,12 +226,12 @@ confirmInscription(concurso) {
 
 .concursoscontenedor {
   box-shadow: 0 0 10px var(--black);
-  padding: 2em;
+  padding: 1em;
 
-  margin: 40px auto;
+  margin: 20px auto;
   border-radius: 20px;
-  width: 500px;
-  height: 900px;
+  width: 400px;
+  height: 720px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -284,12 +253,12 @@ confirmInscription(concurso) {
 }
 
 p {
-  font-size: 1.3em;
+  font-size: 1em;
 }
 
 img {
-  width: 250px;
-  height: 250px;
+  width: 200px;
+  height: 200px;
   border-radius: 20px;
   transition: transform 0.5s ease-in-out;
 }
@@ -303,13 +272,13 @@ img:hover {
 
 h3 {
   text-transform: uppercase;
-  font-size: 1.9em;
+  font-size: 1.3em;
 }
 
 input {
   width: 500px;
-  height: 50px;
-  font-size: 1.5em;
+  height: 40px;
+  font-size: 1.2em;
 }
 
 .modal {
@@ -319,35 +288,38 @@ input {
   bottom: 0;
   border-radius: 30px;
   width: 100%;
+  padding: 1em;
 }
 
 .modalbox {
-  background: var(--verdeclaro);
+  background: var(--white);
   margin: 15% auto;
   padding: 50px;
   border: 1px solid #888;
-  width: 50%;
+  width: 60%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
 
   align-items: center;
-  border-radius: 50px;
-
-  box-shadow: 0px 0px 3px grey;
+  /*  border-radius: 50px; */
+  /*  box-shadow: 0px 0px 3px grey; */
   line-height: 1.5;
   overflow-y: scroll;
   scrollbar-track-color: var(--verdeoscuro);
-  box-shadow: 5px 10px 20px rgba(5, 133, 126, 0.507);
+  box-shadow: 10px 10px 10px 10px rgba(54, 204, 192, 0.24);
+
+  /*  box-shadow: 5px 10px 20px rgba(5, 133, 126, 0.507);
+} */
 }
 
 button {
-  display: flex;
+  /* display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: center; */
   width: 300px;
-  height: 30px;
-  font-size: 1.3em;
+  height: 40px;
+  font-size: 1em;
 
   /*  box-shadow: 0 0 10px rgb(12, 12, 12); */
   margin: 10px;
@@ -360,12 +332,12 @@ button {
 }
 
 #volver {
-  width: 250px;
+  width: 150px;
   margin-left: 55px;
 }
 
 button:hover {
-  background-color: var(--blue);
+  background-color: var(--naranjaoscuro);
   color: var(--black);
 }
 
