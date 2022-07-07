@@ -14,7 +14,7 @@
     "emailjs-com": "^2.4.1",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "mysql": "^2.18.1",
     "star-rating": "0.0.1",
     "sweetalert2": "^9.15.1",
